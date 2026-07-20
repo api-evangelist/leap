@@ -1,0 +1,57 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.leap.energy/docs/api-key-authentication
+docs: https://developer.leap.energy/docs/api-key-authentication
+summary:
+  model: bearer-api-key
+  types:
+  - http
+  notes: Every request to a Leap API endpoint must carry a valid bearer token in the HTTP Authorization
+    header. Tokens are long-lived partner API keys created in the Partner Portal, not OAuth access tokens
+    — there is no OAuth 2.0 authorization server, no scope grant flow and no token endpoint. API keys
+    are scoped to a single environment (production or staging) and carry a permission set selected at
+    creation time.
+schemes:
+- name: Bearer
+  type: http
+  scheme: bearer
+  header: 'Authorization: Bearer <API_KEY>'
+  bearer_format: opaque partner API key (the Dispatch, Revenue and Webhook specs declare bearerFormat
+    JWT; the documented partner key is an opaque two-part string)
+  sources:
+  - openapi/leap-create-meters-openapi-original.yml
+  - openapi/leap-dispatching-openapi-original.yml
+  - openapi/leap-enrollments-openapi-original.yml
+  - openapi/leap-meters-openapi-original.yml
+  - openapi/leap-nominations-openapi-original.yml
+  - openapi/leap-settlement-openapi-original.yml
+  - openapi/leap-webhooks-openapi-original.yml
+credentials:
+  issuance: Self-service in the Leap Partner Portal Partner Account page, API keys tab. Keys are created
+    with a selected permission set.
+  management_urls:
+    production: https://partner.leap.energy/account?settings=apiKeys
+    staging: https://partner.staging.leap.energy/account?settings=apiKeys
+  environment_scoped: true
+  environment_note: API keys are issued separately for production and staging. A key used against the
+    wrong environment returns 403. The same portal user credentials work in both environments.
+  permissions: Selected per key at creation time in the Partner Account page. Portal user roles are 'Manager'
+    (full admin, including inviting users and creating/revoking API keys) and 'User' (no account settings
+    access).
+  rotation: Keys can be created and revoked at any time from the Partner Account page; no published expiry
+    or automatic rotation policy.
+browser_sso:
+  supported: true
+  note: The developer portal has SSO with the Partner Portal. Logging in populates a temporary bearer
+    token into the CREDENTIALS box on API Reference pages so calls can be made directly from the browser
+    against staging or production.
+oauth2: false
+openid_connect: false
+mutual_tls: false
+scopes_artifact: none — Leap publishes no OAuth scope surface; permissions are selected per API key in
+  the portal.
+failure_modes:
+- status: 401
+  meaning: Missing or malformed Authorization header.
+- status: 403
+  meaning: Invalid key, key issued for the other environment, or key lacking the permission for the endpoint.
