@@ -1,0 +1,1002 @@
+openapi: 3.0.2
+info:
+  description: Endpoints to create or update meters in bulk through Leap's API.
+  title: create meters webhooks API
+  version: 1.1.0
+servers:
+- description: Leap staging API
+  url: https://api.staging.leap.energy
+- description: Leap production API
+  url: https://api.leap.energy
+security:
+- Bearer: []
+tags:
+- name: webhooks
+paths:
+  /v1.1/webhooks:
+    get:
+      description: List existing webhooks.
+      operationId: listWebhooks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookListResponse'
+          description: List of webhooks
+        '401':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Unauthorized error
+                  value:
+                    error: Unauthorized
+                    message: Auth token is invalid
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized - Auth token is invalid
+        '403':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Forbidden error
+                  value:
+                    error: Forbidden
+                    message: You do not have permission to perform this action
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden - You do not have permission to perform this action
+        '500':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Internal Server Error
+                  value:
+                    error: Internal Server Error
+                    message: An unexpected error occurred
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+      summary: List webhooks
+      tags:
+      - webhooks
+    post:
+      description: Create a new webhook to receive event notifications.
+      operationId: createWebhook
+      requestBody:
+        $ref: '#/components/requestBodies/WebhookRequestBody'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  summary: A successful response
+                  value:
+                    webhook_id: 364be407-1f08-48fa-afd2-ee1dd228b76b
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+          description: Webhook created successfully
+        '401':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Unauthorized error
+                  value:
+                    error: Unauthorized
+                    message: Auth token is invalid
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized - Auth token is invalid
+        '403':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Forbidden error
+                  value:
+                    error: Forbidden
+                    message: You do not have permission to perform this action
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden - You do not have permission to perform this action
+      summary: Create a webhook
+      tags:
+      - webhooks
+  /v1.1/webhooks/{webhook_id}:
+    delete:
+      description: Delete an existing webhook identified by webhook_id.
+      operationId: deleteWebhook
+      parameters:
+      - description: The ID of the webhook.
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  summary: A successful response
+                  value:
+                    message: Operation completed successfully
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+          description: Operation completed successfully
+        '401':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Unauthorized error
+                  value:
+                    error: Unauthorized
+                    message: Auth token is invalid
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized - Auth token is invalid
+        '403':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Forbidden error
+                  value:
+                    error: Forbidden
+                    message: You do not have permission to perform this action
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden - You do not have permission to perform this action
+        '404':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Not Found error
+                  value:
+                    error: Not Found
+                    message: The specified resource was not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found - The specified resource was not found
+      summary: Delete a webhook
+      tags:
+      - webhooks
+    put:
+      description: 'Update an existing webhook identified by webhook_id. NOTE: using this endpoint will overwrite all existing settings for the specified webhook_id.'
+      operationId: updateWebhook
+      parameters:
+      - description: The ID of the webhook.
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/WebhookRequestBody'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  summary: A successful response
+                  value:
+                    webhook_id: 364be407-1f08-48fa-afd2-ee1dd228b76b
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+          description: Webhook created successfully
+        '401':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Unauthorized error
+                  value:
+                    error: Unauthorized
+                    message: Auth token is invalid
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized - Auth token is invalid
+        '403':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Forbidden error
+                  value:
+                    error: Forbidden
+                    message: You do not have permission to perform this action
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden - You do not have permission to perform this action
+        '404':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Not Found error
+                  value:
+                    error: Not Found
+                    message: The specified resource was not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found - The specified resource was not found
+      summary: Update a webhook
+      tags:
+      - webhooks
+  /v1.1/webhooks/{webhook_id}/test:
+    post:
+      description: Send a test event to the configured receiver_url for the specified webhook_id.
+      operationId: testWebhook
+      parameters:
+      - description: The ID of the webhook.
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/TestWebhookRequestBody'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestWebhookResponse'
+          description: Object that returns the response from your server
+        '401':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Unauthorized error
+                  value:
+                    error: Unauthorized
+                    message: Auth token is invalid
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized - Auth token is invalid
+        '403':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Forbidden error
+                  value:
+                    error: Forbidden
+                    message: You do not have permission to perform this action
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden - You do not have permission to perform this action
+        '404':
+          content:
+            application/json:
+              examples:
+                error:
+                  summary: Not Found error
+                  value:
+                    error: Not Found
+                    message: The specified resource was not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found - The specified resource was not found
+      summary: Test a webhook
+      tags:
+      - webhooks
+components:
+  schemas:
+    BaseEvent:
+      properties:
+        webhook_event_type:
+          $ref: '#/components/schemas/WebhookEventType'
+      required:
+      - webhook_event_type
+      type: object
+    ConnectSessionAuthorizationUpdatedEventV1Wrapped:
+      allOf:
+      - $ref: '#/components/schemas/BaseEvent'
+      - $ref: '#/components/schemas/ConnectSessionAuthorizationUpdatedEventV1'
+    EnrollmentStatus:
+      description: The enrollment status of the meter.
+      enum:
+      - ACTIVE
+      - ELIGIBLE
+      - INELIGIBLE
+      - NOT_PARTICIPATING
+      - PENDING
+      type: string
+    PublicProgram:
+      properties:
+        program_identifier:
+          description: Identifier of program
+          enum:
+          - CAISO-CCA-SC_ONLY
+          - CCA
+          - CEC-DSGS-OPTION4
+          - CEC-DSGS
+          - CONED-CSRP
+          - CONED-DLRP
+          - DRAM
+          - ELRP
+          - ENERGY-ONLY
+          - ERCOT-ERS
+          - EVERSOURCE-CS
+          - MA_DOER-CPS
+          - NATGRID-CS
+          - NRG-REALTIME
+          - NRG-RED
+          - NYISO-SCR
+          - ONCOR-CLM
+          - PGE-ART
+          - PGE-CBP
+          - PJM-CAPACITY
+          - PSEGLI-CSRP
+          - PSEGLI-DLRP
+          - RIE-CS
+          - UNITIL-CS
+          - PSE-RPO
+          - SRP-RPO
+          - TVA-RPO
+          - CAISO-ELRP-A4
+          - CEC-DSGS-OPTION2
+          - ENERGYHUB-CS
+          - CT_GB-ESS
+          example: CEC-DSGS
+          type: string
+          x-enum-varnames:
+          - CAISO_CCA_SC_ONLY
+          - CCA
+          - CEC_DSGS_OPTION4
+          - CEC_DSGS
+          - CONED_CSRP
+          - CONED_DLRP
+          - DRAM
+          - ELRP
+          - ENERGY_ONLY
+          - ERCOT_ERS
+          - EVERSOURCE_CS
+          - MA_DOER_CPS
+          - NATGRID_CS
+          - NRG_REALTIME
+          - NRG_RED
+          - NYISO_SCR
+          - ONCOR_CLM
+          - PGE_ART
+          - PGE_CBP
+          - PJM_CAPACITY
+          - PSEGLI_CSRP
+          - PSEGLI_DLRP
+          - RIE_CS
+          - UNITIL_CS
+          - PSE_RPO
+          - SRP_RPO
+          - TVA_RPO
+          - CAISO_ELRP_A4
+          - CEC_DSGS_OPTION2
+          - ENERGYHUB_CS
+          - CT_GB_ESS
+      type: object
+    WebhookEventTypeDiscriminator:
+      discriminator:
+        mapping:
+          meter.created: '#/components/schemas/MeterCreatedEventV1Wrapped'
+          meter.enrollment.global-status.updated: '#/components/schemas/MeterEnrollmentGlobalStatusUpdatedEventV1Wrapped'
+          meter.enrollment.participation-status.updated: '#/components/schemas/MeterEnrollmentParticipationStatusUpdatedEventV1Wrapped'
+          meter.enrollment.required-actions.updated: '#/components/schemas/MeterEnrollmentPartnerRequiredActionsUpdatedV1Wrapped'
+          meter.enrollment.group.updated: '#/components/schemas/MeterEnrollmentGroupUpdatedEventV1Wrapped'
+          connect_session.updated: '#/components/schemas/ConnectSessionUpdatedEventV1Wrapped'
+          connect_session.authorization_updated: '#/components/schemas/ConnectSessionAuthorizationUpdatedEventV1Wrapped'
+        propertyName: webhook_event_type
+      example:
+        webhook_event_type: meter.created
+      oneOf:
+      - $ref: '#/components/schemas/MeterCreatedEventV1Wrapped'
+      - $ref: '#/components/schemas/MeterEnrollmentGlobalStatusUpdatedEventV1Wrapped'
+      - $ref: '#/components/schemas/MeterEnrollmentParticipationStatusUpdatedEventV1Wrapped'
+      - $ref: '#/components/schemas/MeterEnrollmentPartnerRequiredActionsUpdatedV1Wrapped'
+      - $ref: '#/components/schemas/MeterEnrollmentGroupUpdatedEventV1Wrapped'
+      - $ref: '#/components/schemas/ConnectSessionUpdatedEventV1Wrapped'
+      - $ref: '#/components/schemas/ConnectSessionAuthorizationUpdatedEventV1Wrapped'
+      properties:
+        webhook_event_type:
+          $ref: '#/components/schemas/WebhookEventType'
+      required:
+      - webhook_event_type
+      type: object
+    PartnerRequiredActions:
+      properties:
+        partner:
+          description: Required actions for the partner
+          example:
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            enrollment_deadline_date_time: 2024-07-29 00:00:00+00:00
+            action_type: IS_AUTHORIZED
+            action_description: 'There are missing fields: fieldname'
+            action_code: AUTH_0001
+          items:
+            $ref: '#/components/schemas/RequiredAction'
+          type: array
+      type: object
+    ConnectSessionUpdatedEventV1:
+      properties:
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner?s internal systems.
+          example: partner-reference-1
+          maxLength: 256
+          minLength: 3
+          pattern: ^[^\/\\?\]\[{}!#$%^&*()<>|]{3,256}$
+          type: string
+        status:
+          description: The status of the connect session.
+          enum:
+          - CREATED
+          - UPDATED
+          - CLOSED
+          - COMPLETED
+          type: string
+      required:
+      - partner_reference
+      - status
+      type: object
+    Header:
+      example:
+        name: name
+        value: value
+      properties:
+        name:
+          description: The name of the header.
+          type: string
+        value:
+          description: The value of the header.
+          type: string
+      required:
+      - name
+      - value
+      type: object
+    MeterEnrollmentGlobalStatusUpdatedV1:
+      properties:
+        meter_id:
+          description: The unique identifier for the meter.
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner?s internal systems.
+          example: partner-reference-1
+          maxLength: 256
+          minLength: 3
+          pattern: ^[^\/\\?\]\[{}!#$%^&*()<>|]{3,256}$
+          type: string
+        transmission_region:
+          $ref: '#/components/schemas/transmission_region'
+        meter_type:
+          $ref: '#/components/schemas/MeterType'
+        global_enrollment_status:
+          $ref: '#/components/schemas/EnrollmentStatus'
+      required:
+      - global_enrollment_status
+      - meter_id
+      - transmission_region
+      type: object
+    MeterType:
+      description: The type of asset.
+      enum:
+      - UTILITY_METER
+      - SUBMETER
+      - DEVICE
+      type: string
+    DeliveryPeriod:
+      properties:
+        delivery_period:
+          description: The delivery period of the program.
+          example: CEC-DSGS_2025_AUG_OCT
+          type: string
+      type: object
+    ConnectSessionAuthorizationUpdatedEventV1:
+      properties:
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner?s internal systems.
+          example: partner-reference-1
+          maxLength: 256
+          minLength: 3
+          pattern: ^[^\/\\?\]\[{}!#$%^&*()<>|]{3,256}$
+          type: string
+        utility_name:
+          $ref: '#/components/schemas/utility'
+        status:
+          description: The status of the authorization.
+          enum:
+          - INITIATED
+          - COMPLETED
+          - FAILED
+          type: string
+      required:
+      - partner_reference
+      - status
+      - utility_name
+      type: object
+    WebhookListResponse:
+      example:
+        webhooks:
+        - webhook_id: 364be407-1f08-48fa-afd2-ee1dd228b76b
+          event_types:
+          - meter.created
+          - meter.created
+          headers:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          receiver_url: https://company.com/leap-webhooks
+        - webhook_id: 364be407-1f08-48fa-afd2-ee1dd228b76b
+          event_types:
+          - meter.created
+          - meter.created
+          headers:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          receiver_url: https://company.com/leap-webhooks
+      properties:
+        webhooks:
+          items:
+            $ref: '#/components/schemas/Webhook'
+          type: array
+      required:
+      - webhooks
+      type: object
+    ParticipationPreference:
+      enum:
+      - PARTICIPATE
+      - IDLE
+      - DISENROLL
+      type: string
+    meter_id:
+      description: The unique identifier for the meter.
+      example: 11111111-1111-1111-1111-111111111111
+      format: uuid
+      type: string
+    MeterEnrollmentPartnerRequiredActionsUpdatedV1Wrapped:
+      allOf:
+      - $ref: '#/components/schemas/BaseEvent'
+      - $ref: '#/components/schemas/MeterEnrollmentPartnerRequiredActionsUpdatedV1'
+    ConnectSessionUpdatedEventV1Wrapped:
+      allOf:
+      - $ref: '#/components/schemas/BaseEvent'
+      - $ref: '#/components/schemas/ConnectSessionUpdatedEventV1'
+    RequiredAction:
+      allOf:
+      - $ref: '#/components/schemas/PublicProgram'
+      - $ref: '#/components/schemas/DeliveryPeriod'
+      - properties:
+          enrollment_deadline_date_time:
+            description: The deadline date and time for the required action in UTC.
+            example: 2024-07-29 00:00:00+00:00
+            format: date-time
+            type: string
+          action_type:
+            $ref: '#/components/schemas/action_type'
+          action_description:
+            description: Description of the required action.
+            example: 'There are missing fields: fieldname'
+            type: string
+          action_code:
+            description: The action code.
+            example: SERV_0002
+            type: string
+        required:
+        - action_code
+        - action_description
+        - action_type
+        - enrollment_deadline_date_time
+        type: object
+        example: null
+      type: object
+      example: null
+    ErrorResponse:
+      example:
+        error: error
+        message: message
+      properties:
+        error:
+          description: Error type.
+          type: string
+        message:
+          description: Detailed error message.
+          type: string
+      type: object
+    MeterEnrollmentPartnerRequiredActionsUpdatedV1:
+      properties:
+        meter_id:
+          description: The unique identifier for the meter.
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner?s internal systems.
+          example: partner-reference-1
+          maxLength: 256
+          minLength: 3
+          pattern: ^[^\/\\?\]\[{}!#$%^&*()<>|]{3,256}$
+          type: string
+        transmission_region:
+          $ref: '#/components/schemas/transmission_region'
+        meter_type:
+          $ref: '#/components/schemas/MeterType'
+        required_actions:
+          $ref: '#/components/schemas/PartnerRequiredActions'
+        global_enrollment_status:
+          $ref: '#/components/schemas/EnrollmentStatus'
+      required:
+      - global_enrollment_status
+      - meter_id
+      - required_actions
+      - transmission_region
+      type: object
+    utility:
+      description: The name of the Investor Owned Utility or Publicly Owned Utility whose territory the customer is in.
+      enum:
+      - PGE
+      - SCE
+      - SDGE
+      - SMUD
+      - LADWP
+      - SVP
+      - CECONY
+      - ORU
+      - PSEGLI
+      - NYS
+      - RIE
+      - EVERSOURCE
+      - NATGRID
+      - UNITIL
+      - PPL
+      - CAPELIGHT
+      - UPLIGHT
+      - UNITED_ILLUMINATED
+      - SMT
+      - AEP_CENTRAL
+      - AEP_NORTH
+      - NUECES_ELECTRIC
+      - ONCOR
+      - CENTERPOINT
+      - ENTERGY_GULF
+      - SWEPCO
+      - TNMP
+      - DEMO
+      - DEMO2
+      - LEAP_TEST_CAISO
+      - LEAP_TEST_NYISO
+      - COMED
+      - BGE
+      - PECO
+      - METED
+      - PENELEC
+      - PSEG
+      - DOMINION
+      - WESTPENN
+      - PENNPOWER
+      - PEPCO
+      - PJM_DEMO
+      - OTHER
+      - NES
+      - MLGW
+      - KUB
+      - NPU
+      - MTEMC
+      - PRECC
+      - HSVU
+      - SRP
+      - PSE
+      - TVA
+      example: PGE
+      type: string
+    MeterEnrollmentParticipationStatusUpdatedV1:
+      properties:
+        meter_id:
+          description: The unique identifier for the meter.
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner?s internal systems.
+          example: partner-reference-1
+          maxLength: 256
+          minLength: 3
+          pattern: ^[^\/\\?\]\[{}!#$%^&*()<>|]{3,256}$
+          type: string
+        transmission_region:
+          $ref: '#/components/schemas/transmission_region'
+        meter_type:
+          $ref: '#/components/schemas/MeterType'
+        participation_preference:
+          $ref: '#/components/schemas/ParticipationPreference'
+        start_time:
+          format: date-time
+          type: string
+        end_time:
+          format: date-time
+          type: string
+      required:
+      - meter_id
+      - participation_preference
+      - start_time
+      - transmission_region
+      type: object
+    WebhookResponse:
+      example:
+        webhook_id: 364be407-1f08-48fa-afd2-ee1dd228b76b
+      properties:
+        webhook_id:
+          description: The unique identifier for your webhook subscription.
+          example: 364be407-1f08-48fa-afd2-ee1dd228b76b
+          format: uuid
+          type: string
+      required:
+      - webhook_id
+      type: object
+    MeterCreatedEventV1:
+      properties:
+        meter_id:
+          description: The unique identifier for the meter.
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner?s internal systems.
+          example: partner-reference-1
+          maxLength: 256
+          minLength: 3
+          pattern: ^[^\/\\?\]\[{}!#$%^&*()<>|]{3,256}$
+          type: string
+        transmission_region:
+          $ref: '#/components/schemas/transmission_region'
+        meter_type:
+          $ref: '#/components/schemas/MeterType'
+      required:
+      - meter_id
+      - transmission_region
+      type: object
+    Webhook:
+      example:
+        webhook_id: 364be407-1f08-48fa-afd2-ee1dd228b76b
+        event_types:
+        - meter.created
+        - meter.created
+        headers:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        receiver_url: https://company.com/leap-webhooks
+      properties:
+        webhook_id:
+          description: The unique identifier for your webhook subscription.
+          example: 364be407-1f08-48fa-afd2-ee1dd228b76b
+          format: uuid
+          type: string
+        event_types:
+          items:
+            $ref: '#/components/schemas/WebhookEventType'
+          type: array
+        headers:
+          items:
+            $ref: '#/components/schemas/Header'
+          type: array
+        receiver_url:
+          example: https://company.com/leap-webhooks
+          type: string
+      required:
+      - event_types
+      - headers
+      - receiver_url
+      - webhook_id
+      type: object
+    TestWebhookResponse:
+      description: This object returns the response that Leap got from your server
+      example:
+        is_successful: true
+        error: error
+        status_code: 0
+        response_time_ms: 6
+      properties:
+        is_successful:
+          description: True if Leap was able to connect to your server and receive a 2xx response.
+          type: boolean
+        error:
+          description: If Leap wasn't able to get any response from your server, e.g. due to connection issues, this field will be populated.
+          type: string
+        status_code:
+          description: HTTP response status code that Leap received from your server. This field will only be populated if Leap was able to reach your server.
+          type: integer
+        response_time_ms:
+          description: Your server's response time in milliseconds. This field will only be populated if Leap was able to reach your server.
+          type: integer
+      required:
+      - is_successful
+      type: object
+    WebhookEventType:
+      enum:
+      - meter.created
+      - connect_session.updated
+      - connect_session.authorization_updated
+      - meter.enrollment.global-status.updated
+      - meter.enrollment.participation-status.updated
+      - meter.enrollment.required-actions.updated
+      - meter.enrollment.group.updated
+      type: string
+    MeterEnrollmentParticipationStatusUpdatedEventV1Wrapped:
+      allOf:
+      - $ref: '#/components/schemas/BaseEvent'
+      - $ref: '#/components/schemas/MeterEnrollmentParticipationStatusUpdatedV1'
+    MeterEnrollmentGroupUpdatedEventV1Wrapped:
+      allOf:
+      - $ref: '#/components/schemas/BaseEvent'
+      - $ref: '#/components/schemas/MeterEnrollmentGroupUpdatedV1'
+    action_type:
+      description: The type of action required to participate with this meter.
+      enum:
+      - IS_AUTHORIZED
+      - DOCUMENTS_SIGNED
+      - HAS_AMI
+      - NOT_ENROLLED_IN_CONFLICTING_PROGRAM
+      - PARTICIPATING
+      - HAS_MARKET_REGISTRATION
+      - NO_MISSING_FIELDS
+      - GENERATOR
+      - ADDRESS
+      - HAS_NOMINATIONS
+      - HAS_BIDDING_STRATEGY
+      - IS_ELIGIBLE
+      - IS_ASSIGNED_TO_A_RESOURCE
+      - MEETS_EXTRA_PROGRAM_REQUIREMENTS
+      example: IS_AUTHORIZED
+      type: string
+    MeterCreatedEventV1Wrapped:
+      allOf:
+      - $ref: '#/components/schemas/BaseEvent'
+      - $ref: '#/components/schemas/MeterCreatedEventV1'
+    SuccessResponse:
+      example:
+        message: Operation completed successfully
+      properties:
+        message:
+          description: Success message.
+          example: Operation completed successfully
+          type: string
+      required:
+      - message
+      type: object
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    MeterEnrollmentGroupUpdatedV1:
+      properties:
+        market_group_id:
+          description: Identifier for the market group
+          format: uuid
+          type: string
+        market_group_name:
+          description: Name for the market group
+          example: GRP1_NAME
+          type: string
+        start_date_time:
+          description: The date when this market group will become active
+          example: 2024-05-01 04:00:00+00:00
+          format: date-time
+          type: string
+        end_date_time:
+          description: The date when this market group will become inactive
+          example: 2024-06-01 04:00:00+00:00
+          format: date-time
+          type: string
+        meter_ids:
+          items:
+            $ref: '#/components/schemas/meter_id'
+          type: array
+      required:
+      - end_date_time
+      - market_group_id
+      - market_group_name
+      - meter_ids
+      - start_date_time
+      type: object
+    WebhookRequest:
+      example:
+        headers:
+        - name: x-api-key
+          value: your-test-key
+        event_types:
+        - meter.created
+        receiver_url: https://company.com/leap-webhooks
+      properties:
+        headers:
+          description: List of custom headers used in requests back to the origin.
+          example:
+          - name: x-api-key
+            value: your-test-key
+          items:
+            $ref: '#/components/schemas/Header'
+          type: array
+        event_types:
+          description: A list of unique event keys to subscribe to.
+          example:
+          - meter.created
+          items:
+            $ref: '#/components/schemas/WebhookEventType'
+          type: array
+        receiver_url:
+          description: The callback URL for this webhook.
+          example: https://company.com/leap-webhooks
+          type: string
+      required:
+      - event_types
+      - receiver_url
+      type: object
+    MeterEnrollmentGlobalStatusUpdatedEventV1Wrapped:
+      allOf:
+      - $ref: '#/components/schemas/BaseEvent'
+      - $ref: '#/components/schemas/MeterEnrollmentGlobalStatusUpdatedV1'
+  requestBodies:
+    TestWebhookRequestBody:
+      content:
+        application/json:
+          examples:
+            meter.created:
+              summary: A sample meter created event
+              value:
+                webhook_event_type: meter.created
+                meter_id: 364be407-1f08-48fa-afd2-ee1dd228b76b
+                partner_reference: sample-ref-123
+          schema:
+            $ref: '#/components/schemas/WebhookEventTypeDiscriminator'
+      required: true
+    WebhookRequestBody:
+      content:
+        application/json:
+          examples:
+            webhook:
+              summary: A sample webhook request
+              value:
+                headers:
+                - name: x-api-key
+                  value: your-test-key
+                event_types:
+                - meter.created
+                receiver_url: https://company.com/leap-webhooks
+          schema:
+            $ref: '#/components/schemas/WebhookRequest'
+      required: true
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      type: http
