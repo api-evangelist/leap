@@ -1,0 +1,238 @@
+generated: '2026-07-19'
+method: derived
+status: candidate
+source: openapi/leap-create-meters-openapi-original.yml, openapi/leap-dispatching-openapi-original.yml,
+  openapi/leap-enrollments-openapi-original.yml, openapi/leap-meters-openapi-original.yml, openapi/leap-nominations-openapi-original.yml,
+  openapi/leap-settlement-openapi-original.yml, openapi/leap-webhooks-openapi-original.yml
+search_note: No official or third-party Leap MCP server was found — nothing on developer.leap.energy,
+  nothing in the npm @modelcontextprotocol namespace, nothing in the official MCP registry, and no GitHub
+  organization for the company. Leap does publish https://developer.leap.energy/llms.txt, which is its
+  only agent-facing surface today.
+server:
+  name: leap
+  transport: http
+  url: null
+  base_url: https://api.leap.energy
+  staging_base_url: https://api.staging.leap.energy
+  auth:
+    type: bearer
+    header: Authorization
+    note: Portal-issued partner API key, environment-scoped. See authentication/leap-authentication.yml.
+safety_notes:
+- Read-only tools (get_*, list_*, search_*) are safe to expose broadly.
+- 'Write tools carry real market and revenue consequences and should require confirmation: create_meter_batch_job
+  and create_single_meter add billable inventory; post_*_nomination_suggestions offers capacity into a
+  market; the disenrollment and idle-period operations remove meters from paying programs; create_or_update_*_dispatch_webhook
+  redirects live grid dispatch traffic.'
+- Leap publishes no idempotency mechanism, so a retried write is a second write. See conventions/leap-conventions.yml.
+tools:
+  - name: list_meter_batch_jobs
+    description: List meter jobs
+    method: GET
+    path: /v1.1/jobs/meters
+    source_operation: openapi/leap-create-meters-openapi-original.yml#listMeterBatchJobs
+  - name: create_meter_batch_job
+    description: Create meters
+    method: POST
+    path: /v1.1/jobs/meters
+    source_operation: openapi/leap-create-meters-openapi-original.yml#createMeterBatchJob
+  - name: list_meter_batch_jobs_filters
+    description: List meter upload filters
+    method: GET
+    path: /v1.1/jobs/meter-job-filters
+    source_operation: openapi/leap-create-meters-openapi-original.yml#listMeterBatchJobsFilters
+  - name: get_meter_batch_job
+    description: Get meters job status
+    method: GET
+    path: /v1.1/jobs/meters/{job_id}
+    source_operation: openapi/leap-create-meters-openapi-original.yml#getMeterBatchJob
+  - name: create_single_meter
+    description: Create a single meter
+    method: POST
+    path: /v1.1/meters
+    source_operation: openapi/leap-create-meters-openapi-original.yml#createSingleMeter
+  - name: list_provisional_assets
+    description: List provisional assets
+    method: GET
+    path: /v1.1/provisional-assets
+    source_operation: openapi/leap-create-meters-openapi-original.yml#listProvisionalAssets
+  - name: list_provisional_assets_filters
+    description: List provisional assets filters
+    method: GET
+    path: /v1.1/provisional-assets-filters
+    source_operation: openapi/leap-create-meters-openapi-original.yml#listProvisionalAssetsFilters
+  - name: search_meter_dispatches
+    description: Search meter dispatches
+    method: POST
+    path: /dispatch/meter/search
+    source_operation: openapi/leap-dispatching-openapi-original.yml#searchMeterDispatches
+  - name: search_group_dispatches
+    description: Search group dispatches
+    method: POST
+    path: /dispatch/group/search
+    source_operation: openapi/leap-dispatching-openapi-original.yml#searchGroupDispatches
+  - name: trigger_communication_test_meter_dispatch
+    description: Trigger meter communication test
+    method: POST
+    path: /dispatch/meter/communication_test
+    source_operation: openapi/leap-dispatching-openapi-original.yml#triggerCommunicationTestMeterDispatch
+  - name: delete_meter_dispatch_webhook
+    description: Delete meter dispatch webhook URL
+    method: DELETE
+    path: /dispatch/meter/webhook
+    source_operation: openapi/leap-dispatching-openapi-original.yml#deleteMeterDispatchWebhook
+  - name: get_meter_dispatch_webhook
+    description: Get meter webhook URL
+    method: GET
+    path: /dispatch/meter/webhook
+    source_operation: openapi/leap-dispatching-openapi-original.yml#getMeterDispatchWebhook
+  - name: create_or_update_meter_dispatch_webhook
+    description: Set meter webhook URL
+    method: PUT
+    path: /dispatch/meter/webhook
+    source_operation: openapi/leap-dispatching-openapi-original.yml#createOrUpdateMeterDispatchWebhook
+  - name: trigger_test_meter_dispatch_notification
+    description: Trigger test meter notification
+    method: POST
+    path: /dispatch/meter/webhook/integration_test
+    source_operation: openapi/leap-dispatching-openapi-original.yml#triggerTestMeterDispatchNotification
+  - name: delete_group_dispatch_webhook
+    description: Delete group webhook URL
+    method: DELETE
+    path: /dispatch/group/webhook
+    source_operation: openapi/leap-dispatching-openapi-original.yml#deleteGroupDispatchWebhook
+  - name: get_group_dispatch_webhook
+    description: Get group webhook URL
+    method: GET
+    path: /dispatch/group/webhook
+    source_operation: openapi/leap-dispatching-openapi-original.yml#getGroupDispatchWebhook
+  - name: create_or_update_group_dispatch_webhook
+    description: Set group webhook URL
+    method: PUT
+    path: /dispatch/group/webhook
+    source_operation: openapi/leap-dispatching-openapi-original.yml#createOrUpdateGroupDispatchWebhook
+  - name: trigger_test_group_dispatch_notification
+    description: Trigger test group notification
+    method: POST
+    path: /dispatch/group/webhook/integration_test
+    source_operation: openapi/leap-dispatching-openapi-original.yml#triggerTestGroupDispatchNotification
+  - name: get_meter_enrollment
+    description: Get meter enrollment
+    method: GET
+    path: /v2/meters/{meter_id}/enrollments
+    source_operation: openapi/leap-enrollments-openapi-original.yml#getMeterEnrollment
+  - name: search_meter_enrollments
+    description: Search meter enrollments
+    method: POST
+    path: /v2/meters/enrollments/search
+    source_operation: openapi/leap-enrollments-openapi-original.yml#searchMeterEnrollments
+  - name: get_meter_details
+    description: Get meter details
+    method: GET
+    path: /v2/meters/{meter_id}
+    source_operation: openapi/leap-meters-openapi-original.yml#getMeterDetails
+  - name: search_meter_details
+    description: Search meter details
+    method: POST
+    path: /v2/meters/search
+    source_operation: openapi/leap-meters-openapi-original.yml#searchMeterDetails
+  - name: get_meter_nomination_suggestions
+    description: Get suggested nominations
+    method: GET
+    path: /v2/meters/{meter_id}/nominations/suggestions
+    source_operation: openapi/leap-nominations-openapi-original.yml#getMeterNominationSuggestions
+  - name: post_meter_nomination_suggestions
+    description: Suggest meter nominations
+    method: POST
+    path: /v2/meters/{meter_id}/nominations/suggestions
+    source_operation: openapi/leap-nominations-openapi-original.yml#postMeterNominationSuggestions
+  - name: delete_meter_nomination_suggestion
+    description: Delete suggested nominations
+    method: DELETE
+    path: /v2/meters/{meter_id}/nominations/suggestions/{nomination_suggestion_id}
+    source_operation: openapi/leap-nominations-openapi-original.yml#deleteMeterNominationSuggestion
+  - name: post_nomination_suggestions
+    description: Suggest bulk nominations
+    method: POST
+    path: /v2/meters/nominations/suggestions
+    source_operation: openapi/leap-nominations-openapi-original.yml#postNominationSuggestions
+  - name: search_nomination_suggestions
+    description: Search suggested nominations
+    method: POST
+    path: /v2/meters/nominations/suggestions/search
+    source_operation: openapi/leap-nominations-openapi-original.yml#searchNominationSuggestions
+  - name: search_nominations
+    description: Search nominations
+    method: POST
+    path: /v2/meters/nominations/search
+    source_operation: openapi/leap-nominations-openapi-original.yml#searchNominations
+  - name: post_customer_search_periodic_aggregation_search
+    description: Revenue by customer
+    method: POST
+    path: /v1.1/revenue/periodic/aggregation/customer/search
+    source_operation: openapi/leap-settlement-openapi-original.yml#postCustomerSearchPeriodicAggregationSearch
+  - name: post_load_type_search_periodic_aggregation_search
+    description: Revenue by load type
+    method: POST
+    path: /v1.1/revenue/periodic/aggregation/load-type/search
+    source_operation: openapi/leap-settlement-openapi-original.yml#postLoadTypeSearchPeriodicAggregationSearch
+  - name: post_market_group_search_periodic_aggregation_search
+    description: Revenue by market group
+    method: POST
+    path: /v1.1/revenue/periodic/aggregation/market-group/search
+    source_operation: openapi/leap-settlement-openapi-original.yml#postMarketGroupSearchPeriodicAggregationSearch
+  - name: post_meter_search_periodic_aggregation_search
+    description: Revenue by meter
+    method: POST
+    path: /v1.1/revenue/periodic/aggregation/meter/search
+    source_operation: openapi/leap-settlement-openapi-original.yml#postMeterSearchPeriodicAggregationSearch
+  - name: post_utility_search_periodic_aggregation_search
+    description: Revenue by utility
+    method: POST
+    path: /v1.1/revenue/periodic/aggregation/utility/search
+    source_operation: openapi/leap-settlement-openapi-original.yml#postUtilitySearchPeriodicAggregationSearch
+  - name: get_periodic_reports
+    description: Get monthly revenue reports
+    method: GET
+    path: /v1.1/revenue/periodic/reports
+    source_operation: openapi/leap-settlement-openapi-original.yml#getPeriodicReports
+  - name: get_periodic_report_versions
+    description: Get revenue report versions
+    method: GET
+    path: /v1.1/revenue/periodic/versions
+    source_operation: openapi/leap-settlement-openapi-original.yml#getPeriodicReportVersions
+  - name: get_yearly_overview
+    description: Get annual revenue data
+    method: GET
+    path: /v1.1/revenue/yearly/{year}
+    source_operation: openapi/leap-settlement-openapi-original.yml#getYearlyOverview
+  - name: post_monthly_unresponsive_meters_performance
+    description: Monthly unresponsive meters
+    method: POST
+    path: /v1.1/performance/diagnosis/monthly/unresponsive/meters
+    source_operation: openapi/leap-settlement-openapi-original.yml#postMonthlyUnresponsiveMetersPerformance
+  - name: list_webhooks
+    description: List webhooks
+    method: GET
+    path: /v1.1/webhooks
+    source_operation: openapi/leap-webhooks-openapi-original.yml#listWebhooks
+  - name: create_webhook
+    description: Create a webhook
+    method: POST
+    path: /v1.1/webhooks
+    source_operation: openapi/leap-webhooks-openapi-original.yml#createWebhook
+  - name: delete_webhook
+    description: Delete a webhook
+    method: DELETE
+    path: /v1.1/webhooks/{webhook_id}
+    source_operation: openapi/leap-webhooks-openapi-original.yml#deleteWebhook
+  - name: update_webhook
+    description: Update a webhook
+    method: PUT
+    path: /v1.1/webhooks/{webhook_id}
+    source_operation: openapi/leap-webhooks-openapi-original.yml#updateWebhook
+  - name: test_webhook
+    description: Test a webhook
+    method: POST
+    path: /v1.1/webhooks/{webhook_id}/test
+    source_operation: openapi/leap-webhooks-openapi-original.yml#testWebhook

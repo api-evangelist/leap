@@ -1,0 +1,43 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Leap Meter Enrollment API
+  version: 1.0.0
+extends: openapi/leap-enrollments-openapi-original.yml
+x-generated: '2026-07-19'
+x-method: generated
+x-source: api-evangelist enrichment pipeline - apis.yml + repo artifacts for all/leap
+actions:
+- target: $.info
+  update:
+    x-apievangelist-aid: leap:enrollments
+    x-apievangelist-provider: leap
+    x-apievangelist-apis-json: https://raw.githubusercontent.com/api-evangelist/leap/refs/heads/main/apis.yml
+    x-apievangelist-docs: https://developer.leap.energy/
+    x-apievangelist-artifacts:
+      authentication: authentication/leap-authentication.yml
+      conventions: conventions/leap-conventions.yml
+      errors: errors/leap-problem-types.yml
+      error_codes: errors/leap-error-codes.yml
+      lifecycle: lifecycle/leap-lifecycle.yml
+      changelog: changelog/leap-changelog.yml
+      sandbox: sandbox/leap-sandbox.yml
+      data_model: data-model/leap-data-model.yml
+      events: asyncapi/leap-events-asyncapi.yml
+      skills: skills/_index.yml
+- target: $.info
+  update:
+    x-agentic-notes:
+      auth: Bearer partner API key issued in the Leap Partner Portal, scoped to production or staging; a key used
+        against the wrong host returns 403.
+      idempotency: Not supported - Leap publishes no Idempotency-Key. Treat every write as non-replayable and reconcile
+        with partner_reference.
+      pagination: Opaque page_token / page_size in the request body; next_page_token in the response.
+      rate_limits: Not published; per-request payload ceilings apply instead (1,000,000 interval data points, 100,000
+        bids, 100 meters per bid).
+      errors: application/json with { title, status, details[] } on most services; { code, message, error_code }
+        on dispatch; { error, message } on webhooks.
+- target: $.servers[*]
+  update:
+    x-apievangelist-environments:
+      production: https://api.leap.energy
+      staging: https://api.staging.leap.energy

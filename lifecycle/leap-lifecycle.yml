@@ -1,0 +1,57 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.leap.energy/changelog/meters-api-v1-deprecation-date-set, https://status.leap.energy/,
+  openapi/*
+versioning:
+  scheme: uri-path
+  note: Each Leap service carries its own major/minor version in the URI path — /v1.1/… for create-meters,
+    webhooks and revenue; /v2/… for meters, enrollments, nominations and dispatch. There is no version
+    header and no version query parameter.
+  current:
+    meters: v2
+    enrollments: v2
+    nominations: v2
+    dispatch: v2
+    create_meters: v1.1
+    webhooks: v1.1
+    revenue: v1.1
+  docs: https://developer.leap.energy/reference/
+deprecation:
+  policy_url: https://developer.leap.energy/changelog/meters-api-v1-deprecation-date-set
+  practice: Leap announces deprecations on the developer-portal changelog with a named sunset date and
+    published migration paths, well ahead of removal. The Meters v1 sunset was announced roughly 18 months
+    after the v2 replacement shipped.
+  sunset_header: unknown — no Sunset or Deprecation response header (RFC 8594) is declared in any published
+    OpenAPI definition, and none is documented.
+  deprecated_operations_in_spec: []
+  deprecated_operations_note: No operation in the seven published OpenAPI definitions sets the `deprecated`
+    flag to true. The deprecating v1 Meters endpoints (getMeter, searchMeters) are documented in the API reference
+    but are not present in the OpenAPI files Leap publishes.
+  announced:
+  - api: Meters API v1
+    operations:
+    - getMeter
+    - searchMeters
+    sunset_date: '2026-10-31'
+    announced_via: https://developer.leap.energy/changelog/meters-api-v1-deprecation-date-set
+    migration:
+    - Meter webhook events (recommended) — https://developer.leap.energy/reference/meter-events
+    - Meters API v2 endpoints — https://developer.leap.energy/docs/sync-meter-inventory-v2
+status_page:
+  url: https://status.leap.energy/
+  verified_status: 200
+environments:
+- name: production
+  base_url: https://api.leap.energy
+  portal: https://partner.leap.energy/
+- name: staging
+  base_url: https://api.staging.leap.energy
+  portal: https://partner.staging.leap.energy/
+sla:
+  published: false
+  note: No public SLA or uptime commitment found on the developer portal or marketing site; commercial
+    terms are partner-contract based.
+support:
+  knowledge_center: https://support.leap.energy/support/solutions
+  contact: partners@leap.ac
+  api_contact: apiteam@leap.energy (from OpenAPI info.contact)

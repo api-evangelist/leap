@@ -1,0 +1,76 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.leap.energy/changelog
+docs: https://developer.leap.energy/changelog
+scheme:
+  style: dated developer-portal changelog (ReadMe)
+  hosted_on: developer.leap.energy
+  index_in_llms_txt: true
+  pages: 4 pages of entries at time of capture
+  author: Shaun Tamblin (Leap)
+  date_display: The changelog renders relative ages ("4 days ago", "3 months ago") rather than absolute
+    dates; relative_age below is recorded verbatim as published, and no absolute dates have been inferred.
+current_versions:
+  meters: v2 (Meter Details API 2.0.0, Meter Information/Enrollment API 2.0.0)
+  create_meters: v1.1
+  dispatch: v2
+  revenue: v1.1
+  webhooks: v1.1
+  nominations: v2.0.0
+entries:
+- title: Unresponsive Meters API Released
+  url: https://developer.leap.energy/changelog/unresponsive-meters-api-released
+  relative_age: 4 days ago (as of 2026-07-19)
+  breaking: false
+  additions:
+  - The unresponsive meters endpoint (postMonthlyUnresponsiveMetersPerformance) is out of beta and generally
+    available for automating alerting on non-responsive meters.
+- title: Meters API V1 Deprecation Date Set
+  url: https://developer.leap.energy/changelog/meters-api-v1-deprecation-date-set
+  relative_age: 3 months ago (as of 2026-07-19)
+  breaking: true
+  highlights:
+  - Meters API v1 endpoints (getMeter, searchMeters) will be deprecated on 2026-10-31.
+  - 'Migration paths published: meter webhook events (recommended) or Meters API v2 endpoints.'
+- title: Webhook Platform Released
+  url: https://developer.leap.energy/changelog/webhook-platform-released
+  relative_age: 4 months ago (as of 2026-07-19)
+  breaking: false
+  additions:
+  - General availability of the dedicated webhook platform for non-dispatch events.
+  - Events for Connect/direct-to-utility authorization sessions, new meters, enrollment and participation
+    status changes, VPP group membership changes, and required partner actions.
+- title: Partner Reference ID Added to Dispatch Notifications
+  url: https://developer.leap.energy/changelog/partner-reference-id-added-to-dispatch-notifications
+  relative_age: 7 months ago (as of 2026-07-19)
+  breaking: false
+  additions:
+  - Partner reference ID included in dispatch notification payloads.
+- title: Connect Webhooks Released
+  url: https://developer.leap.energy/changelog/connect-webhooks-released
+  relative_age: 7 months ago (as of 2026-07-19)
+  breaking: false
+  additions:
+  - connect_session.updated and connect_session.authorization_updated webhook events.
+- title: New Webhook Platform Released
+  url: https://developer.leap.energy/changelog/new-webhook-platform-released
+  relative_age: 8 months ago (as of 2026-07-19)
+  breaking: false
+- title: Leap Connect Updates
+  url: https://developer.leap.energy/changelog/leap-connect-updates
+  relative_age: 9 months ago (as of 2026-07-19)
+  breaking: false
+- title: Revenue API Released
+  url: https://developer.leap.energy/changelog/revenue-api-released
+  relative_age: about 1 year ago (as of 2026-07-19)
+  breaking: false
+  additions:
+  - Revenue & Analytics API (settlement reports and aggregations).
+- title: Nomination value added to dispatch API & webhook events
+  url: https://developer.leap.energy/changelog/nomination-value-added-to-dispatch-api-webhook-events
+  relative_age: over 1 year ago (as of 2026-07-19)
+  breaking: false
+- title: Webhook Platform now in Beta
+  url: https://developer.leap.energy/changelog/webhook-platform-now-in-beta
+  relative_age: over 1 year ago (as of 2026-07-19)
+  breaking: false

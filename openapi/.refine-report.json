@@ -1,0 +1,32 @@
+{
+  "provider": "leap",
+  "sources": [
+    "leap-create-meters-api-openapi.yml",
+    "leap-group-dispatches-api-openapi.yml",
+    "leap-meter-details-api-openapi.yml",
+    "leap-meter-dispatches-api-openapi.yml",
+    "leap-meter-enrollment-api-openapi.yml",
+    "leap-nominations-api-openapi.yml",
+    "leap-performance-api-openapi.yml",
+    "leap-provisional-assets-api-openapi.yml",
+    "leap-revenue-api-openapi.yml",
+    "leap-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "leap-create-meters-api-openapi.yml",
+    "leap-group-dispatches-api-openapi.yml",
+    "leap-meter-details-api-openapi.yml",
+    "leap-meter-dispatches-api-openapi.yml",
+    "leap-meter-enrollment-api-openapi.yml",
+    "leap-nominations-api-openapi.yml",
+    "leap-performance-api-openapi.yml",
+    "leap-provisional-assets-api-openapi.yml",
+    "leap-revenue-api-openapi.yml",
+    "leap-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

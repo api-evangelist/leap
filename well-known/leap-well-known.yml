@@ -1,0 +1,45 @@
+generated: '2026-07-19'
+method: searched
+source: live probes of the Leap hosts
+summary: No /.well-known/ discovery documents are published on any Leap host. All five probed paths returned
+  404 on all three hosts. Recorded as an honest negative result — Leap has no security.txt, no OIDC/OAuth
+  discovery (it uses portal-issued bearer API keys, not OAuth), and no API catalog or ai-plugin manifest.
+hosts:
+- host: https://api.leap.energy
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://www.leap.energy
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://developer.leap.energy
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+agent_discovery_note: 'Leap does publish a machine-readable docs index at https://developer.leap.energy/llms.txt
+  (captured in llms/leap-llms.txt), which is the only agent-facing discovery surface found.'

@@ -1,0 +1,398 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/leap-meters-openapi-original.yml, openapi/leap-enrollments-openapi-original.yml, openapi/leap-create-meters-openapi-original.yml,
+  openapi/leap-nominations-openapi-original.yml, openapi/leap-dispatching-openapi-original.yml, openapi/leap-settlement-openapi-original.yml,
+  openapi/leap-webhooks-openapi-original.yml
+summary: The Leap domain graph centres on the Meter — the unit of inventory that provides grid services.
+  A meter belongs to a partner account, carries a customer, a site, one or more devices and a utility
+  service account, holds an enrollment in one or more market programs, is nominated into market delivery
+  periods, receives dispatch timeslots individually or as part of a market group, and settles into periodic
+  revenue aggregations. Leap identifiers are opaque UUID-style strings with no documented type prefixes.
+identifiers:
+  meter_id: Leap-assigned meter identifier; the primary key across every service. Also appears as meter_uuid
+    on the dispatch communication-test request.
+  partner_reference: Partner-supplied identifier attached to a meter and echoed on dispatch events, webhook
+    payloads and revenue aggregations; the join key between Leap and partner systems.
+  job_id: Identifier for an asynchronous meter batch-creation job.
+  webhook_id: Identifier for a webhook subscription.
+  nomination_suggestion_id: Identifier for a nomination suggestion on a meter.
+  market_group_id: Identifier for a market group (a set of meters dispatched together).
+  program_identifier: Identifier for a market or utility program a meter is enrolled in.
+  prefixes: none published — Leap does not document type-prefixed identifiers.
+entities:
+- name: Meter
+  schemas:
+  - MeterId
+  - AssetIdentifiers
+  - ExtendedMeterIdentifiers
+  - CommonMeter
+  description: The basic unit of inventory providing grid services — an end customer's utility service
+    point plus the devices behind it.
+  key_fields:
+  - meter_id
+  - partner_reference
+  - transmission_region
+  - customer_classification
+  - meter_type
+  - load_types
+  - customer_group
+  - tags
+  - is_archived
+  - connection_references
+  operations:
+  - getMeterDetails
+  - searchMeterDetails
+  - createSingleMeter
+  - createMeterBatchJob
+  relationships:
+  - type: has_one
+    target: Customer
+    via: customer
+  - type: has_one
+    target: Site
+    via: site
+  - type: has_one
+    target: Device
+    via: device
+  - type: has_one
+    target: Utility
+    via: utility
+  - type: has_one
+    target: Enrollment
+    via: meter_id
+  - type: has_many
+    target: Nomination
+    via: meter_id
+  - type: has_many
+    target: DispatchEvent
+    via: meter_id
+  - type: belongs_to
+    target: MarketGroup
+    via: market_group_id
+  - type: has_one
+    target: RegionalProfile
+    via: caiso / isone / nyiso
+- name: Customer
+  schemas:
+  - Customer
+  - Customer_billing
+  description: The end customer behind a meter, including service and billing address, contact details
+    and the partner's offering metadata.
+  key_fields:
+  - end_customer_name
+  - end_customer_email
+  - end_customer_phone_number
+  - end_customer_company_name
+  - street_1
+  - city
+  - state_or_province_code
+  - postal_code
+  - country_code
+  - is_in_wholesale_capacity_market
+  - dispatch_option
+  relationships:
+  - type: belongs_to
+    target: Meter
+- name: Site
+  schemas:
+  - Site
+  description: The physical premises — load zone, device count and any on-site generation.
+  key_fields:
+  - load_zone
+  - number_of_devices
+  - on_site_fossil_generator
+  - renewable_generator
+  - generator_capacity_kw
+  - generator_fuel_type
+  relationships:
+  - type: belongs_to
+    target: Meter
+  - type: has_many
+    target: Device
+    via: site_devices
+- name: Device
+  schemas:
+  - Device
+  - DeviceInfo
+  description: A distributed energy resource behind the meter — battery, thermostat/heat pump, EV charger
+    or generator.
+  key_fields:
+  - device_type
+  - device_manufacturer
+  - device_model
+  - device_serial_number
+  - install_date
+  - permission_to_operate_date
+  - battery_power_capacity_kw
+  - battery_energy_capacity_kwh
+  - battery_duration_hours
+  - battery_max_state_of_charge_percentage
+  - battery_min_state_of_charge_percentage
+  - pv_connected
+  relationships:
+  - type: belongs_to
+    target: Site
+- name: Utility
+  schemas:
+  - ReadUtility
+  - CommonUtility
+  description: The utility service account the meter is billed under.
+  key_fields:
+  - utility_name
+  - load_serving_entity
+  - electric_service_account_number
+  - tariff
+  - voltage
+  - utility_meter_serial_number
+  relationships:
+  - type: belongs_to
+    target: Meter
+- name: RegionalProfile
+  schemas:
+  - Caiso
+  - Isone
+  - Nyiso
+  description: Region-specific attributes required by each ISO/RTO.
+  key_fields:
+  - is_receiving_sgip_funding
+  - nem_type
+  - in_connected_solutions
+  - cbl_method
+  - company_type
+  - existing_nyiso_resource_id
+  - partner_nyiso_resource_name
+  relationships:
+  - type: belongs_to
+    target: Meter
+- name: Enrollment
+  schemas:
+  - MeterEnrollmentFields
+  - ParticipationPreferenceResponse
+  - EnrollmentDeadline
+  - PartnerRequiredActions
+  - LeapRequiredActions
+  description: A meter's enrollment state — global status, participation preferences over time windows,
+    per-program enrollment, and any actions required of the partner or of Leap.
+  key_fields:
+  - global_enrollment_status
+  - participation_preferences
+  - program_enrollment
+  - required_actions
+  - customer_group
+  - enrollment_deadline_date_time
+  - activation_date_time
+  operations:
+  - getMeterEnrollment
+  - searchMeterEnrollments
+  relationships:
+  - type: belongs_to
+    target: Meter
+    via: meter_id
+  - type: has_many
+    target: Program
+    via: program_enrollment
+- name: Program
+  schemas:
+  - PublicProgram
+  - DeliveryPeriod
+  description: A market or utility grid-service program a meter participates in, over a delivery period.
+  key_fields:
+  - program_identifier
+  - delivery_period
+  relationships:
+  - type: has_many
+    target: Enrollment
+- name: Nomination
+  schemas:
+  - searchNominations_200_response_1
+  - getMeterNominationSuggestions_200_response
+  description: The capacity a meter is offered into a program for a delivery period, plus Leap-generated
+    suggestions a partner can accept or replace.
+  operations:
+  - searchNominations
+  - searchNominationSuggestions
+  - getMeterNominationSuggestions
+  - postMeterNominationSuggestions
+  - postNominationSuggestions
+  - deleteMeterNominationSuggestion
+  relationships:
+  - type: belongs_to
+    target: Meter
+    via: meter_id
+  - type: belongs_to
+    target: Program
+- name: MarketGroup
+  schemas:
+  - SearchMarketGroupDispatchEvent
+  - WebhookMarketGroupDispatchEvent
+  description: A set of meters dispatched together as a single market resource.
+  key_fields:
+  - market_group_id
+  - meter_ids
+  - partner_references
+  relationships:
+  - type: has_many
+    target: Meter
+    via: meter_ids
+  - type: has_many
+    target: DispatchEvent
+- name: DispatchEvent
+  schemas:
+  - SearchMeterDispatchEvent
+  - BaseDispatchEventTimeslot
+  - WebhookMeterDispatchEvent
+  description: A grid dispatch instruction delivered to a meter or a market group, expressed as timeslots
+    with a power target.
+  key_fields:
+  - start_time
+  - end_time
+  - energy_kw
+  - nomination_kw
+  - cancelled
+  - priority
+  - is_voluntary
+  - dispatch_event_types
+  - programs
+  - performance_compensation_cap
+  operations:
+  - searchMeterDispatches
+  - searchGroupDispatches
+  - triggerCommunicationTestMeterDispatch
+  relationships:
+  - type: belongs_to
+    target: Meter
+    via: meter_id
+  - type: belongs_to
+    target: MarketGroup
+    via: market_group_id
+- name: WebhookSubscription
+  schemas:
+  - Webhook
+  - WebhookRequest
+  - WebhookEventType
+  description: A partner-registered HTTPS receiver plus the event types it is subscribed to. Dispatch
+    webhooks are registered separately as a single URL per account per level (meter or group).
+  key_fields:
+  - webhook_id
+  - url
+  - headers
+  - event types
+  operations:
+  - listWebhooks
+  - createWebhook
+  - updateWebhook
+  - deleteWebhook
+  - testWebhook
+  - getMeterDispatchWebhook
+  - createOrUpdateMeterDispatchWebhook
+  - getGroupDispatchWebhook
+  - createOrUpdateGroupDispatchWebhook
+- name: MeterBatchJob
+  schemas:
+  - job (create-meters service)
+  description: Asynchronous bulk meter creation job accepting CSV or JSON, returning a job_id to poll.
+  key_fields:
+  - job_id
+  - status
+  operations:
+  - createMeterBatchJob
+  - listMeterBatchJobs
+  - getMeterBatchJob
+  - listMeterBatchJobsFilters
+  relationships:
+  - type: has_many
+    target: Meter
+- name: ProvisionalAsset
+  description: A meter candidate awaiting utility data or eligibility resolution before becoming a full
+    meter.
+  operations:
+  - listProvisionalAssets
+  - listProvisionalAssetsFilters
+  relationships:
+  - type: has_one
+    target: Meter
+- name: ConnectSession
+  description: A customer's Leap Connect utility-authorization session; surfaced over getConnections and
+    the connect_session.* webhook events.
+  operations:
+  - getConnections
+  relationships:
+  - type: has_many
+    target: Meter
+    via: connection_references
+- name: RevenueAggregation
+  schemas:
+  - PeriodicMeterAggregation
+  - PeriodicCustomerAggregation
+  - PeriodicLoadTypeAggregation
+  - PeriodicMarketGroupAggregation
+  - PeriodicUtilityAggregation
+  description: Settlement revenue for a delivery period, aggregated along one of five dimensions.
+  key_fields:
+  - delivery_start_date
+  - delivery_end_date
+  - nomination_w
+  - monetized_w
+  - capacity_revenue
+  - energy_revenue
+  - total_revenue
+  - potential_revenue
+  - capacity_performance_percentage
+  - energy_performance_percentage
+  - data_coverage_percentage
+  - version
+  operations:
+  - postMeterSearchPeriodicAggregationSearch
+  - postCustomerSearchPeriodicAggregationSearch
+  - postLoadTypeSearchPeriodicAggregationSearch
+  - postMarketGroupSearchPeriodicAggregationSearch
+  - postUtilitySearchPeriodicAggregationSearch
+  relationships:
+  - type: belongs_to
+    target: Meter
+    via: meter_id
+  - type: belongs_to
+    target: Program
+- name: SettlementReport
+  schemas:
+  - PeriodicReportResponse
+  - SettlementReport
+  - PeriodicReportVersionResponse
+  - YearlyOverview
+  description: Versioned monthly and annual revenue reports, with capacity and energy metrics, penalties,
+    performance adjustments and missed revenue by diagnosis.
+  key_fields:
+  - settlement_period
+  - version
+  - report_status
+  - actual_revenue
+  - potential_revenue
+  - missed_revenue
+  - penalty
+  - performance_adjustment
+  operations:
+  - getPeriodicReports
+  - getPeriodicReportVersions
+  - getYearlyOverview
+  relationships:
+  - type: has_many
+    target: RevenueAggregation
+- name: UnresponsiveMeter
+  schemas:
+  - UnresponsiveMeter
+  - UnresponsiveMetersSummary
+  description: Performance diagnostic identifying meters that failed to respond to dispatch in a month,
+    with the missed revenue attributable to each.
+  key_fields:
+  - meter_id
+  - response_percentage
+  - number_of_events
+  - missed_revenue
+  - historical_responsiveness
+  operations:
+  - postMonthlyUnresponsiveMetersPerformance
+  relationships:
+  - type: belongs_to
+    target: Meter
+    via: meter_id
+render: none — no subway/ diagram in this repo yet.

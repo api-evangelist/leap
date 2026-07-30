@@ -1,0 +1,112 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.leap.energy/docs/getting-started, https://developer.leap.energy/docs/api-key-authentication,
+  https://developer.leap.energy/docs/webhook-setup, https://developer.leap.energy/docs/retry-mechanism,
+  openapi/*
+summary: Leap exposes a single universal REST/JSON API split across seven versioned services on one host
+  pair (production and staging). Reads on large collections are POST /search endpoints with a filter body
+  and opaque page-token pagination; writes are either single-resource POSTs or asynchronous batch jobs.
+  Everything is authorized with a portal-issued bearer API key.
+authentication:
+  style: bearer API key in the Authorization header
+  header: 'Authorization: Bearer <API_KEY>'
+  environment_scoped: true
+  artifact: authentication/leap-authentication.yml
+  docs: https://developer.leap.energy/docs/api-key-authentication
+base_urls:
+  production: https://api.leap.energy
+  staging: https://api.staging.leap.energy
+  note: Path prefixes are per-service — /v1.1/… (create-meters, webhooks, revenue) and /v2/… (meters,
+    enrollments, nominations, dispatch).
+media_types:
+  request:
+  - application/json
+  - text/csv (bulk meter creation via POST /v1.1/jobs/meters)
+  response:
+  - application/json
+  problem_json: false
+idempotency:
+  supported: false
+  evidence: No Idempotency-Key header, no idempotency section in the documentation, and no `idempoten*`
+    string in any of the seven published OpenAPI definitions. Repeat-safety is instead achieved through
+    (a) the asynchronous batch-job model for meter creation — a job is submitted once and polled by job_id
+    — and (b) partner_reference, a partner-supplied identifier carried on meters and echoed back on dispatch
+    notifications, which lets partners reconcile records without server-side request replay protection.
+  note: Because Leap publishes no idempotency mechanism, this repo deliberately does NOT emit an Idempotency
+    type pointer in apis.yml.
+pagination:
+  style: opaque page token (cursor)
+  request_params:
+  - page_token — opaque token from the previous response; omit for the first page
+  - page_size — page size
+  response_fields:
+  - next_page_token — present on ListMeterDetailsResponse and sibling list responses; absent/empty when
+    the last page is reached
+  applies_to: POST /v2/meters/search, POST /v2/meters/enrollments/search, POST /v2/meters/nominations/search,
+    POST /v2/meters/nominations/suggestions/search, POST /v1.1/revenue/periodic/aggregation/*/search
+  volume_limits: Interval-data endpoints cap a single request at 1,000,000 data points and return 400
+    when exceeded; bid submissions cap at 100,000 bids per request and 100 meters per bid.
+search_and_filtering:
+  style: POST /search with a JSON filter body (not GET query strings) for the large collections
+  common_filters:
+  - transmission_region
+  - customer_classification
+  - meter_ids
+  - partner_references
+  - global_enrollment_statuses
+  - meter_types
+  - load_types
+  - customer_groups
+  - tags
+  - last_modified_date_time
+  sort: A `sort` field is accepted on the revenue periodic aggregation search requests.
+  incremental_sync: last_modified_date_time filtering supports delta sync of meter inventory; webhook
+    events are the recommended alternative to polling.
+field_expansion:
+  supported: false
+  note: No expand / fields / sparse-fieldset parameter is defined. Related data is retrieved from the
+    dedicated endpoint (e.g. enrollments are a separate call from meter details).
+metadata:
+  partner_reference: Partner-supplied identifier attached to a meter and echoed on dispatch notifications
+    and webhook payloads, used to join Leap records to partner-system records.
+  tags: Free-form tags on meters, filterable in the search endpoints.
+  ref_id: Optional refId query parameter on Leap Connect flow URLs, for the same reconciliation purpose.
+request_tracing:
+  request_id_header: none documented
+  note: No X-Request-Id / correlation-id header is defined in the specifications or documented. Asynchronous
+    work is traced by job_id (meter batch jobs) and ingestion job ID (interval-data uploads).
+versioning:
+  scheme: uri-path
+  artifact: lifecycle/leap-lifecycle.yml
+errors:
+  envelope: '{ title, status, details[] } — details[] entries carry { message, description }'
+  variants:
+  - 'Dispatch service: { code, message, error_code }'
+  - 'Webhook service: { error, message }'
+  - 'Bulk meter creation: { errors[] } with per-row { field, description, suggestions } and { message,
+    csv_row, json_index, problem_field } validation errors'
+  rfc9457: false
+  artifacts:
+  - errors/leap-problem-types.yml
+  - errors/leap-error-codes.yml
+rate_limiting:
+  published: false
+  evidence: No 429 response, no Retry-After, and no X-RateLimit-* header appears in any published OpenAPI
+    definition, and no rate-limit page exists in the documentation. Volume is bounded by the per-request
+    payload caps listed under pagination instead.
+async_and_events:
+  batch_jobs: POST /v1.1/jobs/meters returns a job ID; poll GET /v1.1/jobs/meters/{job_id} for status
+    and resulting meter IDs.
+  webhooks: Two independent surfaces — the general webhook platform (subscription CRUD at /v1.1/webhooks
+    for connect-session and meter/enrollment events) and the older per-account dispatch webhook URLs (meter-level
+    and group-level, under /v2/dispatch/*/webhook).
+  webhook_transport: HTTPS only, on port 443, 8443 or 8843, TLS 1.2 or 1.3.
+  webhook_ack: Return any 2xx within 10 seconds; a slower response is treated as a failure.
+  webhook_retries: Up to 10 attempts over ~8 hours with increasing intervals (immediate, 1m, 2m, 4m, 8m,
+    16m, 29m, 1h, 2h, 4h).
+  webhook_testing: POST /v1.1/webhooks/{webhook_id}/test, plus triggerTestMeterDispatchNotification and
+    triggerTestGroupDispatchNotification for dispatch.
+  artifact: asyncapi/leap-events-asyncapi.yml
+bulk_data:
+  sftp: Interval data can be uploaded over Leap's SFTP server; upload status and validation errors are
+    readable via listIntervalDataUploads and listIntervalDataUploadErrors.

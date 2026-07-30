@@ -1,0 +1,187 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/leap-create-meters-openapi-original.yml, openapi/leap-dispatching-openapi-original.yml,
+  openapi/leap-enrollments-openapi-original.yml, openapi/leap-meters-openapi-original.yml, openapi/leap-nominations-openapi-original.yml,
+  openapi/leap-settlement-openapi-original.yml, openapi/leap-webhooks-openapi-original.yml
+format: custom-json
+rfc9457: false
+format_note: Leap does not use application/problem+json. The dominant envelope borrows the RFC 7807 field
+  names `title` and `status` plus a `details[]` array, but is served as application/json and carries no
+  `type` URI. Three services deviate from it (see envelopes below), so clients must branch on the service
+  they are calling.
+envelopes:
+- name: standard
+  schema: ErrorResponse
+  fields:
+  - title — short human-readable summary
+  - status — numeric HTTP status, repeated in the body
+  - 'details[] — array of { message, description }'
+  used_by:
+  - openapi/leap-meters-openapi-original.yml
+  - openapi/leap-enrollments-openapi-original.yml
+  - openapi/leap-nominations-openapi-original.yml
+  - openapi/leap-create-meters-openapi-original.yml
+  - openapi/leap-settlement-openapi-original.yml (as ErrorResponseBadRequest / Unauthorized / Forbidden
+    / UnsupportedMediaType / InternalServerError)
+- name: dispatch
+  schema: ErrorResponse (dispatching service)
+  fields:
+  - code
+  - message
+  - error_code
+  used_by:
+  - openapi/leap-dispatching-openapi-original.yml
+- name: webhook
+  schema: ErrorResponse (webhook service)
+  fields:
+  - error
+  - message
+  used_by:
+  - openapi/leap-webhooks-openapi-original.yml
+- name: bulk-meter-validation
+  schema: CreateMeterErrorResponse
+  fields:
+  - 'errors[] — { field, description, suggestions }'
+  - 'ValidationError — { message, csv_row, json_index, problem_field }'
+  used_by:
+  - openapi/leap-create-meters-openapi-original.yml
+  note: Row-level validation feedback for CSV and JSON bulk uploads, including the offending CSV row number
+    or JSON array index and a suggestions list for the failing field.
+problems:
+- status: 400
+  title: Bad request
+  meaning: The request could not be parsed, or the filter/body failed validation. On interval-data endpoints
+    a 400 also signals that the 1,000,000-data-point ceiling was exceeded.
+  remediation: Fix the request body or filters; for interval data, narrow the date range or the meter
+    list and retry.
+  source_operations:
+  - createMeterBatchJob
+  - createSingleMeter
+  - listProvisionalAssets
+  - searchMeterDispatches
+  - searchGroupDispatches
+  - triggerCommunicationTestMeterDispatch
+  - createOrUpdateMeterDispatchWebhook
+  - createOrUpdateGroupDispatchWebhook
+  - triggerTestMeterDispatchNotification
+  - triggerTestGroupDispatchNotification
+  - getMeterDetails
+  - searchMeterDetails
+  - getMeterEnrollment
+  - searchMeterEnrollments
+  - getMeterNominationSuggestions
+  - postMeterNominationSuggestions
+  - deleteMeterNominationSuggestion
+  - postNominationSuggestions
+  - searchNominationSuggestions
+  - searchNominations
+  - postCustomerSearchPeriodicAggregationSearch
+  - postLoadTypeSearchPeriodicAggregationSearch
+  - postMarketGroupSearchPeriodicAggregationSearch
+  - postMeterSearchPeriodicAggregationSearch
+  - postUtilitySearchPeriodicAggregationSearch
+  - getPeriodicReports
+  - getPeriodicReportVersions
+  - getYearlyOverview
+  - postMonthlyUnresponsiveMetersPerformance
+- status: 401
+  title: Unauthorized
+  meaning: The Authorization header is missing, malformed, or the bearer token is invalid.
+  remediation: 'Send the header `Authorization: Bearer <API_KEY>` with a key created in the environment
+    you are calling.'
+  source_operations:
+  - searchMeterDispatches
+  - searchGroupDispatches
+  - getMeterDetails
+  - searchMeterDetails
+  - getMeterEnrollment
+  - searchMeterEnrollments
+  - searchNominations
+  - getPeriodicReports
+  - listWebhooks
+  - createWebhook
+  - updateWebhook
+  - deleteWebhook
+  - testWebhook
+- status: 403
+  title: Forbidden
+  meaning: The key is valid but lacks permission for the operation, the resource belongs to another account,
+    or the key was issued for the other environment (staging key against production or vice versa).
+  remediation: Check the key's permission set on the Partner Account page and confirm you are using the
+    key for the target environment.
+  source_operations:
+  - createMeterBatchJob
+  - searchMeterDispatches
+  - getMeterDetails
+  - searchMeterEnrollments
+  - searchNominations
+  - getPeriodicReports
+  - listWebhooks
+  - createWebhook
+  - updateWebhook
+  - deleteWebhook
+  - testWebhook
+- status: 404
+  title: Not found
+  meaning: The referenced meter, webhook, nomination suggestion or dispatch webhook registration does
+    not exist for this account. Also returned when a delete of idle periods cannot match every supplied
+    period exactly.
+  remediation: Verify the identifier; for idle-period deletes, the meter id plus start and end dates must
+    match an existing period exactly — a single mismatch discards the entire request.
+  source_operations:
+  - getMeterDetails
+  - getMeterEnrollment
+  - searchNominations
+  - getMeterDispatchWebhook
+  - deleteMeterDispatchWebhook
+  - getGroupDispatchWebhook
+  - deleteGroupDispatchWebhook
+  - deleteWebhook
+  - updateWebhook
+  - testWebhook
+- status: 415
+  title: Unsupported media type
+  meaning: The request Content-Type is not supported by the revenue/settlement service.
+  remediation: Send application/json.
+  source_operations:
+  - postCustomerSearchPeriodicAggregationSearch
+  - postLoadTypeSearchPeriodicAggregationSearch
+  - postMarketGroupSearchPeriodicAggregationSearch
+  - postMeterSearchPeriodicAggregationSearch
+  - postUtilitySearchPeriodicAggregationSearch
+  - getPeriodicReports
+  - getYearlyOverview
+  - postMonthlyUnresponsiveMetersPerformance
+- status: 500
+  title: Internal server error
+  meaning: Unexpected server-side failure.
+  remediation: Retry with backoff; if persistent, check https://status.leap.energy/ and contact Leap support.
+  source_operations:
+  - createMeterBatchJob
+  - getMeterDetails
+  - searchMeterDetails
+  - getMeterEnrollment
+  - searchMeterEnrollments
+  - searchNominations
+  - getPeriodicReports
+  - listWebhooks
+- status: 5XX
+  title: Unexpected error
+  meaning: The dispatch service declares a wildcard 5XX response rather than enumerating server errors.
+  remediation: Retry with backoff.
+  source_operations:
+  - searchMeterDispatches
+  - searchGroupDispatches
+  - triggerCommunicationTestMeterDispatch
+  - getMeterDispatchWebhook
+  - createOrUpdateMeterDispatchWebhook
+  - deleteMeterDispatchWebhook
+  - getGroupDispatchWebhook
+  - createOrUpdateGroupDispatchWebhook
+  - deleteGroupDispatchWebhook
+  - triggerTestMeterDispatchNotification
+  - triggerTestGroupDispatchNotification
+no_rate_limit_response: No 429 response is declared in any published Leap OpenAPI definition.
+related:
+- errors/leap-error-codes.yml
+- conventions/leap-conventions.yml

@@ -1,0 +1,1827 @@
+openapi: 3.0.2
+info:
+  description: "API to retrieve and search information about meters, including enrollment\
+    \ status, participation preferences, and associated programs."
+  title: Meter Information API
+  version: 2.0.0
+servers:
+- description: Leap staging API
+  url: https://api.staging.leap.energy
+- description: Leap production API
+  url: https://api.leap.energy
+security:
+- Bearer: []
+tags:
+- name: meter enrollment
+paths:
+  /v2/meters/{meter_id}/enrollments:
+    get:
+      description: "Get enrollment information about a meter including its current\
+        \ enrollment status, participation preferences, associated programs, and any\
+        \ required actions."
+      operationId: getMeterEnrollment
+      parameters:
+      - description: Meter ID
+        in: path
+        name: meter_id
+        required: true
+        schema:
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                simple:
+                  $ref: "#/components/examples/Simple"
+                enrolled:
+                  $ref: "#/components/examples/Enrolled"
+                multiple enrollments:
+                  $ref: "#/components/examples/MultipleEnrollments"
+              schema:
+                $ref: "#/components/schemas/MeterEnrollmentResponse"
+          description: Successful response with meter information.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Get meter enrollment
+      tags:
+      - meter enrollment
+  /v2/meters/enrollments/search:
+    post:
+      description: "Retrieve enrollment information including current enrollment status,\
+        \ participation preferences, associated programs, and any required actions\
+        \ for all meters. Optionally filter by one or more request parameters."
+      operationId: searchMeterEnrollments
+      requestBody:
+        content:
+          application/json:
+            examples:
+              all fields:
+                $ref: "#/components/examples/AllFields"
+              default:
+                $ref: "#/components/examples/Default"
+              paging:
+                $ref: "#/components/examples/Paging"
+              meter ids:
+                $ref: "#/components/examples/MeterIds"
+              active meters:
+                $ref: "#/components/examples/ActiveMeters"
+              last modified:
+                $ref: "#/components/examples/LastModified"
+              connection ref:
+                $ref: "#/components/examples/ConnectionRef"
+            schema:
+              $ref: "#/components/schemas/MeterFilterRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                all meters:
+                  $ref: "#/components/examples/enrollment-search"
+              schema:
+                $ref: "#/components/schemas/searchMeterEnrollments_200_response"
+          description: Successful response with a list of meters that match the search
+            criteria.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Search meter enrollments
+      tags:
+      - meter enrollment
+components:
+  examples:
+    Simple:
+      value:
+        meter_id: 1fa85f64-5717-4562-b3fc-2c963f66afa6
+        partner_reference: unique-reference-id-12345
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        load_types:
+        - HVAC
+        meter_type: UTILITY_METER
+        connection_references:
+        - string
+        customer_group: string
+        tags:
+        - tag1
+        - tag2
+        is_archived: true
+        audit:
+          created_by: PARTNER
+          created_at: 2022-10-01T08:31:53.956Z
+          updated_at: 2024-10-12T08:31:53.956Z
+        global_enrollment_status: ACTIVE
+        participation_preferences:
+        - participation_preference: PARTICIPATE
+          start_time: 2024-11-01T00:00:00Z
+          end_time: 9000-01-01T00:00:00Z
+        program_enrollment:
+        - program_identifier: CEC-DSGS
+          delivery_period: CEC-DSGS_2025_AUG_OCT
+          delivery_period_start_date_time: 2024-10-01T08:31:53.956Z
+          delivery_period_end_date_time: 2024-12-01T08:31:53.956Z
+          enrollment_status: ACTIVE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-09-15T00:00:00.000Z
+            activation_date_time: 2024-10-01T00:00:00.000Z
+          - enrollment_deadline_date_time: 2024-10-15T00:00:00.000Z
+            activation_date_time: 2024-11-01T00:00:00.000Z
+          market_group_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          market_group_name: GRP1_NAME
+        required_actions:
+          partner: []
+          leap: []
+    Enrolled:
+      value:
+        meter_id: 8fa85f64-5717-4562-b3fc-2c963f66afa1
+        partner_reference: unique-reference-id-12345
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        load_types:
+        - HVAC
+        meter_type: UTILITY_METER
+        connection_references:
+        - string
+        customer_group: string
+        tags:
+        - tag1
+        - tag3
+        is_archived: true
+        audit:
+          created_by: PARTNER
+          created_at: 2022-10-01T08:31:53.956Z
+          updated_at: 2024-10-12T08:31:53.956Z
+        global_enrollment_status: ACTIVE
+        participation_preferences:
+        - participation_preference: PARTICIPATE
+          start_time: 2024-11-01T00:00:00Z
+          end_time: 2099-12-31T00:00:00Z
+        program_enrollment:
+        - program_identifier: CEC-DSGS
+          delivery_period: CEC-DSGS_2025_AUG_OCT
+          delivery_period_start_date_time: 2024-10-01T08:31:53.956Z
+          delivery_period_end_date_time: 2024-12-01T08:31:53.956Z
+          enrollment_status: ACTIVE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-09-15T00:00:00.000Z
+            activation_date_time: 2024-10-01T00:00:00.000Z
+          - enrollment_deadline_date_time: 2024-10-15T00:00:00.000Z
+            activation_date_time: 2024-11-01T00:00:00.000Z
+          market_group_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          market_group_name: GRP1_NAME
+        required_actions:
+          partner: []
+          leap: []
+    MultipleEnrollments:
+      value:
+        meter_id: 2fa85f64-5717-4562-b3fc-2c963f66afa6
+        partner_reference: ref-id-0102
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        load_types:
+        - EV_CHARGING
+        meter_type: UTILITY_METER
+        connection_references:
+        - ref-id-0102
+        customer_group: ""
+        tags: []
+        is_archived: false
+        audit:
+          created_by: UTILITY
+          created_at: 2024-07-12T16:40:56.401422Z
+          updated_at: 2024-10-07T13:19:45.052994Z
+        global_enrollment_status: ACTIVE
+        participation_preferences:
+        - participation_preference: PARTICIPATE
+          start_time: 2024-07-12T16:40:56Z
+          end_time: 9000-01-01T00:00:00Z
+        program_enrollment:
+        - program_identifier: CCA
+          delivery_period: CAISO-CCA_2024_OCT
+          delivery_period_start_date_time: 2024-10-01T07:00:00Z
+          delivery_period_end_date_time: 2024-10-31T07:00:00Z
+          enrollment_status: ACTIVE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-09-29T07:00:00Z
+            activation_date_time: 2024-10-01T07:00:00Z
+          - enrollment_deadline_date_time: 2024-10-13T07:00:00Z
+            activation_date_time: 2024-10-15T07:00:00Z
+          market_group_id: 406720c2-0175-4137-9ff1-1641702292d4
+          market_group_name: PGSB_1_PDRP68
+        - program_identifier: CCA
+          delivery_period: CAISO-CCA_2024_NOV
+          delivery_period_start_date_time: 2024-11-01T07:00:00Z
+          delivery_period_end_date_time: 2024-11-30T08:00:00Z
+          enrollment_status: ACTIVE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-10-30T07:00:00Z
+            activation_date_time: 2024-11-01T07:00:00Z
+          - enrollment_deadline_date_time: 2024-11-13T08:00:00Z
+            activation_date_time: 2024-11-15T08:00:00Z
+          market_group_id: 78e4e059-3326-49db-8781-b0d997b03a2a
+          market_group_name: PGSB_1_PDRP92
+        - program_identifier: CCA
+          delivery_period: CAISO-CCA_2024_DEC
+          delivery_period_start_date_time: 2024-12-01T08:00:00Z
+          delivery_period_end_date_time: 2024-12-31T08:00:00Z
+          enrollment_status: ACTIVE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-11-29T08:00:00Z
+            activation_date_time: 2024-12-01T08:00:00Z
+          - enrollment_deadline_date_time: 2024-12-13T08:00:00Z
+            activation_date_time: 2024-12-15T08:00:00Z
+        - program_identifier: DRAM
+          delivery_period: CAISO-DRAM_2024_OCT
+          delivery_period_start_date_time: 2024-10-01T07:00:00Z
+          delivery_period_end_date_time: 2024-10-31T07:00:00Z
+          enrollment_status: INELIGIBLE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-09-29T07:00:00Z
+            activation_date_time: 2024-10-01T07:00:00Z
+          - enrollment_deadline_date_time: 2024-10-13T07:00:00Z
+            activation_date_time: 2024-10-15T07:00:00Z
+        - program_identifier: DRAM
+          delivery_period: CAISO-DRAM_2024_NOV
+          delivery_period_start_date_time: 2024-11-01T07:00:00Z
+          delivery_period_end_date_time: 2024-11-30T08:00:00Z
+          enrollment_status: INELIGIBLE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-10-30T07:00:00Z
+            activation_date_time: 2024-11-01T07:00:00Z
+          - enrollment_deadline_date_time: 2024-11-13T08:00:00Z
+            activation_date_time: 2024-11-15T08:00:00Z
+        - program_identifier: DRAM
+          delivery_period: CAISO-DRAM_2024_DEC
+          delivery_period_start_date_time: 2024-12-01T08:00:00Z
+          delivery_period_end_date_time: 2024-12-31T08:00:00Z
+          enrollment_status: INELIGIBLE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-11-29T08:00:00Z
+            activation_date_time: 2024-12-01T08:00:00Z
+          - enrollment_deadline_date_time: 2024-12-13T08:00:00Z
+            activation_date_time: 2024-12-15T08:00:00Z
+        - program_identifier: ELRP
+          delivery_period: CAISO-ELRP_2024_OCT
+          delivery_period_start_date_time: 2024-10-01T07:00:00Z
+          delivery_period_end_date_time: 2024-10-31T07:00:00Z
+          enrollment_status: ACTIVE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-09-29T07:00:00Z
+            activation_date_time: 2024-10-01T07:00:00Z
+          - enrollment_deadline_date_time: 2024-10-13T07:00:00Z
+            activation_date_time: 2024-10-15T07:00:00Z
+          market_group_id: 78e4e059-3326-49db-8781-b0d997b03a2a
+          market_group_name: PGSB_1_PDRP92
+        required_actions:
+          partner:
+          - program_identifier: CCA
+            delivery_period: CAISO-CCA_2024_NOV
+            enrollment_deadline_date_time: 2024-11-01T07:00:00Z
+            action_type: IS_AUTHORIZED
+            action_description: End customer must re-authorize meter. Learn more in
+              our partner guide
+            action_code: AUTH_0001
+          leap:
+          - program_identifier: DRAM
+            delivery_period: CAISO-DRAM_2024_NOV
+            enrollment_deadline_date_time: 2024-11-01T07:00:00Z
+            action_type: IS_ASSIGNED_TO_A_RESOURCE
+            action_description: The meter is not enrolled in the program
+            action_code: LEAP_0001
+    AllFields:
+      value:
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        meter_ids:
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        partner_references:
+        - a-partner-reference
+        global_enrollment_statuses:
+        - ACTIVE
+        meter_types:
+        - UTILITY_METER
+        load_types:
+        - HVAC
+        customer_groups:
+        - CustomerGroup1
+        tags:
+        - tag1
+        last_modified_date_time: 2024-10-21T11:43:05.892Z
+        created_after_date_time: 2024-10-21T11:43:05.892Z
+        created_before_date_time: 2024-10-21T11:43:05.892Z
+        partner_action_required: false
+        exclude_archived: false
+        connection_reference_ids:
+        - connectionReferenceId1
+    Default:
+      value:
+        page_size: 500
+    Paging:
+      value:
+        page_token: INSERT PAGE TOKEN FROM PREVIOUS RESPONSE
+        page_size: 100
+    MeterIds:
+      value:
+        meter_ids:
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa1
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa2
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa3
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa4
+    ActiveMeters:
+      value:
+        global_enrollment_statuses:
+        - ACTIVE
+    LastModified:
+      value:
+        last_modified_date_time: 2024-10-21T11:43:05.892Z
+        created_after_date_time: 2024-10-21T11:43:05.892Z
+        created_before_date_time: 2024-10-21T11:43:05.892Z
+    ConnectionRef:
+      value:
+        connection_reference_ids:
+        - connectionReferenceId1
+    enrollment-search:
+      value:
+        next_page_token: PAGE_TOKEN
+        meters:
+        - meter_id: 11111111-1111-1111-1111-111111111111
+          is_archived: false
+          customer_group: ""
+          global_enrollment_status: ELIGIBLE
+          participation_preferences:
+          - participation_preference: PARTICIPATE
+            start_time: 2024-04-24T16:03:06Z
+            end_time: 9000-12-31T23:59:59.999999999Z
+          program_enrollment:
+          - program_identifier: PSEGLI-CSRP
+            delivery_period: PSEGLI-CSRP_2025_MAY_SEP
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+          - program_identifier: CONED-CSRP
+            delivery_period: CONED-CSRP_2025_MAY_SEP
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: ELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+          - program_identifier: PSEGLI-DLRP
+            delivery_period: PSEGLI-DLRP_2025_MAY_SEP
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+          - program_identifier: NYISO-SCR
+            delivery_period: NYISO-SCR_2024_MAY_OCT
+            delivery_period_start_date_time: 2024-05-01T04:00:00Z
+            delivery_period_end_date_time: 2024-10-31T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-04-29T04:00:00Z
+              activation_date_time: 2024-05-01T04:00:00Z
+          - program_identifier: NYISO-SCR
+            delivery_period: NYISO-SCR_2024_NOV_2025_APR
+            delivery_period_start_date_time: 2024-11-01T04:00:00Z
+            delivery_period_end_date_time: 2025-04-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-10-30T04:00:00Z
+              activation_date_time: 2024-11-01T04:00:00Z
+          - program_identifier: NYISO-SCR
+            delivery_period: NYISO-SCR_2025_MAY_OCT
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-10-31T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-09-15T04:00:00Z
+              activation_date_time: 2025-10-01T04:00:00Z
+          - program_identifier: CONED-DLRP
+            delivery_period: CONED-DLRP_2025_MAY_SEP
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: ELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+            market_group_id: 891b8c8b-6315-4ea3-8675-5337963c5757
+            market_group_name: PGSB_1_PDRP93
+          required_actions:
+            partner:
+            - program_identifier: NYISO-SCR
+              delivery_period: NYISO-SCR_2024_MAY_OCT
+              enrollment_deadline_date_time: 2024-05-01T04:00:00Z
+              action_type: NO_MISSING_FIELDS
+              action_description: "Partner needs configuration for fields: Voltage\
+                \ Group, CBL Method, Load Zone."
+              action_code: SERV_0005
+            - program_identifier: NYISO-SCR
+              delivery_period: NYISO-SCR_2024_NOV_2025_APR
+              enrollment_deadline_date_time: 2024-11-01T04:00:00Z
+              action_type: IS_AUTHORIZED
+              action_description: End customer must re-authorize meter. Learn more
+                in our partner guide
+              action_code: AUTH_0001
+            leap:
+            - program_identifier: NYISO-SCR
+              delivery_period: NYISO-SCR_2024_MAY_OCT
+              enrollment_deadline_date_time: 2024-05-01T04:00:00Z
+              action_type: HAS_NOMINATIONS
+              action_description: This meter does not have nominations set
+              action_code: LEAP_0001
+          connection_references:
+          - test_jae
+          tags: []
+          partner_reference: test_meter
+          transmission_region: NYISO
+          customer_classification: RESIDENTIAL
+          load_types:
+          - HVAC
+          meter_type: UTILITY_METER
+          audit:
+            created_by: UTILITY
+            created_at: 2024-04-24T16:03:06.785318Z
+            updated_at: 2024-10-10T12:08:13.538427Z
+        - meter_id: 22222222-2222-2222-2222-222222222222
+          is_archived: false
+          customer_group: ""
+          global_enrollment_status: ELIGIBLE
+          participation_preferences:
+          - participation_preference: PARTICIPATE
+            start_time: 2024-04-23T19:09:58Z
+            end_time: 9000-12-31T23:59:59.999999999Z
+          program_enrollment:
+          - program_identifier: PSEGLI-CSRP
+            delivery_period: PSEGLI-CSRP_2025_MAY_SEP
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+          - program_identifier: CONED-CSRP
+            delivery_period: CONED-CSRP_2025_MAY_SEP
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: ELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+          - program_identifier: PSEGLI-DLRP
+            delivery_period: PSEGLI-DLRP_2025_MAY_SEP
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+          - program_identifier: NYISO-SCR
+            delivery_period: NYISO-SCR_2024_MAY_OCT
+            delivery_period_start_date_time: 2024-05-01T04:00:00Z
+            delivery_period_end_date_time: 2024-10-31T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-04-29T04:00:00Z
+              activation_date_time: 2024-05-01T04:00:00Z
+          - program_identifier: NYISO-SCR
+            delivery_period: NYISO-SCR_2024_NOV_2025_APR
+            delivery_period_start_date_time: 2024-11-01T04:00:00Z
+            delivery_period_end_date_time: 2025-04-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-10-30T04:00:00Z
+              activation_date_time: 2024-11-01T04:00:00Z
+          - program_identifier: NYISO-SCR
+            delivery_period: NYISO-SCR_2025_MAY_OCT
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-10-31T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-09-15T04:00:00Z
+              activation_date_time: 2025-10-01T04:00:00Z
+          - program_identifier: CONED-DLRP
+            delivery_period: CONED-DLRP_2025_MAY_SEP
+            delivery_period_start_date_time: 2025-05-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: ELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-03-15T04:00:00Z
+              activation_date_time: 2025-05-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-04-15T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-06-15T04:00:00Z
+              activation_date_time: 2025-07-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-07-15T04:00:00Z
+              activation_date_time: 2025-08-01T04:00:00Z
+            - enrollment_deadline_date_time: 2025-08-15T04:00:00Z
+              activation_date_time: 2025-09-01T04:00:00Z
+          required_actions:
+            partner:
+            - program_identifier: NYISO-SCR
+              delivery_period: NYISO-SCR_2024_MAY_OCT
+              enrollment_deadline_date_time: 2024-05-01T04:00:00Z
+              action_type: IS_AUTHORIZED
+              action_description: End customer must re-authorize meter. Learn more
+                in our partner guide
+              action_code: AUTH_0001
+            - program_identifier: NYISO-SCR
+              delivery_period: NYISO-SCR_2024_MAY_OCT
+              enrollment_deadline_date_time: 2024-05-01T04:00:00Z
+              action_type: NO_MISSING_FIELDS
+              action_description: "Partner needs configuration for fields: Voltage\
+                \ Group, CBL Method, Load Zone."
+              action_code: SERV_0005
+            leap:
+            - program_identifier: NYISO-SCR
+              delivery_period: NYISO-SCR_2024_MAY_OCT
+              enrollment_deadline_date_time: 2024-05-01T04:00:00Z
+              action_type: HAS_NOMINATIONS
+              action_description: This meter does not have nominations set
+              action_code: LEAP_0001
+          connection_references:
+          - test_rosalie_2
+          tags: []
+          partner_reference: test_meter_2
+          transmission_region: NYISO
+          customer_classification: RESIDENTIAL
+          load_types:
+          - HVAC
+          meter_type: UTILITY_METER
+          audit:
+            created_by: UTILITY
+            created_at: 2024-04-23T19:09:58.938282Z
+            updated_at: 2024-10-10T12:07:50.108755Z
+        - meter_id: 33333333-3333-3333-3333-333333333333
+          is_archived: false
+          customer_group: ""
+          global_enrollment_status: ELIGIBLE
+          participation_preferences:
+          - participation_preference: PARTICIPATE
+            start_time: 2024-03-25T18:06:11Z
+            end_time: 9000-12-31T23:59:59.999999999Z
+          program_enrollment:
+          - program_identifier: UNITIL-CS
+            delivery_period: UNITIL-CS_2025_JUN_SEP
+            delivery_period_start_date_time: 2025-06-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-05-30T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+          - program_identifier: RIE-CS
+            delivery_period: RIE-CS_2025_JUN_SEP
+            delivery_period_start_date_time: 2025-06-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-05-30T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+          - program_identifier: MA_DOER-CPS
+            delivery_period: MA_DOER-CPS_2024_OCT_NOV
+            delivery_period_start_date_time: 2024-10-01T04:00:00Z
+            delivery_period_end_date_time: 2024-11-30T05:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-09-29T04:00:00Z
+              activation_date_time: 2024-10-01T04:00:00Z
+          - program_identifier: MA_DOER-CPS
+            delivery_period: MA_DOER-CPS_2024_DEC_2025_FEB
+            delivery_period_start_date_time: 2024-12-01T05:00:00Z
+            delivery_period_end_date_time: 2025-02-28T05:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-11-29T05:00:00Z
+              activation_date_time: 2024-12-01T05:00:00Z
+          - program_identifier: MA_DOER-CPS
+            delivery_period: MA_DOER-CPS_2025_MAR_APR
+            delivery_period_start_date_time: 2025-03-01T05:00:00Z
+            delivery_period_end_date_time: 2025-04-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-02-27T05:00:00Z
+              activation_date_time: 2025-03-01T05:00:00Z
+          - program_identifier: EVERSOURCE-CS
+            delivery_period: EVERSOURCE-CS_2025_JUN_SEP
+            delivery_period_start_date_time: 2025-06-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-05-30T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+          - program_identifier: NATGRID-CS
+            delivery_period: NATGRID-CS_2025_JUN_SEP
+            delivery_period_start_date_time: 2025-06-01T04:00:00Z
+            delivery_period_end_date_time: 2025-09-30T04:00:00Z
+            enrollment_status: INELIGIBLE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2025-05-30T04:00:00Z
+              activation_date_time: 2025-06-01T04:00:00Z
+          required_actions:
+            partner:
+            - program_identifier: MA_DOER-CPS
+              delivery_period: NATGRID-CS_2025_JUN_SEP
+              enrollment_deadline_date_time: 2025-06-01T04:00:00Z
+              action_type: NO_MISSING_FIELDS
+              action_description: "Partner needs configuration for fields: End Customer\
+                \ Company Name."
+              action_code: SERV_0005
+            leap:
+            - program_identifier: MA_DOER-CPS
+              delivery_period: MA_DOER-CPS_2024_OCT_NOV
+              enrollment_deadline_date_time: 2024-10-01T04:00:00Z
+              action_type: HAS_NOMINATIONS
+              action_description: This meter does not have nominations set
+              action_code: LEAP_0001
+          connection_references: []
+          tags: []
+          partner_reference: test-isone-device-serial-00002
+          transmission_region: ISONE
+          customer_classification: COMMERCIAL
+          load_types:
+          - BATTERY_STORAGE
+          meter_type: DEVICE
+          audit:
+            created_by: PARTNER
+            created_at: 2024-03-25T18:06:11.463842Z
+            updated_at: 2024-03-25T18:06:13.514888Z
+  parameters:
+    PathMeterId:
+      description: Meter ID
+      in: path
+      name: meter_id
+      required: true
+      schema:
+        example: 11111111-1111-1111-1111-111111111111
+        format: uuid
+        type: string
+  responses:
+    "400":
+      content:
+        application/json:
+          examples:
+            Meter id is not a UUID:
+              value:
+                title: Meter id is not a UUID
+                status: 400
+                details:
+                  meter_id: abcdef
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: The request is not valid
+    "401":
+      content:
+        application/json:
+          examples:
+            Unauthorized:
+              value:
+                title: Unauthorized
+                status: 401
+                details: {}
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: You are not authorized to perform this operation.
+    "403":
+      content:
+        application/json:
+          examples:
+            Forbidden:
+              value:
+                title: You do not have the necessary permissions for this operation
+                status: 403
+                details: {}
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: You do not have the necessary permissions for this operation.
+    "404":
+      content:
+        application/json:
+          examples:
+            Meter not found:
+              value:
+                title: Meter not found
+                status: 404
+                details:
+                  meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Meter not found
+    "500":
+      content:
+        application/json:
+          examples:
+            Internal Error:
+              value: An error happened whilst processing your request
+          schema:
+            type: string
+      description: Internal server error
+  schemas:
+    MeterEnrollmentResponse:
+      allOf:
+      - $ref: "#/components/schemas/MeterIdentifiers"
+      - $ref: "#/components/schemas/AuditInfo"
+      - $ref: "#/components/schemas/MeterEnrollmentFields"
+      example:
+        meter_id: 11111111-1111-1111-1111-111111111111
+        partner_reference: unique-reference-id-12345
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        load_types:
+        - HVAC
+        meter_type: UTILITY_METER
+        connection_references:
+        - connection-reference-id-1
+        - connection-reference-id-1
+        customer_group: customer_group
+        tags:
+        - tags
+        - tags
+        is_archived: true
+        audit:
+          created_by: PARTNER
+          created_at: 2000-01-23T04:56:07.000+00:00
+          updated_at: 2000-01-23T04:56:07.000+00:00
+        global_enrollment_status: ACTIVE
+        participation_preferences:
+        - participation_preference: PARTICIPATE
+          start_time: 2024-11-01T00:00:00Z
+          end_time: 2025-03-31T00:00:00Z
+        - participation_preference: IDLE
+          start_time: 2025-03-02T00:00:00Z
+          end_time: 2025-06-01T00:00:00Z
+          reason: Idle Time
+        - participation_preference: DISENROLL
+          start_time: 2025-06-01T00:00:00Z
+          end_time: 2099-01-01T00:00:00Z
+          reason: Disenrollment
+        program_enrollment:
+        - program_identifier: CEC-DSGS
+          delivery_period: CEC-DSGS_2025_AUG_OCT
+          delivery_period_start_date_time: 2000-01-23T04:56:07.000+00:00
+          delivery_period_end_date_time: 2000-01-23T04:56:07.000+00:00
+          enrollment_status: ACTIVE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+            activation_date_time: 2024-11-01T00:00:00.000Z
+          - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+            activation_date_time: 2024-11-01T00:00:00.000Z
+          market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          market_group_name: GRP1_NAME
+        - program_identifier: CEC-DSGS
+          delivery_period: CEC-DSGS_2025_AUG_OCT
+          delivery_period_start_date_time: 2000-01-23T04:56:07.000+00:00
+          delivery_period_end_date_time: 2000-01-23T04:56:07.000+00:00
+          enrollment_status: ACTIVE
+          enrollment_deadlines:
+          - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+            activation_date_time: 2024-11-01T00:00:00.000Z
+          - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+            activation_date_time: 2024-11-01T00:00:00.000Z
+          market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          market_group_name: GRP1_NAME
+        required_actions:
+          partner:
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            enrollment_deadline_date_time: 2024-07-29T00:00:00.000Z
+            action_type: IS_AUTHORIZED
+            action_description: "There are missing fields: fieldname"
+            action_code: AUTH_0001
+          leap:
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            enrollment_deadline_date_time: 2024-08-01T00:00:00.000Z
+            action_type: IS_ASSIGNED_TO_A_RESOURCE
+            action_description: This meter is not enrolled in the program
+            action_code: LEAP_0001
+      required:
+      - audit
+      - global_enrollment_status
+      - is_archived
+      - load_types
+      - meter_id
+      - program_enrollment
+      - required_actions
+      - tags
+      - transmission_region
+      type: object
+    MeterEnrollmentFields:
+      properties:
+        customer_group:
+          description: The customer group associated with the meter.
+          type: string
+        global_enrollment_status:
+          $ref: "#/components/schemas/EnrollmentStatus"
+        participation_preferences:
+          description: Details about the participation preferences.
+          example:
+          - participation_preference: PARTICIPATE
+            start_time: 2024-11-01T00:00:00Z
+            end_time: 2025-03-31T00:00:00Z
+          - participation_preference: IDLE
+            start_time: 2025-03-02T00:00:00Z
+            end_time: 2025-06-01T00:00:00Z
+            reason: Idle Time
+          - participation_preference: DISENROLL
+            start_time: 2025-06-01T00:00:00Z
+            end_time: 2099-01-01T00:00:00Z
+            reason: Disenrollment
+          items:
+            $ref: "#/components/schemas/ParticipationPreferenceResponse"
+          type: array
+        program_enrollment:
+          description: List of enrollments.
+          items:
+            $ref: "#/components/schemas/ProgramEnrollment"
+          type: array
+        required_actions:
+          $ref: "#/components/schemas/RequiredActions"
+    ParticipationPreferenceResponse:
+      properties:
+        participation_preference:
+          $ref: "#/components/schemas/ParticipationPreference"
+        start_time:
+          description: The start time of the idle period in UTC.
+          format: date-time
+          type: string
+        end_time:
+          description: The end time of the idle period in UTC.
+          format: date-time
+          type: string
+        reason:
+          description: The reason for the idle period.
+          type: string
+      required:
+      - participation_preference
+      - start_time
+      type: object
+    ProgramEnrollment:
+      allOf:
+      - $ref: "#/components/schemas/PublicProgram"
+      - $ref: "#/components/schemas/DeliveryPeriod"
+      - properties:
+          delivery_period_start_date_time:
+            description: The start date and time of the program in UTC.
+            format: date-time
+            type: string
+          delivery_period_end_date_time:
+            description: The end date and time of the program in UTC.
+            format: date-time
+            type: string
+          enrollment_status:
+            $ref: "#/components/schemas/EnrollmentStatus"
+          enrollment_deadlines:
+            description: full list of enrollment deadlines with the expected activation
+              dates for the delivery period
+            items:
+              $ref: "#/components/schemas/EnrollmentDeadline"
+            type: array
+          market_group_id:
+            description: The market group ID associated with the program.
+            format: uuid
+            type: string
+          market_group_name:
+            description: Name for the market group
+            example: GRP1_NAME
+            type: string
+        required:
+        - delivery_period_end_date_time
+        - delivery_period_start_date_time
+        - enrollment_deadlines
+        - enrollment_status
+        type: object
+      example:
+        program_identifier: CEC-DSGS
+        delivery_period: CEC-DSGS_2025_AUG_OCT
+        delivery_period_start_date_time: 2000-01-23T04:56:07.000+00:00
+        delivery_period_end_date_time: 2000-01-23T04:56:07.000+00:00
+        enrollment_status: ACTIVE
+        enrollment_deadlines:
+        - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+          activation_date_time: 2024-11-01T00:00:00.000Z
+        - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+          activation_date_time: 2024-11-01T00:00:00.000Z
+        market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        market_group_name: GRP1_NAME
+    EnrollmentDeadline:
+      example:
+        enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+        activation_date_time: 2024-11-01T00:00:00.000Z
+      properties:
+        enrollment_deadline_date_time:
+          description: The deadline to complete all meter actions for a meter to be
+            enrolled on the activation date
+          example: 2024-04-29T04:00:00Z
+          format: date-time
+          type: string
+        activation_date_time:
+          description: The date a meter is expected to be activated when it is Eligible
+            on the Enrollment Deadline
+          example: 2024-05-01T04:00:00Z
+          format: date-time
+          type: string
+      required:
+      - activation_date_time
+      - enrollment_deadline_date_time
+      type: object
+    RequiredActions:
+      allOf:
+      - $ref: "#/components/schemas/PartnerRequiredActions"
+      - $ref: "#/components/schemas/LeapRequiredActions"
+      example:
+        partner:
+        - program_identifier: CEC-DSGS
+          delivery_period: CEC-DSGS_2025_AUG_OCT
+          enrollment_deadline_date_time: 2024-07-29T00:00:00.000Z
+          action_type: IS_AUTHORIZED
+          action_description: "There are missing fields: fieldname"
+          action_code: AUTH_0001
+        leap:
+        - program_identifier: CEC-DSGS
+          delivery_period: CEC-DSGS_2025_AUG_OCT
+          enrollment_deadline_date_time: 2024-08-01T00:00:00.000Z
+          action_type: IS_ASSIGNED_TO_A_RESOURCE
+          action_description: This meter is not enrolled in the program
+          action_code: LEAP_0001
+      type: object
+    PartnerRequiredActions:
+      properties:
+        partner:
+          description: Required actions for the partner
+          example:
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            enrollment_deadline_date_time: 2024-07-29T00:00:00.000Z
+            action_type: IS_AUTHORIZED
+            action_description: "There are missing fields: fieldname"
+            action_code: AUTH_0001
+          items:
+            $ref: "#/components/schemas/RequiredAction"
+          type: array
+      type: object
+    RequiredAction:
+      allOf:
+      - $ref: "#/components/schemas/PublicProgram"
+      - $ref: "#/components/schemas/DeliveryPeriod"
+      - properties:
+          enrollment_deadline_date_time:
+            description: The deadline date and time for the required action in UTC.
+            example: 2024-07-29T00:00:00Z
+            format: date-time
+            type: string
+          action_type:
+            $ref: "#/components/schemas/action_type"
+          action_description:
+            description: Description of the required action.
+            example: "There are missing fields: fieldname"
+            type: string
+          action_code:
+            description: The action code.
+            example: SERV_0002
+            type: string
+        required:
+        - action_code
+        - action_description
+        - action_type
+        - delivery_period
+        - enrollment_deadline_date_time
+        - program_identifier
+        type: object
+    LeapRequiredActions:
+      properties:
+        leap:
+          description: Required actions for Leap
+          example:
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            enrollment_deadline_date_time: 2024-08-01T00:00:00.000Z
+            action_type: IS_ASSIGNED_TO_A_RESOURCE
+            action_description: This meter is not enrolled in the program
+            action_code: LEAP_0001
+          items:
+            $ref: "#/components/schemas/RequiredAction"
+          type: array
+      type: object
+    ErrorResponse:
+      example:
+        title: Bad Request
+        status: 400
+        details:
+          error: Meter id is not a UUID
+      properties:
+        title:
+          description: Summary of what went wrong
+          example: Bad Request
+          maxLength: 2000
+          minLength: 1
+          type: string
+        status:
+          description: "An error code indicating what went wrong, usually the same\
+            \ as the HTTP Status Code"
+          example: 400
+          type: integer
+        details:
+          description: Extra information about the error.
+          example:
+            error: Meter id is not a UUID
+          type: object
+      type: object
+    MeterFilterRequest:
+      example:
+        page_token: page_token
+        page_size: 100
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        meter_ids:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        partner_references:
+        - a-partner-reference
+        global_enrollment_statuses:
+        - ACTIVE
+        - ACTIVE
+        - ACTIVE
+        - ACTIVE
+        - ACTIVE
+        meter_types:
+        - UTILITY_METER
+        - UTILITY_METER
+        - UTILITY_METER
+        - UTILITY_METER
+        - UTILITY_METER
+        load_types:
+        - HVAC
+        - HVAC
+        - HVAC
+        - HVAC
+        - HVAC
+        customer_groups:
+        - CustomerGroup1
+        tags:
+        - tag1
+        last_modified_date_time: 2024-01-01T00:00:11Z
+        created_after_date_time: 2024-02-01T00:00:22Z
+        created_before_date_time: 2024-03-01T00:00:33Z
+        partner_action_required: false
+        exclude_archived: false
+        connection_reference_ids:
+        - connectionReferenceId1
+        action_type:
+        - IS_AUTHORIZED
+        - IS_AUTHORIZED
+        - IS_AUTHORIZED
+        - IS_AUTHORIZED
+        - IS_AUTHORIZED
+      properties:
+        page_token:
+          description: "If there are more meters to fetch, this token will be populated\
+            \ as `next_page_token` in the response. Use it to fetch the next page."
+          type: string
+        page_size:
+          default: 500
+          description: Amount of results to return. Defaults to 500.
+          example: 100
+          format: int32
+          maximum: 500
+          minimum: 1
+          type: integer
+        transmission_region:
+          $ref: "#/components/schemas/transmission_region"
+        customer_classification:
+          $ref: "#/components/schemas/CustomerClassification"
+        meter_ids:
+          description: Meter ID
+          items:
+            format: uuid
+            type: string
+          maxItems: 1000
+          minItems: 0
+          type: array
+          uniqueItems: true
+        partner_references:
+          description: Filter meters with a partner reference that is included in
+            this list.
+          example:
+          - a-partner-reference
+          items:
+            allOf:
+            - $ref: "#/components/schemas/PartnerReference"
+            example: a-partner-reference
+            type: string
+          maxItems: 1000
+          minItems: 1
+          type: array
+          uniqueItems: true
+        global_enrollment_statuses:
+          description: Filter meters with a `global_enrollment_status` that is included
+            in this list.
+          items:
+            $ref: "#/components/schemas/EnrollmentStatus"
+          maxItems: 5
+          minItems: 1
+          type: array
+          uniqueItems: true
+        meter_types:
+          description: The type of meter
+          items:
+            $ref: "#/components/schemas/MeterType"
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+        load_types:
+          description: The type of meter
+          items:
+            $ref: "#/components/schemas/load_type"
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+        customer_groups:
+          description: The customer group associated with the meter.
+          example:
+          - CustomerGroup1
+          items:
+            type: string
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+        tags:
+          description: A tag associated with the meter.
+          example:
+          - tag1
+          items:
+            type: string
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+        last_modified_date_time:
+          description: Find meters that have been modified after this date
+          example: 2024-01-01T00:00:11Z
+          format: date-time
+          type: string
+        created_after_date_time:
+          description: Find meters created after this date
+          example: 2024-02-01T00:00:22Z
+          format: date-time
+          type: string
+        created_before_date_time:
+          description: Find meters created before this date
+          example: 2024-03-01T00:00:33Z
+          format: date-time
+          type: string
+        partner_action_required:
+          default: false
+          description: "When true, returns only meters that require partner action.\
+            \ False returns all meters."
+          type: boolean
+        exclude_archived:
+          default: false
+          description: "When true, archived meters are excluded in the response. By\
+            \ default they are included."
+          type: boolean
+        connection_reference_ids:
+          description: "Filter by a set of connection reference IDs, which are the\
+            \ refIDs supplied during completed Leap Connect authorizations. A meter\
+            \ may have multiple connection reference IDs if multiple people authorized\
+            \ the same meter or a single person authorized a meter multiple times\
+            \ with different reference IDs each time."
+          example:
+          - connectionReferenceId1
+          items:
+            allOf:
+            - $ref: "#/components/schemas/PartnerReference"
+            type: string
+          maxItems: 100
+          minItems: 1
+          type: array
+          uniqueItems: true
+        action_type:
+          description: The type of action required
+          items:
+            $ref: "#/components/schemas/action_type"
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    MeterIdentifiers:
+      allOf:
+      - $ref: "#/components/schemas/MeterId"
+      - $ref: "#/components/schemas/AssetIdentifiers"
+      - $ref: "#/components/schemas/ExtendedMeterIdentifiers"
+      required:
+      - is_archived
+      type: object
+    MeterId:
+      properties:
+        meter_id:
+          description: The unique identifier for the meter.
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+    AssetIdentifiers:
+      properties:
+        partner_reference:
+          allOf:
+          - $ref: "#/components/schemas/PartnerReference"
+          description: The partner-supplied reference ID to help identify the customer
+            or site that a Leap meter correlates to a partner’s internal systems.
+          example: unique-reference-id-12345
+          type: string
+        transmission_region:
+          $ref: "#/components/schemas/transmission_region"
+        customer_classification:
+          $ref: "#/components/schemas/CustomerClassification"
+        load_types:
+          description: The partner-controlled and curtailable assets associated with
+            the meter. Multiple load types per meter are supported.
+          example:
+          - HVAC
+          items:
+            $ref: "#/components/schemas/load_type"
+          minItems: 1
+          type: array
+        meter_type:
+          $ref: "#/components/schemas/MeterType"
+    ExtendedMeterIdentifiers:
+      properties:
+        connection_references:
+          description: "List of connection reference IDs, which are the refIDs supplied\
+            \ during completed Leap Connect authorizations.  A meter may have multiple\
+            \ connection reference IDs if multiple people authorized the same meter\
+            \ or a single person authorized a meter multiple times with different\
+            \ reference IDs each time."
+          items:
+            allOf:
+            - $ref: "#/components/schemas/PartnerReference"
+            example: connection-reference-id-1
+            type: string
+          type: array
+          uniqueItems: true
+        customer_group:
+          description: The customer group associated with the meter.
+          pattern: "^[’'+#\\\"@()/&.,;A-Za-z\\u00C0-\\u024F\\u1E00-\\u1EFF0-9\\s_\\\
+            -]{0,128}$"
+          type: string
+        tags:
+          description: Tags set by partner or Leap to help group and identify meters
+          items:
+            pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-|\\\\]{1,128}$"
+            type: string
+          type: array
+        is_archived:
+          description: Whether the meter is archived
+          type: boolean
+    AuditInfo:
+      properties:
+        audit:
+          $ref: "#/components/schemas/AuditInfo_audit"
+    EnrollmentStatus:
+      description: The enrollment status of the meter.
+      enum:
+      - ACTIVE
+      - ELIGIBLE
+      - INELIGIBLE
+      - NOT_PARTICIPATING
+      - PENDING
+      example: ACTIVE
+      type: string
+    ParticipationPreference:
+      enum:
+      - PARTICIPATE
+      - IDLE
+      - DISENROLL
+      type: string
+    PublicProgram:
+      properties:
+        program_identifier:
+          description: Identifier of program
+          enum:
+          - CAISO-CCA-SC_ONLY
+          - CCA
+          - CEC-DSGS-OPTION4
+          - CEC-DSGS
+          - CONED-CSRP
+          - CONED-DLRP
+          - DRAM
+          - ELRP
+          - ENERGY-ONLY
+          - ERCOT-ERS
+          - EVERSOURCE-CS
+          - MA_DOER-CPS
+          - NATGRID-CS
+          - NRG-REALTIME
+          - NRG-RED
+          - NYISO-SCR
+          - ONCOR-CLM
+          - PGE-ART
+          - PGE-CBP
+          - PJM-CAPACITY
+          - PSEGLI-CSRP
+          - PSEGLI-DLRP
+          - RIE-CS
+          - UNITIL-CS
+          - PSE-RPO
+          - SRP-RPO
+          - TVA-RPO
+          - CAISO-ELRP-A4
+          - CEC-DSGS-OPTION2
+          - ENERGYHUB-CS
+          - CT_GB-ESS
+          example: CEC-DSGS
+          type: string
+          x-enum-varnames:
+          - CAISO_CCA_SC_ONLY
+          - CCA
+          - CEC_DSGS_OPTION4
+          - CEC_DSGS
+          - CONED_CSRP
+          - CONED_DLRP
+          - DRAM
+          - ELRP
+          - ENERGY_ONLY
+          - ERCOT_ERS
+          - EVERSOURCE_CS
+          - MA_DOER_CPS
+          - NATGRID_CS
+          - NRG_REALTIME
+          - NRG_RED
+          - NYISO_SCR
+          - ONCOR_CLM
+          - PGE_ART
+          - PGE_CBP
+          - PJM_CAPACITY
+          - PSEGLI_CSRP
+          - PSEGLI_DLRP
+          - RIE_CS
+          - UNITIL_CS
+          - PSE_RPO
+          - SRP_RPO
+          - TVA_RPO
+          - CAISO_ELRP_A4
+          - CEC_DSGS_OPTION2
+          - ENERGYHUB_CS
+          - CT_GB_ESS
+      type: object
+    DeliveryPeriod:
+      properties:
+        delivery_period:
+          description: The delivery period of the program.
+          example: CEC-DSGS_2025_AUG_OCT
+          type: string
+      type: object
+    action_type:
+      description: The type of action required to participate with this meter.
+      enum:
+      - IS_AUTHORIZED
+      - DOCUMENTS_SIGNED
+      - HAS_AMI
+      - NOT_ENROLLED_IN_CONFLICTING_PROGRAM
+      - PARTICIPATING
+      - HAS_MARKET_REGISTRATION
+      - NO_MISSING_FIELDS
+      - GENERATOR
+      - ADDRESS
+      - HAS_NOMINATIONS
+      - HAS_BIDDING_STRATEGY
+      - IS_ELIGIBLE
+      - IS_ASSIGNED_TO_A_RESOURCE
+      - MEETS_EXTRA_PROGRAM_REQUIREMENTS
+      example: IS_AUTHORIZED
+      type: string
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    CustomerClassification:
+      description: Whether this is a residential (home) asset or a commercial (business)
+        asset.
+      enum:
+      - RESIDENTIAL
+      - COMMERCIAL
+      type: string
+    PartnerReference:
+      description: The partner-supplied reference ID to help identify the customer
+        or site that a Leap meter correlates to a partner’s internal systems.
+      example: partner-reference-1
+      maxLength: 256
+      minLength: 3
+      pattern: "^[^\\/\\\\?\\]\\[{}!#$%^&*()<>|]{3,256}$"
+      type: string
+    MeterType:
+      description: The type of asset.
+      enum:
+      - UTILITY_METER
+      - SUBMETER
+      - DEVICE
+      type: string
+    load_type:
+      description: The load type of the device
+      enum:
+      - HVAC
+      - EV_CHARGING
+      - BATTERY_STORAGE
+      - COLD_STORAGE
+      - PUMPING
+      - WATER_HEATING
+      - BUILDING_AUTOMATION
+      - GENERATION
+      - MANUFACTURING
+      - LIGHTING
+      - OTHER
+      example: HVAC
+      type: string
+    searchMeterEnrollments_200_response:
+      example:
+        next_page_token: next_page_token
+        meters:
+        - meter_id: 11111111-1111-1111-1111-111111111111
+          partner_reference: unique-reference-id-12345
+          transmission_region: CAISO
+          customer_classification: RESIDENTIAL
+          load_types:
+          - HVAC
+          meter_type: UTILITY_METER
+          connection_references:
+          - connection-reference-id-1
+          - connection-reference-id-1
+          customer_group: customer_group
+          tags:
+          - tags
+          - tags
+          is_archived: true
+          audit:
+            created_by: PARTNER
+            created_at: 2000-01-23T04:56:07.000+00:00
+            updated_at: 2000-01-23T04:56:07.000+00:00
+          global_enrollment_status: ACTIVE
+          participation_preferences:
+          - participation_preference: PARTICIPATE
+            start_time: 2024-11-01T00:00:00Z
+            end_time: 2025-03-31T00:00:00Z
+          - participation_preference: IDLE
+            start_time: 2025-03-02T00:00:00Z
+            end_time: 2025-06-01T00:00:00Z
+            reason: Idle Time
+          - participation_preference: DISENROLL
+            start_time: 2025-06-01T00:00:00Z
+            end_time: 2099-01-01T00:00:00Z
+            reason: Disenrollment
+          program_enrollment:
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            delivery_period_start_date_time: 2000-01-23T04:56:07.000+00:00
+            delivery_period_end_date_time: 2000-01-23T04:56:07.000+00:00
+            enrollment_status: ACTIVE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+              activation_date_time: 2024-11-01T00:00:00.000Z
+            - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+              activation_date_time: 2024-11-01T00:00:00.000Z
+            market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            market_group_name: GRP1_NAME
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            delivery_period_start_date_time: 2000-01-23T04:56:07.000+00:00
+            delivery_period_end_date_time: 2000-01-23T04:56:07.000+00:00
+            enrollment_status: ACTIVE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+              activation_date_time: 2024-11-01T00:00:00.000Z
+            - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+              activation_date_time: 2024-11-01T00:00:00.000Z
+            market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            market_group_name: GRP1_NAME
+          required_actions:
+            partner:
+            - program_identifier: CEC-DSGS
+              delivery_period: CEC-DSGS_2025_AUG_OCT
+              enrollment_deadline_date_time: 2024-07-29T00:00:00.000Z
+              action_type: IS_AUTHORIZED
+              action_description: "There are missing fields: fieldname"
+              action_code: AUTH_0001
+            leap:
+            - program_identifier: CEC-DSGS
+              delivery_period: CEC-DSGS_2025_AUG_OCT
+              enrollment_deadline_date_time: 2024-08-01T00:00:00.000Z
+              action_type: IS_ASSIGNED_TO_A_RESOURCE
+              action_description: This meter is not enrolled in the program
+              action_code: LEAP_0001
+        - meter_id: 11111111-1111-1111-1111-111111111111
+          partner_reference: unique-reference-id-12345
+          transmission_region: CAISO
+          customer_classification: RESIDENTIAL
+          load_types:
+          - HVAC
+          meter_type: UTILITY_METER
+          connection_references:
+          - connection-reference-id-1
+          - connection-reference-id-1
+          customer_group: customer_group
+          tags:
+          - tags
+          - tags
+          is_archived: true
+          audit:
+            created_by: PARTNER
+            created_at: 2000-01-23T04:56:07.000+00:00
+            updated_at: 2000-01-23T04:56:07.000+00:00
+          global_enrollment_status: ACTIVE
+          participation_preferences:
+          - participation_preference: PARTICIPATE
+            start_time: 2024-11-01T00:00:00Z
+            end_time: 2025-03-31T00:00:00Z
+          - participation_preference: IDLE
+            start_time: 2025-03-02T00:00:00Z
+            end_time: 2025-06-01T00:00:00Z
+            reason: Idle Time
+          - participation_preference: DISENROLL
+            start_time: 2025-06-01T00:00:00Z
+            end_time: 2099-01-01T00:00:00Z
+            reason: Disenrollment
+          program_enrollment:
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            delivery_period_start_date_time: 2000-01-23T04:56:07.000+00:00
+            delivery_period_end_date_time: 2000-01-23T04:56:07.000+00:00
+            enrollment_status: ACTIVE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+              activation_date_time: 2024-11-01T00:00:00.000Z
+            - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+              activation_date_time: 2024-11-01T00:00:00.000Z
+            market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            market_group_name: GRP1_NAME
+          - program_identifier: CEC-DSGS
+            delivery_period: CEC-DSGS_2025_AUG_OCT
+            delivery_period_start_date_time: 2000-01-23T04:56:07.000+00:00
+            delivery_period_end_date_time: 2000-01-23T04:56:07.000+00:00
+            enrollment_status: ACTIVE
+            enrollment_deadlines:
+            - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+              activation_date_time: 2024-11-01T00:00:00.000Z
+            - enrollment_deadline_date_time: 2024-10-29T00:00:00.000Z
+              activation_date_time: 2024-11-01T00:00:00.000Z
+            market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            market_group_name: GRP1_NAME
+          required_actions:
+            partner:
+            - program_identifier: CEC-DSGS
+              delivery_period: CEC-DSGS_2025_AUG_OCT
+              enrollment_deadline_date_time: 2024-07-29T00:00:00.000Z
+              action_type: IS_AUTHORIZED
+              action_description: "There are missing fields: fieldname"
+              action_code: AUTH_0001
+            leap:
+            - program_identifier: CEC-DSGS
+              delivery_period: CEC-DSGS_2025_AUG_OCT
+              enrollment_deadline_date_time: 2024-08-01T00:00:00.000Z
+              action_type: IS_ASSIGNED_TO_A_RESOURCE
+              action_description: This meter is not enrolled in the program
+              action_code: LEAP_0001
+      properties:
+        next_page_token:
+          description: "If there are more meter enrollments to fetch, this token will\
+            \ be populated. Use it to fetch the next page of provisional assets."
+          type: string
+        meters:
+          items:
+            $ref: "#/components/schemas/MeterEnrollmentResponse"
+          type: array
+      type: object
+    AuditInfo_audit:
+      example:
+        created_by: PARTNER
+        created_at: 2000-01-23T04:56:07.000+00:00
+        updated_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        created_by:
+          description: Which entity created the meter
+          enum:
+          - PARTNER
+          - LEAP
+          - UTILITY
+          type: string
+        created_at:
+          description: When the meter was created
+          format: date-time
+          type: string
+        updated_at:
+          description: When the meter was last updated
+          format: date-time
+          type: string
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      type: http

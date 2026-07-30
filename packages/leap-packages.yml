@@ -1,0 +1,23 @@
+generated: '2026-07-19'
+method: searched
+source: npm registry search, PyPI, GitHub org + repository search, https://developer.leap.energy/docs/home
+summary: Leap publishes no first-party client libraries. The developer portal documents raw HTTPS/JSON
+  integration only — bearer API key plus REST endpoints — and there is no GitHub organization for the
+  company. Searches of npm, PyPI and GitHub returned no first-party Leap energy packages (npm/GitHub hits
+  for "leap" belong to unrelated projects — LEAP energy-system modelling, Leap Motion, Leap Wallet).
+packages: []
+registries_probed:
+- registry: npm
+  query: leap.energy
+  result: no first-party package
+- registry: pypi
+  query: leap-energy
+  result: 404
+- registry: github
+  query: org:leapenergy
+  result: 404 — no GitHub organization
+integration_surface:
+  style: direct REST over HTTPS
+  sftp: Interval data may also be delivered by SFTP upload (https://developer.leap.energy/docs/upload-interval-data-sftp)
+  code_samples: The ReadMe-hosted API Reference renders per-language request samples and supports in-browser
+    calls after Partner Portal SSO login.

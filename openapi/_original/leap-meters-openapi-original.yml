@@ -1,0 +1,1954 @@
+openapi: 3.0.2
+info:
+  description: "Get details about a meter such as customer, utility, site, and device\
+    \ information."
+  title: Get meter detail
+  version: "2"
+servers:
+- description: Leap staging API
+  url: https://api.staging.leap.energy
+- description: Leap production API
+  url: https://api.leap.energy
+security:
+- Bearer: []
+tags:
+- name: Meter Details
+paths:
+  /v2/meters/{meter_id}:
+    get:
+      description: "Get details about a meter such as customer, utility, site, and\
+        \ device information."
+      operationId: getMeterDetails
+      parameters:
+      - description: Meter ID
+        in: path
+        name: meter_id
+        required: true
+        schema:
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeterDetailsResponse"
+          description: OK
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Get meter details
+      tags:
+      - Meter Details
+  /v2/meters/search:
+    post:
+      description: "Retrieve meter details, such as customer, utility, site, and device\
+        \ information for all meters. Optionally filter by one or more request parameters."
+      operationId: searchMeterDetails
+      requestBody:
+        content:
+          application/json:
+            examples:
+              all fields:
+                $ref: "#/components/examples/AllFields"
+              default:
+                $ref: "#/components/examples/Default"
+              paging:
+                $ref: "#/components/examples/Paging"
+              meter ids:
+                $ref: "#/components/examples/MeterIds"
+              active meters:
+                $ref: "#/components/examples/ActiveMeters"
+              last modified:
+                $ref: "#/components/examples/LastModified"
+              connection ref:
+                $ref: "#/components/examples/ConnectionRef"
+            schema:
+              $ref: "#/components/schemas/MeterFilterRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMeterDetailsResponse"
+          description: Successful response with a list of meters that match the search
+            criteria.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Search meter details
+      tags:
+      - Meter Details
+components:
+  examples:
+    AllFields:
+      value:
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        meter_ids:
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        partner_references:
+        - a-partner-reference
+        global_enrollment_statuses:
+        - ACTIVE
+        meter_types:
+        - UTILITY_METER
+        load_types:
+        - HVAC
+        customer_groups:
+        - CustomerGroup1
+        tags:
+        - tag1
+        last_modified_date_time: 2024-10-21T11:43:05.892Z
+        created_after_date_time: 2024-10-21T11:43:05.892Z
+        created_before_date_time: 2024-10-21T11:43:05.892Z
+        partner_action_required: false
+        exclude_archived: false
+        connection_reference_ids:
+        - connectionReferenceId1
+    Default:
+      value:
+        page_size: 500
+    Paging:
+      value:
+        page_token: INSERT PAGE TOKEN FROM PREVIOUS RESPONSE
+        page_size: 100
+    MeterIds:
+      value:
+        meter_ids:
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa1
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa2
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa3
+        - 3fa85f64-5717-4562-b3fc-2c963f66afa4
+    ActiveMeters:
+      value:
+        global_enrollment_statuses:
+        - ACTIVE
+    LastModified:
+      value:
+        last_modified_date_time: 2024-10-21T11:43:05.892Z
+        created_after_date_time: 2024-10-21T11:43:05.892Z
+        created_before_date_time: 2024-10-21T11:43:05.892Z
+    ConnectionRef:
+      value:
+        connection_reference_ids:
+        - connectionReferenceId1
+  parameters:
+    PathMeterId:
+      description: Meter ID
+      in: path
+      name: meter_id
+      required: true
+      schema:
+        example: 11111111-1111-1111-1111-111111111111
+        format: uuid
+        type: string
+  responses:
+    "400":
+      content:
+        application/json:
+          examples:
+            Meter id is not a UUID:
+              value:
+                title: Meter id is not a UUID
+                status: 400
+                details:
+                  meter_id: abcdef
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: The request is not valid
+    "401":
+      content:
+        application/json:
+          examples:
+            Unauthorized:
+              value:
+                title: Unauthorized
+                status: 401
+                details: {}
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: You are not authorized to perform this operation.
+    "403":
+      content:
+        application/json:
+          examples:
+            Forbidden:
+              value:
+                title: You do not have the necessary permissions for this operation
+                status: 403
+                details: {}
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: You do not have the necessary permissions for this operation.
+    "404":
+      content:
+        application/json:
+          examples:
+            Meter not found:
+              value:
+                title: Meter not found
+                status: 404
+                details:
+                  meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Meter not found
+    "500":
+      content:
+        application/json:
+          examples:
+            Internal Error:
+              value: An error happened whilst processing your request
+          schema:
+            type: string
+      description: Internal server error
+  schemas:
+    MeterDetailsResponse:
+      allOf:
+      - $ref: "#/components/schemas/MeterIdentifiers"
+      - $ref: "#/components/schemas/CommonMeter"
+      - $ref: "#/components/schemas/ReadUtility"
+      - $ref: "#/components/schemas/AuditInfo"
+      description: "Details about a meter such as customer, utility, site, and device\
+        \ information."
+      example:
+        meter_id: 11111111-1111-1111-1111-111111111111
+        partner_reference: unique-reference-id-12345
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        load_types:
+        - HVAC
+        meter_type: UTILITY_METER
+        connection_references:
+        - connection-reference-id-1
+        - connection-reference-id-1
+        customer_group: customer_group
+        tags:
+        - tags
+        - tags
+        is_archived: true
+        customer:
+          street_1: 132 My Street
+          street_2: Apartment 32
+          postal_code: "10001"
+          city: New York
+          state_or_province_code: NY
+          country_code: US
+          end_customer_name: Customer Name
+          end_customer_title: Mrs.
+          end_customer_email: email@address.com
+          end_customer_phone_number: (123) 123-4567
+          end_customer_company_name: Company Name Inc.
+          partner_offering_name: Offering Name
+          partner_offering_date: 2000-01-23
+          is_in_wholesale_capacity_market: true
+          dispatch_option: DAILY
+          billing:
+            street_1: 132 My Billing Street
+            street_2: Apartment 32
+            postal_code: "90210"
+            city: Los Angeles
+            state_or_province_code: CA
+            country_code: US
+          partner_customer_reference: partner-customer-reference-1
+        device:
+          device_type: BATTERY
+          device_serial_number: device-serial-number
+          device_model: device-model
+          device_manufacturer: device-manufacturer
+          install_date: 2000-01-23
+          battery_power_capacity_kw: 1.233
+          battery_energy_capacity_kwh: 9.876
+          battery_duration_hours: 4
+          permission_to_operate_date: 2000-01-23
+        site:
+          load_zone: load-zone
+          number_of_devices: 1
+          on_site_fossil_generator: true
+          renewable_generator: true
+          generator_capacity_kw: 1.234
+          generator_model_year: 2020
+          generator_manufacturer: Manufacturer of the generator
+          generator_fuel_type: ""
+          generator_serial_number: generator-serial-number
+          site_devices:
+          - device_type: BATTERY
+            model: device-model
+            manufacturer: device-manufacturer
+            serial_number: device-serial-number
+            energy_capacity_kwh: 39.504
+            power_capacity_kw: 9.876
+            energy_capacity_duration_hours: 4
+            voltage_level: EVSE_LEVEL_1
+            model_year: 2020
+            fuel_type: DIESEL
+            max_energy_production_rate_kw: 7.5
+            max_energy_consumption_rate_kw: 7.5
+            battery_max_state_of_charge_percentage: 95
+            battery_min_state_of_charge_percentage: 10
+            installer: Acme Installations Inc.
+            pv_connected: true
+          - device_type: BATTERY
+            model: device-model
+            manufacturer: device-manufacturer
+            serial_number: device-serial-number
+            energy_capacity_kwh: 39.504
+            power_capacity_kw: 9.876
+            energy_capacity_duration_hours: 4
+            voltage_level: EVSE_LEVEL_1
+            model_year: 2020
+            fuel_type: DIESEL
+            max_energy_production_rate_kw: 7.5
+            max_energy_consumption_rate_kw: 7.5
+            battery_max_state_of_charge_percentage: 95
+            battery_min_state_of_charge_percentage: 10
+            installer: Acme Installations Inc.
+            pv_connected: true
+        caiso:
+          is_receiving_sgip_funding: true
+          nem_type: NEM2
+        isone:
+          in_connected_solutions: true
+        nyiso:
+          cbl_method: AVERAGE_DAY
+          company_type: INDIVIDUAL_OR_SOLE_PROPRIETOR
+          existing_nyiso_resource_id: "666266"
+          partner_nyiso_resource_name: "666266"
+        utility:
+          utility_name: PGE
+          load_serving_entity: PGE
+          electric_service_account_number: 12243243-121
+          tariff: tariff code
+          voltage: '>= 600 V'
+          utility_meter_serial_number: utility-meter-serial-number
+          bill_service_agreement_number: bill_service_agreement_number
+          bill_customer_account_number: bill_customer_account_number
+        audit:
+          created_by: PARTNER
+          created_at: 2000-01-23T04:56:07.000+00:00
+          updated_at: 2000-01-23T04:56:07.000+00:00
+      required:
+      - audit
+      - meter_id
+      type: object
+    ListMeterDetailsResponse:
+      description: Response object for the retrieval of a list of meters.
+      example:
+        next_page_token: next_page_token
+        meters:
+        - meter_id: 11111111-1111-1111-1111-111111111111
+          partner_reference: unique-reference-id-12345
+          transmission_region: CAISO
+          customer_classification: RESIDENTIAL
+          load_types:
+          - HVAC
+          meter_type: UTILITY_METER
+          connection_references:
+          - connection-reference-id-1
+          - connection-reference-id-1
+          customer_group: customer_group
+          tags:
+          - tags
+          - tags
+          is_archived: true
+          customer:
+            street_1: 132 My Street
+            street_2: Apartment 32
+            postal_code: "10001"
+            city: New York
+            state_or_province_code: NY
+            country_code: US
+            end_customer_name: Customer Name
+            end_customer_title: Mrs.
+            end_customer_email: email@address.com
+            end_customer_phone_number: (123) 123-4567
+            end_customer_company_name: Company Name Inc.
+            partner_offering_name: Offering Name
+            partner_offering_date: 2000-01-23
+            is_in_wholesale_capacity_market: true
+            dispatch_option: DAILY
+            billing:
+              street_1: 132 My Billing Street
+              street_2: Apartment 32
+              postal_code: "90210"
+              city: Los Angeles
+              state_or_province_code: CA
+              country_code: US
+            partner_customer_reference: partner-customer-reference-1
+          device:
+            device_type: BATTERY
+            device_serial_number: device-serial-number
+            device_model: device-model
+            device_manufacturer: device-manufacturer
+            install_date: 2000-01-23
+            battery_power_capacity_kw: 1.233
+            battery_energy_capacity_kwh: 9.876
+            battery_duration_hours: 4
+            permission_to_operate_date: 2000-01-23
+          site:
+            load_zone: load-zone
+            number_of_devices: 1
+            on_site_fossil_generator: true
+            renewable_generator: true
+            generator_capacity_kw: 1.234
+            generator_model_year: 2020
+            generator_manufacturer: Manufacturer of the generator
+            generator_fuel_type: ""
+            generator_serial_number: generator-serial-number
+            site_devices:
+            - device_type: BATTERY
+              model: device-model
+              manufacturer: device-manufacturer
+              serial_number: device-serial-number
+              energy_capacity_kwh: 39.504
+              power_capacity_kw: 9.876
+              energy_capacity_duration_hours: 4
+              voltage_level: EVSE_LEVEL_1
+              model_year: 2020
+              fuel_type: DIESEL
+              max_energy_production_rate_kw: 7.5
+              max_energy_consumption_rate_kw: 7.5
+              battery_max_state_of_charge_percentage: 95
+              battery_min_state_of_charge_percentage: 10
+              installer: Acme Installations Inc.
+              pv_connected: true
+            - device_type: BATTERY
+              model: device-model
+              manufacturer: device-manufacturer
+              serial_number: device-serial-number
+              energy_capacity_kwh: 39.504
+              power_capacity_kw: 9.876
+              energy_capacity_duration_hours: 4
+              voltage_level: EVSE_LEVEL_1
+              model_year: 2020
+              fuel_type: DIESEL
+              max_energy_production_rate_kw: 7.5
+              max_energy_consumption_rate_kw: 7.5
+              battery_max_state_of_charge_percentage: 95
+              battery_min_state_of_charge_percentage: 10
+              installer: Acme Installations Inc.
+              pv_connected: true
+          caiso:
+            is_receiving_sgip_funding: true
+            nem_type: NEM2
+          isone:
+            in_connected_solutions: true
+          nyiso:
+            cbl_method: AVERAGE_DAY
+            company_type: INDIVIDUAL_OR_SOLE_PROPRIETOR
+            existing_nyiso_resource_id: "666266"
+            partner_nyiso_resource_name: "666266"
+          utility:
+            utility_name: PGE
+            load_serving_entity: PGE
+            electric_service_account_number: 12243243-121
+            tariff: tariff code
+            voltage: '>= 600 V'
+            utility_meter_serial_number: utility-meter-serial-number
+            bill_service_agreement_number: bill_service_agreement_number
+            bill_customer_account_number: bill_customer_account_number
+          audit:
+            created_by: PARTNER
+            created_at: 2000-01-23T04:56:07.000+00:00
+            updated_at: 2000-01-23T04:56:07.000+00:00
+        - meter_id: 11111111-1111-1111-1111-111111111111
+          partner_reference: unique-reference-id-12345
+          transmission_region: CAISO
+          customer_classification: RESIDENTIAL
+          load_types:
+          - HVAC
+          meter_type: UTILITY_METER
+          connection_references:
+          - connection-reference-id-1
+          - connection-reference-id-1
+          customer_group: customer_group
+          tags:
+          - tags
+          - tags
+          is_archived: true
+          customer:
+            street_1: 132 My Street
+            street_2: Apartment 32
+            postal_code: "10001"
+            city: New York
+            state_or_province_code: NY
+            country_code: US
+            end_customer_name: Customer Name
+            end_customer_title: Mrs.
+            end_customer_email: email@address.com
+            end_customer_phone_number: (123) 123-4567
+            end_customer_company_name: Company Name Inc.
+            partner_offering_name: Offering Name
+            partner_offering_date: 2000-01-23
+            is_in_wholesale_capacity_market: true
+            dispatch_option: DAILY
+            billing:
+              street_1: 132 My Billing Street
+              street_2: Apartment 32
+              postal_code: "90210"
+              city: Los Angeles
+              state_or_province_code: CA
+              country_code: US
+            partner_customer_reference: partner-customer-reference-1
+          device:
+            device_type: BATTERY
+            device_serial_number: device-serial-number
+            device_model: device-model
+            device_manufacturer: device-manufacturer
+            install_date: 2000-01-23
+            battery_power_capacity_kw: 1.233
+            battery_energy_capacity_kwh: 9.876
+            battery_duration_hours: 4
+            permission_to_operate_date: 2000-01-23
+          site:
+            load_zone: load-zone
+            number_of_devices: 1
+            on_site_fossil_generator: true
+            renewable_generator: true
+            generator_capacity_kw: 1.234
+            generator_model_year: 2020
+            generator_manufacturer: Manufacturer of the generator
+            generator_fuel_type: ""
+            generator_serial_number: generator-serial-number
+            site_devices:
+            - device_type: BATTERY
+              model: device-model
+              manufacturer: device-manufacturer
+              serial_number: device-serial-number
+              energy_capacity_kwh: 39.504
+              power_capacity_kw: 9.876
+              energy_capacity_duration_hours: 4
+              voltage_level: EVSE_LEVEL_1
+              model_year: 2020
+              fuel_type: DIESEL
+              max_energy_production_rate_kw: 7.5
+              max_energy_consumption_rate_kw: 7.5
+              battery_max_state_of_charge_percentage: 95
+              battery_min_state_of_charge_percentage: 10
+              installer: Acme Installations Inc.
+              pv_connected: true
+            - device_type: BATTERY
+              model: device-model
+              manufacturer: device-manufacturer
+              serial_number: device-serial-number
+              energy_capacity_kwh: 39.504
+              power_capacity_kw: 9.876
+              energy_capacity_duration_hours: 4
+              voltage_level: EVSE_LEVEL_1
+              model_year: 2020
+              fuel_type: DIESEL
+              max_energy_production_rate_kw: 7.5
+              max_energy_consumption_rate_kw: 7.5
+              battery_max_state_of_charge_percentage: 95
+              battery_min_state_of_charge_percentage: 10
+              installer: Acme Installations Inc.
+              pv_connected: true
+          caiso:
+            is_receiving_sgip_funding: true
+            nem_type: NEM2
+          isone:
+            in_connected_solutions: true
+          nyiso:
+            cbl_method: AVERAGE_DAY
+            company_type: INDIVIDUAL_OR_SOLE_PROPRIETOR
+            existing_nyiso_resource_id: "666266"
+            partner_nyiso_resource_name: "666266"
+          utility:
+            utility_name: PGE
+            load_serving_entity: PGE
+            electric_service_account_number: 12243243-121
+            tariff: tariff code
+            voltage: '>= 600 V'
+            utility_meter_serial_number: utility-meter-serial-number
+            bill_service_agreement_number: bill_service_agreement_number
+            bill_customer_account_number: bill_customer_account_number
+          audit:
+            created_by: PARTNER
+            created_at: 2000-01-23T04:56:07.000+00:00
+            updated_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        next_page_token:
+          description: "If there are more meters to fetch, this token will be populated.\
+            \ Use it to fetch the next page of provisional assets."
+          type: string
+        meters:
+          items:
+            $ref: "#/components/schemas/MeterDetailsResponse"
+          type: array
+      required:
+      - meters
+      type: object
+    ErrorResponse:
+      example:
+        title: Bad Request
+        status: 400
+        details:
+          error: Meter id is not a UUID
+      properties:
+        title:
+          description: Summary of what went wrong
+          example: Bad Request
+          maxLength: 2000
+          minLength: 1
+          type: string
+        status:
+          description: "An error code indicating what went wrong, usually the same\
+            \ as the HTTP Status Code"
+          example: 400
+          type: integer
+        details:
+          description: Extra information about the error.
+          example:
+            error: Meter id is not a UUID
+          type: object
+      type: object
+    MeterFilterRequest:
+      example:
+        page_token: page_token
+        page_size: 100
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        meter_ids:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        partner_references:
+        - a-partner-reference
+        global_enrollment_statuses:
+        - ACTIVE
+        - ACTIVE
+        - ACTIVE
+        - ACTIVE
+        - ACTIVE
+        meter_types:
+        - UTILITY_METER
+        - UTILITY_METER
+        - UTILITY_METER
+        - UTILITY_METER
+        - UTILITY_METER
+        load_types:
+        - HVAC
+        - HVAC
+        - HVAC
+        - HVAC
+        - HVAC
+        customer_groups:
+        - CustomerGroup1
+        tags:
+        - tag1
+        last_modified_date_time: 2024-01-01T00:00:11Z
+        created_after_date_time: 2024-02-01T00:00:22Z
+        created_before_date_time: 2024-03-01T00:00:33Z
+        partner_action_required: false
+        exclude_archived: false
+        connection_reference_ids:
+        - connectionReferenceId1
+        action_type:
+        - IS_AUTHORIZED
+        - IS_AUTHORIZED
+        - IS_AUTHORIZED
+        - IS_AUTHORIZED
+        - IS_AUTHORIZED
+      properties:
+        page_token:
+          description: "If there are more meters to fetch, this token will be populated\
+            \ as `next_page_token` in the response. Use it to fetch the next page."
+          type: string
+        page_size:
+          default: 500
+          description: Amount of results to return. Defaults to 500.
+          example: 100
+          format: int32
+          maximum: 500
+          minimum: 1
+          type: integer
+        transmission_region:
+          $ref: "#/components/schemas/transmission_region"
+        customer_classification:
+          $ref: "#/components/schemas/CustomerClassification"
+        meter_ids:
+          description: Meter ID
+          items:
+            format: uuid
+            type: string
+          maxItems: 1000
+          minItems: 0
+          type: array
+          uniqueItems: true
+        partner_references:
+          description: Filter meters with a partner reference that is included in
+            this list.
+          example:
+          - a-partner-reference
+          items:
+            allOf:
+            - $ref: "#/components/schemas/PartnerReference"
+            example: a-partner-reference
+            type: string
+          maxItems: 1000
+          minItems: 1
+          type: array
+          uniqueItems: true
+        global_enrollment_statuses:
+          description: Filter meters with a `global_enrollment_status` that is included
+            in this list.
+          items:
+            $ref: "#/components/schemas/EnrollmentStatus"
+          maxItems: 5
+          minItems: 1
+          type: array
+          uniqueItems: true
+        meter_types:
+          description: The type of meter
+          items:
+            $ref: "#/components/schemas/MeterType"
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+        load_types:
+          description: The type of meter
+          items:
+            $ref: "#/components/schemas/load_type"
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+        customer_groups:
+          description: The customer group associated with the meter.
+          example:
+          - CustomerGroup1
+          items:
+            type: string
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+        tags:
+          description: A tag associated with the meter.
+          example:
+          - tag1
+          items:
+            type: string
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+        last_modified_date_time:
+          description: Find meters that have been modified after this date
+          example: 2024-01-01T00:00:11Z
+          format: date-time
+          type: string
+        created_after_date_time:
+          description: Find meters created after this date
+          example: 2024-02-01T00:00:22Z
+          format: date-time
+          type: string
+        created_before_date_time:
+          description: Find meters created before this date
+          example: 2024-03-01T00:00:33Z
+          format: date-time
+          type: string
+        partner_action_required:
+          default: false
+          description: "When true, returns only meters that require partner action.\
+            \ False returns all meters."
+          type: boolean
+        exclude_archived:
+          default: false
+          description: "When true, archived meters are excluded in the response. By\
+            \ default they are included."
+          type: boolean
+        connection_reference_ids:
+          description: "Filter by a set of connection reference IDs, which are the\
+            \ refIDs supplied during completed Leap Connect authorizations. A meter\
+            \ may have multiple connection reference IDs if multiple people authorized\
+            \ the same meter or a single person authorized a meter multiple times\
+            \ with different reference IDs each time."
+          example:
+          - connectionReferenceId1
+          items:
+            allOf:
+            - $ref: "#/components/schemas/PartnerReference"
+            type: string
+          maxItems: 100
+          minItems: 1
+          type: array
+          uniqueItems: true
+        action_type:
+          description: The type of action required
+          items:
+            $ref: "#/components/schemas/action_type"
+          maxItems: 20
+          minItems: 1
+          type: array
+          uniqueItems: true
+      type: object
+    ReadMeter:
+      allOf:
+      - $ref: "#/components/schemas/MeterIdentifiers"
+      - $ref: "#/components/schemas/CommonMeter"
+      - $ref: "#/components/schemas/ReadUtility"
+      - $ref: "#/components/schemas/AuditInfo"
+      description: "Details about a meter such as customer, utility, site, and device\
+        \ information."
+      example:
+        meter_id: 11111111-1111-1111-1111-111111111111
+        partner_reference: unique-reference-id-12345
+        transmission_region: CAISO
+        customer_classification: RESIDENTIAL
+        load_types:
+        - HVAC
+        meter_type: UTILITY_METER
+        connection_references:
+        - connection-reference-id-1
+        - connection-reference-id-1
+        customer_group: customer_group
+        tags:
+        - tags
+        - tags
+        is_archived: true
+        customer:
+          street_1: 132 My Street
+          street_2: Apartment 32
+          postal_code: "10001"
+          city: New York
+          state_or_province_code: NY
+          country_code: US
+          end_customer_name: Customer Name
+          end_customer_title: Mrs.
+          end_customer_email: email@address.com
+          end_customer_phone_number: (123) 123-4567
+          end_customer_company_name: Company Name Inc.
+          partner_offering_name: Offering Name
+          partner_offering_date: 2000-01-23
+          is_in_wholesale_capacity_market: true
+          dispatch_option: DAILY
+          billing:
+            street_1: 132 My Billing Street
+            street_2: Apartment 32
+            postal_code: "90210"
+            city: Los Angeles
+            state_or_province_code: CA
+            country_code: US
+          partner_customer_reference: partner-customer-reference-1
+        device:
+          device_type: BATTERY
+          device_serial_number: device-serial-number
+          device_model: device-model
+          device_manufacturer: device-manufacturer
+          install_date: 2000-01-23
+          battery_power_capacity_kw: 1.233
+          battery_energy_capacity_kwh: 9.876
+          battery_duration_hours: 4
+          permission_to_operate_date: 2000-01-23
+        site:
+          load_zone: load-zone
+          number_of_devices: 1
+          on_site_fossil_generator: true
+          renewable_generator: true
+          generator_capacity_kw: 1.234
+          generator_model_year: 2020
+          generator_manufacturer: Manufacturer of the generator
+          generator_fuel_type: ""
+          generator_serial_number: generator-serial-number
+          site_devices:
+          - device_type: BATTERY
+            model: device-model
+            manufacturer: device-manufacturer
+            serial_number: device-serial-number
+            energy_capacity_kwh: 39.504
+            power_capacity_kw: 9.876
+            energy_capacity_duration_hours: 4
+            voltage_level: EVSE_LEVEL_1
+            model_year: 2020
+            fuel_type: DIESEL
+            max_energy_production_rate_kw: 7.5
+            max_energy_consumption_rate_kw: 7.5
+            battery_max_state_of_charge_percentage: 95
+            battery_min_state_of_charge_percentage: 10
+            installer: Acme Installations Inc.
+            pv_connected: true
+          - device_type: BATTERY
+            model: device-model
+            manufacturer: device-manufacturer
+            serial_number: device-serial-number
+            energy_capacity_kwh: 39.504
+            power_capacity_kw: 9.876
+            energy_capacity_duration_hours: 4
+            voltage_level: EVSE_LEVEL_1
+            model_year: 2020
+            fuel_type: DIESEL
+            max_energy_production_rate_kw: 7.5
+            max_energy_consumption_rate_kw: 7.5
+            battery_max_state_of_charge_percentage: 95
+            battery_min_state_of_charge_percentage: 10
+            installer: Acme Installations Inc.
+            pv_connected: true
+        caiso:
+          is_receiving_sgip_funding: true
+          nem_type: NEM2
+        isone:
+          in_connected_solutions: true
+        nyiso:
+          cbl_method: AVERAGE_DAY
+          company_type: INDIVIDUAL_OR_SOLE_PROPRIETOR
+          existing_nyiso_resource_id: "666266"
+          partner_nyiso_resource_name: "666266"
+        utility:
+          utility_name: PGE
+          load_serving_entity: PGE
+          electric_service_account_number: 12243243-121
+          tariff: tariff code
+          voltage: '>= 600 V'
+          utility_meter_serial_number: utility-meter-serial-number
+          bill_service_agreement_number: bill_service_agreement_number
+          bill_customer_account_number: bill_customer_account_number
+        audit:
+          created_by: PARTNER
+          created_at: 2000-01-23T04:56:07.000+00:00
+          updated_at: 2000-01-23T04:56:07.000+00:00
+      required:
+      - audit
+      - meter_id
+      type: object
+    MeterIdentifiers:
+      allOf:
+      - $ref: "#/components/schemas/MeterId"
+      - $ref: "#/components/schemas/AssetIdentifiers"
+      - $ref: "#/components/schemas/ExtendedMeterIdentifiers"
+      required:
+      - is_archived
+      type: object
+    MeterId:
+      properties:
+        meter_id:
+          description: The unique identifier for the meter.
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+    AssetIdentifiers:
+      properties:
+        partner_reference:
+          allOf:
+          - $ref: "#/components/schemas/PartnerReference"
+          description: The partner-supplied reference ID to help identify the customer
+            or site that a Leap meter correlates to a partner’s internal systems.
+          example: unique-reference-id-12345
+          type: string
+        transmission_region:
+          $ref: "#/components/schemas/transmission_region"
+        customer_classification:
+          $ref: "#/components/schemas/CustomerClassification"
+        load_types:
+          description: The partner-controlled and curtailable assets associated with
+            the meter. Multiple load types per meter are supported.
+          example:
+          - HVAC
+          items:
+            $ref: "#/components/schemas/load_type"
+          minItems: 1
+          type: array
+        meter_type:
+          $ref: "#/components/schemas/MeterType"
+    ExtendedMeterIdentifiers:
+      properties:
+        connection_references:
+          description: "List of connection reference IDs, which are the refIDs supplied\
+            \ during completed Leap Connect authorizations.  A meter may have multiple\
+            \ connection reference IDs if multiple people authorized the same meter\
+            \ or a single person authorized a meter multiple times with different\
+            \ reference IDs each time."
+          items:
+            allOf:
+            - $ref: "#/components/schemas/PartnerReference"
+            example: connection-reference-id-1
+            type: string
+          type: array
+          uniqueItems: true
+        customer_group:
+          description: The customer group associated with the meter.
+          pattern: "^[’'+#\\\"@()/&.,;A-Za-z\\u00C0-\\u024F\\u1E00-\\u1EFF0-9\\s_\\\
+            -]{0,128}$"
+          type: string
+        tags:
+          description: Tags set by partner or Leap to help group and identify meters
+          items:
+            pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-|\\\\]{1,128}$"
+            type: string
+          type: array
+        is_archived:
+          description: Whether the meter is archived
+          type: boolean
+    CommonMeter:
+      properties:
+        customer:
+          $ref: "#/components/schemas/Customer"
+        device:
+          $ref: "#/components/schemas/Device"
+        site:
+          $ref: "#/components/schemas/Site"
+        caiso:
+          $ref: "#/components/schemas/Caiso"
+        isone:
+          $ref: "#/components/schemas/Isone"
+        nyiso:
+          $ref: "#/components/schemas/Nyiso"
+      required:
+      - customer
+      - meter_type
+      - transmission_region
+      type: object
+    Customer:
+      example:
+        street_1: 132 My Street
+        street_2: Apartment 32
+        postal_code: "10001"
+        city: New York
+        state_or_province_code: NY
+        country_code: US
+        end_customer_name: Customer Name
+        end_customer_title: Mrs.
+        end_customer_email: email@address.com
+        end_customer_phone_number: (123) 123-4567
+        end_customer_company_name: Company Name Inc.
+        partner_offering_name: Offering Name
+        partner_offering_date: 2000-01-23
+        is_in_wholesale_capacity_market: true
+        dispatch_option: DAILY
+        billing:
+          street_1: 132 My Billing Street
+          street_2: Apartment 32
+          postal_code: "90210"
+          city: Los Angeles
+          state_or_province_code: CA
+          country_code: US
+        partner_customer_reference: partner-customer-reference-1
+      properties:
+        street_1:
+          description: "Physical street this asset is located in. If you need to provide\
+            \ extensions like apartment or unit number, please add those to the 'street2'\
+            \ field."
+          example: 132 My Street
+          maxLength: 128
+          minLength: 1
+          pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-|\\\\]{1,128}$"
+          type: string
+        street_2:
+          description: Provide extensions like apartment or unit number here.
+          example: Apartment 32
+          maxLength: 128
+          minLength: 1
+          pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-|\\\\]{1,128}$"
+          type: string
+        postal_code:
+          description: Postal code of the location this asset is located in.
+          example: "10001"
+          pattern: "^[0-9]{5}(?:-[0-9]{4})?$"
+          type: string
+        city:
+          description: City this asset is located in.
+          example: New York
+          maxLength: 128
+          minLength: 1
+          pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-]{1,128}$"
+          type: string
+        state_or_province_code:
+          description: State or province this asset is located in.
+          example: NY
+          maxLength: 2
+          minLength: 2
+          type: string
+        country_code:
+          default: US
+          description: ISO 3166-1 alpha-2 country code of the country this asset is
+            located in.
+          example: US
+          maxLength: 2
+          minLength: 2
+          type: string
+        end_customer_name:
+          description: End customer name or contact name
+          example: Customer Name
+          maxLength: 128
+          minLength: 1
+          pattern: "^(?!.*[�\\u00A0\\uFFFD?])[\\s\\S]{1,128}$"
+          type: string
+        end_customer_title:
+          description: Title of the primary contact for the end customer; only applicable
+            for Commercial & Industrial customers
+          example: Mrs.
+          maxLength: 15
+          minLength: 1
+          pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-]{1,128}$"
+          type: string
+        end_customer_email:
+          description: The customer email address
+          example: email@address.com
+          format: email
+          maxLength: 128
+          minLength: 3
+          type: string
+        end_customer_phone_number:
+          description: "This would ideally be the phone number on file with the LSE;\
+            \ it may be used by the CEC and/or Utility Distribution Company (UDC)\
+            \ for verification purposes; please do not use any special characters\
+            \ for this column, and do not include a \"1\" at the front of the phone\
+            \ number."
+          example: (123) 123-4567
+          maxLength: 32
+          minLength: 3
+          type: string
+        end_customer_company_name:
+          description: Legal company name of the end customer site; only applicable
+            for Commercial & Industrial customers
+          example: Company Name Inc.
+          maxLength: 128
+          minLength: 1
+          pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-]{1,128}$"
+          type: string
+        partner_offering_name:
+          description: 'The name of Partner''s program/offering in which the end-customer
+            enrolled/contracted. '
+          example: Offering Name
+          maxLength: 128
+          minLength: 1
+          type: string
+        partner_offering_date:
+          description: Date in which the end customer enrolled in Partner's offering
+          format: date
+          type: string
+        is_in_wholesale_capacity_market:
+          description: Forward Capacity Market in ISONE
+          type: boolean
+        dispatch_option:
+          $ref: "#/components/schemas/DispatchOption"
+        billing:
+          $ref: "#/components/schemas/Customer_billing"
+        partner_customer_reference:
+          description: Partner identifier for customer or site. This should match
+            the refId used in Leap Connect when combining  customer-supplied data
+            in Leap Connect with partner-supplied data in Create Meters/Meter Uploads.
+          example: partner-customer-reference-1
+          maxLength: 256
+          minLength: 3
+          pattern: "^[^\\/\\\\?\\]\\[{}!#$%^&*()<>|]{3,256}$"
+          type: string
+      required:
+      - city
+      - country_code
+      - postal_code
+      - state_or_province_code
+      - street_1
+      type: object
+    Device:
+      example:
+        device_type: BATTERY
+        device_serial_number: device-serial-number
+        device_model: device-model
+        device_manufacturer: device-manufacturer
+        install_date: 2000-01-23
+        battery_power_capacity_kw: 1.233
+        battery_energy_capacity_kwh: 9.876
+        battery_duration_hours: 4
+        permission_to_operate_date: 2000-01-23
+      properties:
+        device_type:
+          $ref: "#/components/schemas/DeviceType"
+        device_serial_number:
+          description: The serial number of the device
+          example: device-serial-number
+          maxLength: 256
+          minLength: 1
+          type: string
+        device_model:
+          description: The model of the device
+          example: device-model
+          maxLength: 128
+          minLength: 1
+          type: string
+        device_manufacturer:
+          description: The manufacturer of the device
+          example: device-manufacturer
+          maxLength: 128
+          minLength: 1
+          type: string
+        install_date:
+          description: Could also be the activation date for the device
+          format: date
+          type: string
+        battery_power_capacity_kw:
+          description: The lower value between the inverter maximum output OR the
+            nameplate maximum battery output according to battery specification sheet
+            in kilowatts.
+          example: 1.233
+          maximum: 999999
+          minimum: 0
+          type: number
+        battery_energy_capacity_kwh:
+          description: Total battery energy capacity according to battery specification
+            sheet in kilowatt-hours.
+          example: 9.876
+          maximum: 999999
+          minimum: 0
+          type: number
+        battery_duration_hours:
+          description: "Leap's default approach will be to determine duration based\
+            \ on Battery Capacity and Battery Energy Capacity, but Leap Partner can\
+            \ recommend an alternative nomination as they see fit.  Measured in hours"
+          example: 4
+          format: int32
+          maximum: 100
+          minimum: 0
+          type: integer
+        permission_to_operate_date:
+          description: This data should be found on the Utility or Electric Distribution
+            Company Permission to Operate (PTO) letter that the battery installer
+            received at the conclusion of the interconnection process.
+          format: date
+          type: string
+      type: object
+    Site:
+      example:
+        load_zone: load-zone
+        number_of_devices: 1
+        on_site_fossil_generator: true
+        renewable_generator: true
+        generator_capacity_kw: 1.234
+        generator_model_year: 2020
+        generator_manufacturer: Manufacturer of the generator
+        generator_fuel_type: ""
+        generator_serial_number: generator-serial-number
+        site_devices:
+        - device_type: BATTERY
+          model: device-model
+          manufacturer: device-manufacturer
+          serial_number: device-serial-number
+          energy_capacity_kwh: 39.504
+          power_capacity_kw: 9.876
+          energy_capacity_duration_hours: 4
+          voltage_level: EVSE_LEVEL_1
+          model_year: 2020
+          fuel_type: DIESEL
+          max_energy_production_rate_kw: 7.5
+          max_energy_consumption_rate_kw: 7.5
+          battery_max_state_of_charge_percentage: 95
+          battery_min_state_of_charge_percentage: 10
+          installer: Acme Installations Inc.
+          pv_connected: true
+        - device_type: BATTERY
+          model: device-model
+          manufacturer: device-manufacturer
+          serial_number: device-serial-number
+          energy_capacity_kwh: 39.504
+          power_capacity_kw: 9.876
+          energy_capacity_duration_hours: 4
+          voltage_level: EVSE_LEVEL_1
+          model_year: 2020
+          fuel_type: DIESEL
+          max_energy_production_rate_kw: 7.5
+          max_energy_consumption_rate_kw: 7.5
+          battery_max_state_of_charge_percentage: 95
+          battery_min_state_of_charge_percentage: 10
+          installer: Acme Installations Inc.
+          pv_connected: true
+      properties:
+        load_zone:
+          description: Sub region of the transmission region that the meter is located
+          example: load-zone
+          maxLength: 128
+          minLength: 1
+          type: string
+        number_of_devices:
+          description: "Refers to the total number of devices available for dispatch\
+            \ behind this Leap meter.   For CA DSGS Option 3, this field is required\
+            \ to indicate if multiple batteries are being stacked behind a single\
+            \ inverter."
+          example: 1
+          format: int32
+          maximum: 99
+          minimum: 0
+          type: integer
+        on_site_fossil_generator:
+          description: Is there a fossil fuel powered generator on site
+          type: boolean
+        renewable_generator:
+          description: Is there a behind the meter renewable generator on site
+          type: boolean
+        generator_capacity_kw:
+          deprecated: true
+          description: Deprecated. Use site_devices.power_capacity_kw for the capacity
+            in kW of the generator on site.
+          example: 1.234
+          maximum: 999999
+          minimum: 0
+          type: number
+        generator_model_year:
+          deprecated: true
+          description: Deprecated. Use site_devices.model_year for the year in which
+            the generator was manufactured.
+          example: 2020
+          format: int32
+          maximum: 2100
+          minimum: 1900
+          type: integer
+        generator_manufacturer:
+          deprecated: true
+          description: Deprecated. Use site_devices.manufacturer for generator manufacturer’s
+            name.
+          example: Manufacturer of the generator
+          maxLength: 128
+          minLength: 1
+          type: string
+        generator_fuel_type:
+          allOf:
+          - $ref: "#/components/schemas/FuelType"
+          deprecated: true
+          description: Deprecated. Use site_devices.fuel_type for the fuel source
+            of the generator.
+        generator_serial_number:
+          deprecated: true
+          description: Deprecated. Use site_devices.serial_number for the serial number
+            on the generator.
+          example: generator-serial-number
+          maxLength: 256
+          minLength: 1
+          type: string
+        site_devices:
+          description: List of additional information about devices on the premise
+          items:
+            $ref: "#/components/schemas/DeviceInfo"
+          minItems: 0
+          type: array
+      type: object
+    DeviceInfo:
+      example:
+        device_type: BATTERY
+        model: device-model
+        manufacturer: device-manufacturer
+        serial_number: device-serial-number
+        energy_capacity_kwh: 39.504
+        power_capacity_kw: 9.876
+        energy_capacity_duration_hours: 4
+        voltage_level: EVSE_LEVEL_1
+        model_year: 2020
+        fuel_type: DIESEL
+        max_energy_production_rate_kw: 7.5
+        max_energy_consumption_rate_kw: 7.5
+        battery_max_state_of_charge_percentage: 95
+        battery_min_state_of_charge_percentage: 10
+        installer: Acme Installations Inc.
+        pv_connected: true
+      properties:
+        device_type:
+          $ref: "#/components/schemas/DeviceType"
+        model:
+          description: The model of the device
+          example: device-model
+          maxLength: 128
+          minLength: 1
+          type: string
+        manufacturer:
+          description: The manufacturer of the device
+          example: device-manufacturer
+          maxLength: 128
+          minLength: 1
+          type: string
+        serial_number:
+          description: The serial number of the device
+          example: device-serial-number
+          maxLength: 256
+          minLength: 1
+          type: string
+        energy_capacity_kwh:
+          description: Total device energy capacity according to device specification
+            sheet in kilowatt-hours.
+          example: 39.504
+          maximum: 999999
+          minimum: 0
+          type: number
+        power_capacity_kw:
+          description: The lower value between the inverter maximum output OR the
+            nameplate maximum device output according to device specification sheet
+            in kilowatts.
+          example: 9.876
+          maximum: 999999
+          minimum: 0
+          type: number
+        energy_capacity_duration_hours:
+          description: "Leap's default approach will be to determine duration based\
+            \ on Battery Capacity and Battery Energy Capacity, but Leap Partner can\
+            \ recommend an alternative nomination as they see fit.  Measured in hours"
+          example: 4
+          format: int32
+          maximum: 100
+          minimum: 0
+          type: integer
+        voltage_level:
+          description: Device voltage level
+          enum:
+          - EVSE_LEVEL_1
+          - EVSE_LEVEL_2
+          type: string
+        model_year:
+          description: Year in which the device was manufactured
+          example: 2020
+          format: int32
+          maximum: 2100
+          minimum: 1900
+          type: integer
+        fuel_type:
+          $ref: "#/components/schemas/FuelType"
+        max_energy_production_rate_kw:
+          description: "Max energy production rate of the battery in kilowatts, as\
+            \ configured on the device."
+          example: 7.5
+          maximum: 999999
+          minimum: 0
+          type: number
+        max_energy_consumption_rate_kw:
+          description: "Max energy consumption rate of the battery in kilowatts, as\
+            \ configured on the device."
+          example: 7.5
+          maximum: 999999
+          minimum: 0
+          type: number
+        battery_max_state_of_charge_percentage:
+          description: "Max state of charge allowed/configured for the battery, as\
+            \ a percentage between 2 and 100 (e.g. 95 = 95%). 2 is the lower bound\
+            \ so people don't accidentally fill in 0.95 if they mean 95%."
+          example: 95
+          maximum: 100
+          minimum: 2
+          type: number
+        battery_min_state_of_charge_percentage:
+          description: "Min state of charge allowed/configured for the battery, as\
+            \ a percentage between 0 and 100 (e.g. 10 = 10%)."
+          example: 10
+          maximum: 100
+          minimum: 0
+          type: number
+        installer:
+          description: Name of the company or person that installed the device.
+          example: Acme Installations Inc.
+          maxLength: 256
+          minLength: 1
+          type: string
+        pv_connected:
+          description: Whether solar panels are connected to the device.
+          example: true
+          type: boolean
+      required:
+      - device_type
+      type: object
+    Caiso:
+      example:
+        is_receiving_sgip_funding: true
+        nem_type: NEM2
+      properties:
+        is_receiving_sgip_funding:
+          description: "Only needed if the battery is installed after June 30, 2023\
+            \ to verify eligibility for no baseline."
+          type: boolean
+        nem_type:
+          $ref: "#/components/schemas/NemType"
+      type: object
+    Isone:
+      example:
+        in_connected_solutions: true
+      properties:
+        in_connected_solutions:
+          description: Is the meter also participating in ConnectedSolutions; used
+            for CPS
+          type: boolean
+      type: object
+    Nyiso:
+      example:
+        cbl_method: AVERAGE_DAY
+        company_type: INDIVIDUAL_OR_SOLE_PROPRIETOR
+        existing_nyiso_resource_id: "666266"
+        partner_nyiso_resource_name: "666266"
+      properties:
+        cbl_method:
+          $ref: "#/components/schemas/customer_baseline_load_verification_methodology"
+        company_type:
+          $ref: "#/components/schemas/company_type"
+        existing_nyiso_resource_id:
+          description: "If the meter has previously been enrolled in SCR, they have\
+            \ had a resource_id assigned to it by NYISO"
+          example: "666266"
+          type: string
+        partner_nyiso_resource_name:
+          description: "If the meter has previously been enrolled in SCR, they have\
+            \ had a resource_id assigned to it by partner"
+          example: "666266"
+          type: string
+      type: object
+    ReadUtility:
+      properties:
+        utility:
+          $ref: "#/components/schemas/ReadUtility_utility"
+    CommonUtility:
+      properties:
+        utility_name:
+          $ref: "#/components/schemas/utility"
+        load_serving_entity:
+          description: The utility or community choice aggregator that the customer
+            buys electricity from
+          example: PGE
+          maxLength: 128
+          minLength: 1
+          type: string
+        electric_service_account_number:
+          description: "This is also known as Service Agreement ID or Service Account\
+            \ Number, depending on utility in CAISO, Electric Account Number in ISO-NE,\
+            \ ESIID in ERCOT, or TO Account Number in NYISO."
+          example: 12243243-121
+          maxLength: 128
+          minLength: 1
+          type: string
+        tariff:
+          description: "The tariff or electric rate code can be found on the electric\
+            \ bill. For California DSGS, virtual net energy metering storage assets\
+            \ must indicate 'VNEM'."
+          example: tariff code
+          maxLength: 128
+          minLength: 1
+          type: string
+        voltage:
+          description: "Transmission Owner voltage service level description (e.g.,\
+            \ High tension, Transmission, Primary) or range (e.g., >= 600 V, < 35kV).While\
+            \ this information is required for customers enrolling in NYISO SCR, Leap\
+            \ is usually able to identify the TO service voltage level for the site."
+          example: '>= 600 V'
+          maxLength: 128
+          minLength: 1
+          type: string
+        utility_meter_serial_number:
+          description: Serial number of the electricity meter
+          example: utility-meter-serial-number
+          maxLength: 256
+          minLength: 1
+          type: string
+      type: object
+    AuditInfo:
+      properties:
+        audit:
+          $ref: "#/components/schemas/AuditInfo_audit"
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    CustomerClassification:
+      description: Whether this is a residential (home) asset or a commercial (business)
+        asset.
+      enum:
+      - RESIDENTIAL
+      - COMMERCIAL
+      type: string
+    PartnerReference:
+      description: The partner-supplied reference ID to help identify the customer
+        or site that a Leap meter correlates to a partner’s internal systems.
+      example: partner-reference-1
+      maxLength: 256
+      minLength: 3
+      pattern: "^[^\\/\\\\?\\]\\[{}!#$%^&*()<>|]{3,256}$"
+      type: string
+    EnrollmentStatus:
+      description: The enrollment status of the meter.
+      enum:
+      - ACTIVE
+      - ELIGIBLE
+      - INELIGIBLE
+      - NOT_PARTICIPATING
+      - PENDING
+      example: ACTIVE
+      type: string
+    MeterType:
+      description: The type of asset.
+      enum:
+      - UTILITY_METER
+      - SUBMETER
+      - DEVICE
+      type: string
+    load_type:
+      description: The load type of the device
+      enum:
+      - HVAC
+      - EV_CHARGING
+      - BATTERY_STORAGE
+      - COLD_STORAGE
+      - PUMPING
+      - WATER_HEATING
+      - BUILDING_AUTOMATION
+      - GENERATION
+      - MANUFACTURING
+      - LIGHTING
+      - OTHER
+      example: HVAC
+      type: string
+    action_type:
+      description: The type of action required to participate with this meter.
+      enum:
+      - IS_AUTHORIZED
+      - DOCUMENTS_SIGNED
+      - HAS_AMI
+      - NOT_ENROLLED_IN_CONFLICTING_PROGRAM
+      - PARTICIPATING
+      - HAS_MARKET_REGISTRATION
+      - NO_MISSING_FIELDS
+      - GENERATOR
+      - ADDRESS
+      - HAS_NOMINATIONS
+      - HAS_BIDDING_STRATEGY
+      - IS_ELIGIBLE
+      - IS_ASSIGNED_TO_A_RESOURCE
+      - MEETS_EXTRA_PROGRAM_REQUIREMENTS
+      example: IS_AUTHORIZED
+      type: string
+    DispatchOption:
+      description: Dispatch strategy used in ConnectedSolutions.
+      enum:
+      - DAILY
+      - TARGETED
+      type: string
+    DeviceType:
+      description: Type of device on premise
+      enum:
+      - BATTERY
+      - GENERATOR
+      - EV
+      - EV_CHARGER
+      - BIDIRECTIONAL_EV_CHARGER
+      - SMART_THERMOSTAT
+      - AIR_CONDITIONER
+      - HEAT_PUMP
+      example: BATTERY
+      type: string
+    FuelType:
+      description: The fuel source for a generator.
+      enum:
+      - DIESEL
+      - NATURAL_GAS
+      - DUAL_FUEL
+      - CO_GEN
+      - ENERGY_STORAGE
+      - OTHER
+      type: string
+    NemType:
+      description: Is the battery under NEM2 or NEM3 rules
+      enum:
+      - NEM2
+      - NEM3
+      type: string
+    customer_baseline_load_verification_methodology:
+      description: Choice of the Customer Baseline Load (CBL) verification methodology
+        that will be used to calculate load reduction.
+      enum:
+      - AVERAGE_DAY
+      - WEATHER_ADJUSTED
+      type: string
+    company_type:
+      description: Required for customers enrolling in PSEGLI CSRP/DLRP
+      enum:
+      - INDIVIDUAL_OR_SOLE_PROPRIETOR
+      - LIMITED_LIABILITY_COMPANY
+      - PARTNERSHIP
+      - CORPORATION
+      - OTHER
+      - EXEMPT_PAYEE
+      type: string
+    utility:
+      description: The name of the Investor Owned Utility or Publicly Owned Utility
+        whose territory the customer is in.
+      enum:
+      - PGE
+      - SCE
+      - SDGE
+      - SMUD
+      - LADWP
+      - SVP
+      - CECONY
+      - ORU
+      - PSEGLI
+      - NYS
+      - RIE
+      - EVERSOURCE
+      - NATGRID
+      - UNITIL
+      - PPL
+      - CAPELIGHT
+      - UPLIGHT
+      - UNITED_ILLUMINATED
+      - SMT
+      - AEP_CENTRAL
+      - AEP_NORTH
+      - NUECES_ELECTRIC
+      - ONCOR
+      - CENTERPOINT
+      - ENTERGY_GULF
+      - SWEPCO
+      - TNMP
+      - DEMO
+      - DEMO2
+      - LEAP_TEST_CAISO
+      - LEAP_TEST_NYISO
+      - COMED
+      - BGE
+      - PECO
+      - METED
+      - PENELEC
+      - PSEG
+      - DOMINION
+      - WESTPENN
+      - PENNPOWER
+      - PEPCO
+      - PJM_DEMO
+      - OTHER
+      - NES
+      - MLGW
+      - KUB
+      - NPU
+      - MTEMC
+      - PRECC
+      - HSVU
+      - SRP
+      - PSE
+      - TVA
+      example: PGE
+      type: string
+    Customer_billing:
+      description: Billing address for the customer.
+      example:
+        street_1: 132 My Billing Street
+        street_2: Apartment 32
+        postal_code: "90210"
+        city: Los Angeles
+        state_or_province_code: CA
+        country_code: US
+      properties:
+        street_1:
+          description: "Physical street of the billing address. If you need to provide\
+            \ extensions like apartment or unit number, please add those to the 'street2'\
+            \ field."
+          example: 132 My Billing Street
+          maxLength: 128
+          minLength: 1
+          pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-\\\\|]{1,128}$"
+          type: string
+        street_2:
+          description: Provide extensions like apartment or unit number here if needed.
+          example: Apartment 32
+          maxLength: 128
+          minLength: 1
+          pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-\\\\|]{1,128}$"
+          type: string
+        postal_code:
+          description: Billing address postal code.
+          example: "90210"
+          pattern: "^[0-9]{5}(?:-[0-9]{4})?$"
+          type: string
+        city:
+          description: Billing address city.
+          example: Los Angeles
+          maxLength: 128
+          minLength: 1
+          pattern: "^[’'+#\"@()/&.,;\\sA-Za-zÀ-ɏḀ-ỿ0-9\\-]{1,128}$"
+          type: string
+        state_or_province_code:
+          description: Billing address state or province code.
+          example: CA
+          maxLength: 2
+          minLength: 2
+          type: string
+        country_code:
+          default: US
+          description: ISO 3166-1 alpha-2 country code of the billing address country.
+            Defaults to US.
+          example: US
+          maxLength: 2
+          minLength: 2
+          type: string
+      required:
+      - city
+      - country_code
+      - postal_code
+      - state_or_province_code
+      - street_1
+      type: object
+    ReadUtility_utility:
+      allOf:
+      - $ref: "#/components/schemas/CommonUtility"
+      - properties:
+          bill_service_agreement_number:
+            description: The Bill Service Agreement Number can be found on the customer’s
+              bills and is the number that the customer would use to interact with
+              the utility. This number may be called a different name by the utility.
+              Use the table below to determine what it’s called and where to find
+              it on the customer’s bill. See https://support.leap.energy/support/solutions/articles/73000524967--ca-what-s-the-difference-between-the-leap-meter-id-bill-service-agreement-number-bill-customer-ac
+            type: string
+          bill_customer_account_number:
+            description: "The Bill Customer Account Number represents the customer\
+              \ account, which may have multiple service agreements open with the\
+              \ utility. See https://support.leap.energy/support/solutions/articles/73000524967--ca-what-s-the-difference-between-the-leap-meter-id-bill-service-agreement-number-bill-customer-ac"
+            type: string
+        type: object
+      example:
+        utility_name: PGE
+        load_serving_entity: PGE
+        electric_service_account_number: 12243243-121
+        tariff: tariff code
+        voltage: '>= 600 V'
+        utility_meter_serial_number: utility-meter-serial-number
+        bill_service_agreement_number: bill_service_agreement_number
+        bill_customer_account_number: bill_customer_account_number
+    AuditInfo_audit:
+      example:
+        created_by: PARTNER
+        created_at: 2000-01-23T04:56:07.000+00:00
+        updated_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        created_by:
+          description: Which entity created the meter
+          enum:
+          - PARTNER
+          - LEAP
+          - UTILITY
+          type: string
+        created_at:
+          description: When the meter was created
+          format: date-time
+          type: string
+        updated_at:
+          description: When the meter was last updated
+          format: date-time
+          type: string
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      type: http

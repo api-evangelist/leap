@@ -1,0 +1,3996 @@
+openapi: 3.0.3
+info:
+  description: Retrieves partner settlements
+  title: Revenue & Analytics
+  version: "1.1"
+servers:
+- description: Leap staging API
+  url: https://api.staging.leap.energy
+- description: Leap production API
+  url: https://api.leap.energy
+security:
+- Bearer: []
+tags:
+- name: revenue
+paths:
+  /v1.1/revenue/periodic/aggregation/customer/search:
+    post:
+      deprecated: false
+      description: Retrieves revenue data for a designated month or months aggregated
+        by customer
+      operationId: postCustomerSearchPeriodicAggregationSearch
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeriodicSearchAggregationRequest"
+        description: The request body containing aggregation detail.
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeriodicCustomerAggregationResponse"
+          description: "Retrieves periodic customer revenue reports for a specified\
+            \ time frame, with a request limit of up to 3 months."
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "415":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+          description: Returns 415 if provided content in the request is not supported.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Revenue by customer
+      tags:
+      - revenue
+  /v1.1/revenue/periodic/aggregation/load-type/search:
+    post:
+      deprecated: false
+      description: Retrieves revenue data for a designated month or months aggregated
+        by load type
+      operationId: postLoadTypeSearchPeriodicAggregationSearch
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeriodicSearchAggregationRequest"
+        description: The request body containing aggregation detail.
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeriodicLoadTypeAggregationResponse"
+          description: "Retrieves periodic load type revenue reports for a specified\
+            \ time frame, with a request limit of up to 3 months."
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "415":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+          description: Returns 415 if provided content in the request is not supported.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Revenue by load type
+      tags:
+      - revenue
+  /v1.1/revenue/periodic/aggregation/market-group/search:
+    post:
+      deprecated: false
+      description: Retrieves revenue data for a designated month or months aggregated
+        by market group
+      operationId: postMarketGroupSearchPeriodicAggregationSearch
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeriodicSearchAggregationRequest"
+        description: The request body containing aggregation detail.
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeriodicMarketGroupAggregationResponse"
+          description: "Retrieves periodic market group revenue reports for a specified\
+            \ time frame, with a request limit of up to 3 months."
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "415":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+          description: Returns 415 if provided content in the request is not supported.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Revenue by market group
+      tags:
+      - revenue
+  /v1.1/revenue/periodic/aggregation/meter/search:
+    post:
+      deprecated: false
+      description: Retrieves revenue data for a designated month or months aggregated
+        by meter
+      operationId: postMeterSearchPeriodicAggregationSearch
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeriodicSearchAggregationRequest"
+        description: The request body containing aggregation detail.
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeriodicMeterAggregationResponse"
+          description: "Retrieves periodic meter revenue reports for a specified time\
+            \ frame, with a request limit of up to 3 months."
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "415":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+          description: Returns 415 if provided content in the request is not supported.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Revenue by meter
+      tags:
+      - revenue
+  /v1.1/revenue/periodic/aggregation/utility/search:
+    post:
+      deprecated: false
+      description: Retrieves revenue data for a designated month or months aggregated
+        by utility
+      operationId: postUtilitySearchPeriodicAggregationSearch
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeriodicSearchAggregationRequest"
+        description: The request body containing aggregation detail.
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeriodicUtilityAggregationResponse"
+          description: "Retrieves periodic utility revenue reports for a specified\
+            \ time frame, with a request limit of up to 3 months."
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "415":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+          description: Returns 415 if provided content in the request is not supported.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Revenue by utility
+      tags:
+      - revenue
+  /v1.1/revenue/periodic/reports:
+    get:
+      deprecated: false
+      description: |
+        Retrieves monthly revenue reports for a designated time frame. If a version is not specified, the response will include the latest  version.
+      operationId: getPeriodicReports
+      parameters:
+      - allowEmptyValue: false
+        deprecated: false
+        description: The start of the period for the report in ISO-8601 formatted
+          year and month (`YYYY-MM`).
+        in: query
+        name: period_start
+        required: true
+        schema:
+          example: 2024-05
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+      - allowEmptyValue: false
+        deprecated: false
+        description: "The end of the period for the report in ISO-8601 formatted year\
+          \ and month (`YYYY-MM`), which is inclusive."
+        in: query
+        name: period_end
+        required: true
+        schema:
+          example: 2024-05
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+      - allowEmptyValue: false
+        deprecated: false
+        description: The report's version. If not specified the latest version is
+          returned.
+        in: query
+        name: version
+        required: false
+        schema:
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+      - allowEmptyValue: false
+        deprecated: false
+        description: "The list of programs, separated by comma."
+        in: query
+        name: programs
+        required: false
+        schema:
+          example:
+          - CONED-DLRP
+          - PSEGLI-CSRP
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          type: array
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeriodicReportResponse"
+            text/csv:
+              schema:
+                type: string
+          description: |
+            Fetches periodic revenue reports for a designated time frame. If a version is not specified, the response will include the latest version.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "415":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+          description: Returns 415 if provided content in the request is not supported.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Get monthly revenue reports
+      tags:
+      - revenue
+  /v1.1/revenue/periodic/versions:
+    get:
+      deprecated: false
+      description: |
+        Retrieves versions of revenue reports for a specified period. The response includes all versions filtered by the provided report type and date range.
+      operationId: getPeriodicReportVersions
+      parameters:
+      - allowEmptyValue: false
+        deprecated: false
+        description: "The list of programs, separated by comma."
+        in: query
+        name: programs
+        required: false
+        schema:
+          example:
+          - CONED-DLRP
+          - PSEGLI-CSRP
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          type: array
+      - allowEmptyValue: false
+        deprecated: false
+        description: The start of the period for the report in ISO-8601 formatted
+          year and month (`YYYY-MM`).
+        in: query
+        name: period_start
+        required: true
+        schema:
+          example: 2024-05
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+      - allowEmptyValue: false
+        deprecated: false
+        description: "The end of the period for the report in ISO-8601 formatted year\
+          \ and month (`YYYY-MM`), which is inclusive."
+        in: query
+        name: period_end
+        required: true
+        schema:
+          example: 2024-05
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/PeriodicReportVersionResponse"
+                type: array
+          description: |
+            Versions of revenue reports for a specified period. The response includes the latest revenue report versions filtered by the  provided report type and date range
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Get revenue report versions
+      tags:
+      - revenue
+  /v1.1/revenue/yearly/{year}:
+    get:
+      deprecated: false
+      description: "Retrieves the revenue overview for a given year and transmission\
+        \ regions, if set."
+      operationId: getYearlyOverview
+      parameters:
+      - allowEmptyValue: false
+        deprecated: false
+        description: The year of the report
+        example: 2025
+        in: path
+        name: year
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - allowEmptyValue: false
+        deprecated: true
+        description: The transmission region to filter the reports by.
+        in: query
+        name: transmission_region
+        required: false
+        schema:
+          $ref: "#/components/schemas/transmission_region"
+      - allowEmptyValue: false
+        deprecated: false
+        description: The transmission regions to filter the reports by.
+        in: query
+        name: transmission_regions
+        required: false
+        schema:
+          example:
+          - CAISO
+          - NYISO
+          items:
+            $ref: "#/components/schemas/transmission_region"
+          type: array
+      - allowEmptyValue: false
+        deprecated: false
+        description: "The list of programs, separated by comma."
+        in: query
+        name: programs
+        required: false
+        schema:
+          example:
+          - CONED-DLRP
+          - PSEGLI-CSRP
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          type: array
+      - allowEmptyValue: false
+        deprecated: false
+        description: "The report status to filter the reports by. When left empty,\
+          \ reports with any status are returned."
+        in: query
+        name: report_statuses
+        required: false
+        schema:
+          example:
+          - PRELIMINARY
+          items:
+            $ref: "#/components/schemas/ReportStatusType"
+          type: array
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/YearlyOverview"
+          description: Yearly overview with metrics and a list of all reports for
+            the given year
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "415":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+          description: Returns 415 if provided content in the request is not supported.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Get annual revenue data
+      tags:
+      - revenue
+  /v1.1/performance/diagnosis/monthly/unresponsive/meters:
+    post:
+      deprecated: false
+      description: Retrieves unresponsive meters in a designated month
+      operationId: postMonthlyUnresponsiveMetersPerformance
+      parameters:
+      - description: Boolean flag indicating whether the response should include  a
+          summary of the requested data in addition to the detailed results.
+        explode: true
+        in: query
+        name: include_summary
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MonthlyUnresponsiveMetersRequest"
+          text/csv:
+            schema:
+              type: string
+        description: Monthly unresponsive meters request body
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonthlyUnresponsiveMetersResponse"
+          description: Retrieves monthly unresponsive meters for a specified month
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBadRequest"
+          description: Returns 400 if the request is invalid.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnauthorized"
+          description: Returns 401 if the request is unauthorized.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseForbidden"
+          description: Returns 403 if the request doesn't have the right values.
+        "415":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+          description: Returns 415 if provided content in the request is not supported.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseInternalServerError"
+          description: Returns 500 if the there's an internal server error.
+      security:
+      - Bearer: []
+      summary: Monthly unresponsive meters
+      tags:
+      - performance
+components:
+  parameters:
+    period_start:
+      allowEmptyValue: false
+      deprecated: false
+      description: The start of the period for the report in ISO-8601 formatted year
+        and month (`YYYY-MM`).
+      in: query
+      name: period_start
+      required: true
+      schema:
+        example: 2024-05
+        pattern: "^\\d{4}-\\d{2}$"
+        type: string
+    period_end:
+      allowEmptyValue: false
+      deprecated: false
+      description: "The end of the period for the report in ISO-8601 formatted year\
+        \ and month (`YYYY-MM`), which is inclusive."
+      in: query
+      name: period_end
+      required: true
+      schema:
+        example: 2024-05
+        pattern: "^\\d{4}-\\d{2}$"
+        type: string
+    version:
+      allowEmptyValue: false
+      deprecated: false
+      description: The report's version. If not specified the latest version is returned.
+      in: query
+      name: version
+      required: false
+      schema:
+        example: V1
+        minLength: 2
+        pattern: V.+
+        type: string
+    programs:
+      allowEmptyValue: false
+      deprecated: false
+      description: "The list of programs, separated by comma."
+      in: query
+      name: programs
+      required: false
+      schema:
+        example:
+        - CONED-DLRP
+        - PSEGLI-CSRP
+        items:
+          $ref: "#/components/schemas/program_identifier"
+        type: array
+    year:
+      allowEmptyValue: false
+      deprecated: false
+      description: The year of the report
+      example: 2025
+      in: path
+      name: year
+      required: true
+      schema:
+        format: int32
+        type: integer
+    transmission_region:
+      allowEmptyValue: false
+      deprecated: true
+      description: The transmission region to filter the reports by.
+      in: query
+      name: transmission_region
+      required: false
+      schema:
+        $ref: "#/components/schemas/transmission_region"
+    transmission_regions:
+      allowEmptyValue: false
+      deprecated: false
+      description: The transmission regions to filter the reports by.
+      in: query
+      name: transmission_regions
+      required: false
+      schema:
+        example:
+        - CAISO
+        - NYISO
+        items:
+          $ref: "#/components/schemas/transmission_region"
+        type: array
+    report_statuses:
+      allowEmptyValue: false
+      deprecated: false
+      description: "The report status to filter the reports by. When left empty, reports\
+        \ with any status are returned."
+      in: query
+      name: report_statuses
+      required: false
+      schema:
+        example:
+        - PRELIMINARY
+        items:
+          $ref: "#/components/schemas/ReportStatusType"
+        type: array
+  responses:
+    "400":
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseBadRequest"
+      description: Returns 400 if the request is invalid.
+    "401":
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseUnauthorized"
+      description: Returns 401 if the request is unauthorized.
+    "403":
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseForbidden"
+      description: Returns 403 if the request doesn't have the right values.
+    "415":
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseUnsupportedMediaType"
+      description: Returns 415 if provided content in the request is not supported.
+    "500":
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseInternalServerError"
+      description: Returns 500 if the there's an internal server error.
+  schemas:
+    PeriodicSearchAggregationRequest:
+      additionalProperties: false
+      description: Search for aggregations in a specific period. Max allowed period
+        between start and end is 3 months.
+      example:
+        period_start: 2023-03
+        period_end: 2023-03
+        programs:
+        - DRAM
+        - CCA
+        - ENERGY-ONLY
+        filters:
+        - SCEC_1_PDRP
+        - PDRP
+        page_token: page_token
+        page_size: 100
+        sort:
+        - direction: DESC
+          field: nomination_w
+        - direction: ASC
+          field: meter_id
+        version: V1
+      properties:
+        period_start:
+          description: The start of the period for the report in ISO-8601 formatted
+            year and month (`YYYY-MM`).
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        period_end:
+          description: "The end of the period for the report in ISO 8601 format (`YYYY-MM`),\
+            \ which is inclusive."
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        programs:
+          description: "The list of the program identifiers that report is associated\
+            \ with. If not specified, defaults to all programs."
+          example:
+          - DRAM
+          - CCA
+          - ENERGY-ONLY
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          type: array
+        filters:
+          description: "Optional filters to apply to the search query. Depending on\
+            \ the aggregation type, the filters are applied to the following field:\n\
+            \  - `METER`: meter ID, \n  - `MARKET_GROUP`: market group ID, \n  - `CUSTOMER`:\
+            \ customer name. \nNot supported for other aggregation types.\nThe search\
+            \ is case-insensitive and will match those results that start with the\
+            \ filter value. Passing multiple filters will\nbe applied as OR-condition.\
+            \ For example, passing `[\"SCEC\", \"PDRP\"]` will match all records that\
+            \ start with either `SCEC` or `PDRP`.\n"
+          example:
+          - SCEC_1_PDRP
+          - PDRP
+          items:
+            type: string
+          type: array
+        page_token:
+          description: |
+            If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+          type: string
+        page_size:
+          default: 100
+          description: |
+            Specifies the number of results to return. Defaults to 100 if not set, with a maximum limit of 1000 per page. When requesting a CSV format via Accept header with value 'text/csv', this parameter is not required.
+          example: 100
+          format: int32
+          type: integer
+        sort:
+          description: |
+            Specifies the sorting criteria for the results. It is a list of fields by which the results should be sorted. This parameter is optional. Only supported for `meter`, `customer_group` and `market_group` types.
+          example:
+          - direction: DESC
+            field: nomination_w
+          - direction: ASC
+            field: meter_id
+          items:
+            $ref: "#/components/schemas/SortRequest"
+          type: array
+        version:
+          description: The report version. If not specified the latest version is
+            returned.
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+      required:
+      - page_size
+      - period_end
+      - period_start
+      type: object
+    SortRequest:
+      additionalProperties: false
+      properties:
+        field:
+          description: The field used to perform the sort operation
+          example: nomination_w
+          type: string
+        direction:
+          $ref: "#/components/schemas/SortDirection"
+      required:
+      - direction
+      - field
+      type: object
+    PeriodicCustomerAggregationResponse:
+      additionalProperties: false
+      example:
+        customers:
+        - customer_name: John Doe
+          customer_group: Store Inc.
+          meter_count: 10
+          nomination_w: 16600.88
+          capacity_revenue: 27600.3
+          energy_revenue: 27600.3
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          monetized_w: 8400.0
+          total_revenue: 20600.3
+          capacity_performance_percentage: 50.33
+          energy_performance_percentage: 60.5
+          data_coverage_percentage: 55.5
+          energy_earned_wh: 2000.3
+          potential_revenue: 104366.8
+          capacity_earned_w: 2000.3
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          missed_revenue: 20000.3
+          version: V1
+          capacity_price: 5.56
+          energy_price_kwh: 6.67
+        - customer_name: John Doe
+          customer_group: Store Inc.
+          meter_count: 10
+          nomination_w: 16600.88
+          capacity_revenue: 27600.3
+          energy_revenue: 27600.3
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          monetized_w: 8400.0
+          total_revenue: 20600.3
+          capacity_performance_percentage: 50.33
+          energy_performance_percentage: 60.5
+          data_coverage_percentage: 55.5
+          energy_earned_wh: 2000.3
+          potential_revenue: 104366.8
+          capacity_earned_w: 2000.3
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          missed_revenue: 20000.3
+          version: V1
+          capacity_price: 5.56
+          energy_price_kwh: 6.67
+        page_token: page_token
+      properties:
+        customers:
+          description: The customer detail object.
+          items:
+            $ref: "#/components/schemas/PeriodicCustomerAggregation"
+          type: array
+        page_token:
+          description: |
+            If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+          type: string
+      required:
+      - customers
+      type: object
+    PeriodicCustomerAggregation:
+      additionalProperties: false
+      example:
+        customer_name: John Doe
+        customer_group: Store Inc.
+        meter_count: 10
+        nomination_w: 16600.88
+        capacity_revenue: 27600.3
+        energy_revenue: 27600.3
+        delivery_date: ""
+        delivery_start_date: 2023-03
+        delivery_end_date: 2023-03
+        monetized_w: 8400.0
+        total_revenue: 20600.3
+        capacity_performance_percentage: 50.33
+        energy_performance_percentage: 60.5
+        data_coverage_percentage: 55.5
+        energy_earned_wh: 2000.3
+        potential_revenue: 104366.8
+        capacity_earned_w: 2000.3
+        payment_adjustment: 20.0
+        penalty: 11.0
+        performance_adjustment: 12.0
+        missed_revenue: 20000.3
+        version: V1
+        capacity_price: 5.56
+        energy_price_kwh: 6.67
+      properties:
+        customer_name:
+          description: Customer Name
+          example: John Doe
+          type: string
+        customer_group:
+          description: |
+            The Customer Group(s) associated with the customer. If the customer is part of multiple groups, they will be separated by a comma.
+          example: Store Inc.
+          type: string
+        meter_count:
+          description: The number of meters
+          example: 10
+          format: int32
+          type: integer
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        capacity_revenue:
+          description: Revenue received by the partner for participating in capacity
+            market.
+          example: 27600.3
+          format: double
+          type: number
+        energy_revenue:
+          description: Revenue received by the partner for actively participating
+            in energy programs.
+          example: 27600.3
+          format: double
+          type: number
+        delivery_date:
+          allOf:
+          - $ref: "#/components/schemas/delivery_date"
+          deprecated: true
+          description: Deprecated. This field contains the delivery start date. Use
+            the delivery_start_date field instead.
+        delivery_start_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        delivery_end_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        monetized_w:
+          description: |
+            Monetized capacity wattage. Partners provide nomination and then Leap will calculate what capacity can be monetized based on program rules.
+          example: 8400.0
+          format: double
+          type: number
+        total_revenue:
+          description: Total revenue
+          example: 20600.3
+          format: double
+          type: number
+        capacity_performance_percentage:
+          description: Capacity performance percentage
+          example: 50.33
+          format: double
+          type: number
+        energy_performance_percentage:
+          description: Energy performance percentage
+          example: 60.5
+          format: double
+          type: number
+        data_coverage_percentage:
+          description: Data coverage percentage
+          example: 55.5
+          format: double
+          type: number
+        energy_earned_wh:
+          description: Energy earned watt hour
+          example: 2000.3
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+        capacity_earned_w:
+          description: Capacity earned wattage
+          example: 2000.3
+          format: double
+          type: number
+        payment_adjustment:
+          description: |
+            A sum of any bonuses, Leap adjustments like missed enrollment, and any adjustment payments if this report has multiple versions (`V2`, `V3`, etc.). In NY CSRP and DLRP adjustments also include any true up payments associated with updated performance factors from  prior participation months
+          example: 20.0
+          format: double
+          type: number
+        penalty:
+          description: |
+            The sum of all penalties or market adjustments that are applied to the revenue.
+          example: 11.0
+          format: double
+          type: number
+        performance_adjustment:
+          description: |
+            Any revenue changes applied to Capacity Revenue. Negative values reflect penalties, when capacity performance  is below nominations. Positive values reflect aggregation benefits, where overperformance from one meter can  offset underperformance elsewhere.
+          example: 12.0
+          format: double
+          type: number
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        version:
+          description: The report version. If not specified the latest version is
+            returned.
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+        capacity_price:
+          description: Capacity price
+          example: 5.56
+          format: double
+          type: number
+        energy_price_kwh:
+          description: Energy price
+          example: 6.67
+          format: double
+          type: number
+      required:
+      - capacity_revenue
+      - customer_name
+      - delivery_end_date
+      - delivery_start_date
+      - energy_revenue
+      - meter_count
+      - nomination_w
+      - total_revenue
+      type: object
+    ErrorResponseBadRequest:
+      additionalProperties: false
+      example:
+        title: Bad Request
+        status: 400
+        details:
+        - message: Validation Error
+          description: Missing required parameter(s)
+      properties:
+        title:
+          example: Bad Request
+          type: string
+        status:
+          example: 400
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Validation Error
+            description: Missing required parameter(s)
+          items:
+            $ref: "#/components/schemas/ErrorResponseDetail"
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseDetail:
+      additionalProperties: false
+      example:
+        message: message
+        description: description
+      properties:
+        message:
+          type: string
+        description:
+          type: string
+      required:
+      - description
+      - message
+      type: object
+    ErrorResponseUnauthorized:
+      additionalProperties: false
+      example:
+        title: Unauthorized
+        status: 401
+        details:
+        - message: message
+          description: description
+        - message: message
+          description: description
+      properties:
+        title:
+          example: Unauthorized
+          type: string
+        status:
+          example: 401
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: "#/components/schemas/ErrorResponseDetail"
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseForbidden:
+      additionalProperties: false
+      example:
+        title: Forbidden
+        status: 403
+        details:
+        - message: message
+          description: description
+        - message: message
+          description: description
+      properties:
+        title:
+          example: Forbidden
+          type: string
+        status:
+          example: 403
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: "#/components/schemas/ErrorResponseDetail"
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseUnsupportedMediaType:
+      additionalProperties: false
+      example:
+        title: Unsupported Media Type
+        status: 415
+        details:
+        - message: Invalid value in the 'Accept' header.
+          description: Supported types are application/json and text/csv
+      properties:
+        title:
+          example: Unsupported Media Type
+          type: string
+        status:
+          example: 415
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Invalid value in the 'Accept' header.
+            description: Supported types are application/json and text/csv
+          items:
+            $ref: "#/components/schemas/ErrorResponseDetail"
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseInternalServerError:
+      additionalProperties: false
+      example:
+        title: Server Error
+        status: 500
+        details:
+        - message: Internal Error
+          description: A technical error has occurred
+      properties:
+        title:
+          example: Server Error
+          type: string
+        status:
+          example: 500
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Internal Error
+            description: A technical error has occurred
+          items:
+            $ref: "#/components/schemas/ErrorResponseDetail"
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    PeriodicLoadTypeAggregationResponse:
+      additionalProperties: false
+      example:
+        load_types:
+        - load_type: BATTERY_STORAGE
+          meter_count: 10
+          nomination_w: 16600.88
+          capacity_revenue: 27600.3
+          energy_revenue: 27600.3
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          monetized_w: 8400.0
+          total_revenue: 20600.3
+          capacity_performance_percentage: 50.33
+          energy_performance_percentage: 60.5
+          data_coverage_percentage: 55.5
+          energy_earned_wh: 2000.3
+          potential_revenue: 104366.8
+          capacity_earned_w: 2000.3
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          missed_revenue: 20000.3
+          version: V1
+          capacity_price: 5.56
+          energy_price_kwh: 6.67
+        - load_type: BATTERY_STORAGE
+          meter_count: 10
+          nomination_w: 16600.88
+          capacity_revenue: 27600.3
+          energy_revenue: 27600.3
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          monetized_w: 8400.0
+          total_revenue: 20600.3
+          capacity_performance_percentage: 50.33
+          energy_performance_percentage: 60.5
+          data_coverage_percentage: 55.5
+          energy_earned_wh: 2000.3
+          potential_revenue: 104366.8
+          capacity_earned_w: 2000.3
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          missed_revenue: 20000.3
+          version: V1
+          capacity_price: 5.56
+          energy_price_kwh: 6.67
+        page_token: page_token
+      properties:
+        load_types:
+          description: The load type detail object.
+          items:
+            $ref: "#/components/schemas/PeriodicLoadTypeAggregation"
+          type: array
+        page_token:
+          description: |
+            If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+          type: string
+      required:
+      - load_types
+      type: object
+    PeriodicLoadTypeAggregation:
+      additionalProperties: false
+      example:
+        load_type: BATTERY_STORAGE
+        meter_count: 10
+        nomination_w: 16600.88
+        capacity_revenue: 27600.3
+        energy_revenue: 27600.3
+        delivery_date: ""
+        delivery_start_date: 2023-03
+        delivery_end_date: 2023-03
+        monetized_w: 8400.0
+        total_revenue: 20600.3
+        capacity_performance_percentage: 50.33
+        energy_performance_percentage: 60.5
+        data_coverage_percentage: 55.5
+        energy_earned_wh: 2000.3
+        potential_revenue: 104366.8
+        capacity_earned_w: 2000.3
+        payment_adjustment: 20.0
+        penalty: 11.0
+        performance_adjustment: 12.0
+        missed_revenue: 20000.3
+        version: V1
+        capacity_price: 5.56
+        energy_price_kwh: 6.67
+      properties:
+        load_type:
+          $ref: "#/components/schemas/ExtendedLoadType"
+        meter_count:
+          description: The number of meters
+          example: 10
+          format: int32
+          type: integer
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        capacity_revenue:
+          description: Revenue received by the partner for participating in capacity
+            market.
+          example: 27600.3
+          format: double
+          type: number
+        energy_revenue:
+          description: Revenue received by the partner for actively participating
+            in energy programs.
+          example: 27600.3
+          format: double
+          type: number
+        delivery_date:
+          allOf:
+          - $ref: "#/components/schemas/delivery_date"
+          deprecated: true
+          description: Deprecated. This field contains the delivery start date. Use
+            the delivery_start_date field instead.
+        delivery_start_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        delivery_end_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        monetized_w:
+          description: |
+            Monetized capacity wattage. Partners provide nomination and then Leap will calculate what capacity can be monetized based on program rules.
+          example: 8400.0
+          format: double
+          type: number
+        total_revenue:
+          description: Total revenue
+          example: 20600.3
+          format: double
+          type: number
+        capacity_performance_percentage:
+          description: Capacity performance percentage
+          example: 50.33
+          format: double
+          type: number
+        energy_performance_percentage:
+          description: Energy performance percentage
+          example: 60.5
+          format: double
+          type: number
+        data_coverage_percentage:
+          description: Data coverage percentage
+          example: 55.5
+          format: double
+          type: number
+        energy_earned_wh:
+          description: Energy earned watt hour
+          example: 2000.3
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+        capacity_earned_w:
+          description: Capacity earned wattage
+          example: 2000.3
+          format: double
+          type: number
+        payment_adjustment:
+          description: |
+            A sum of any bonuses, Leap adjustments like missed enrollment, and any adjustment payments if this report has multiple versions (`V2`, `V3`, etc.). In NY CSRP and DLRP adjustments also include any true up payments associated with updated performance factors from  prior participation months
+          example: 20.0
+          format: double
+          type: number
+        penalty:
+          description: |
+            The sum of all penalties or market adjustments that are applied to the revenue.
+          example: 11.0
+          format: double
+          type: number
+        performance_adjustment:
+          description: |
+            Any revenue changes applied to Capacity Revenue. Negative values reflect penalties, when capacity performance  is below nominations. Positive values reflect aggregation benefits, where overperformance from one meter can  offset underperformance elsewhere.
+          example: 12.0
+          format: double
+          type: number
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        version:
+          description: The report version. If not specified the latest version is
+            returned.
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+        capacity_price:
+          description: Capacity price
+          example: 5.56
+          format: double
+          type: number
+        energy_price_kwh:
+          description: Energy price
+          example: 6.67
+          format: double
+          type: number
+      required:
+      - capacity_revenue
+      - delivery_end_date
+      - delivery_start_date
+      - energy_revenue
+      - load_type
+      - meter_count
+      - total_revenue
+      type: object
+    ExtendedLoadType:
+      description: Load type
+      enum:
+      - HVAC
+      - EV_CHARGING
+      - BATTERY_STORAGE
+      - COLD_STORAGE
+      - PUMPING
+      - WATER_HEATING
+      - BUILDING_AUTOMATION
+      - GENERATION
+      - MANUFACTURING
+      - LIGHTING
+      - OTHER
+      - UNASSIGNED_LOAD_TYPE
+      example: BATTERY_STORAGE
+      type: string
+      x-enum-descriptions:
+      - ""
+      - ""
+      - ""
+      - ""
+      - ""
+      - ""
+      - ""
+      - ""
+      - ""
+      - ""
+      - ""
+      - Unassigned load type
+    PeriodicMarketGroupAggregationResponse:
+      additionalProperties: false
+      example:
+        market_groups:
+        - market_group: PGF1_2_PDDP78
+          meter_count: 10
+          nomination_w: 16600.88
+          capacity_revenue: 27600.3
+          energy_revenue: 27600.3
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          monetized_w: 8400.0
+          total_revenue: 20600.3
+          data_coverage_percentage: 55.5
+          capacity_performance_percentage: 50.33
+          energy_performance_percentage: 60.5
+          energy_earned_wh: 2000.3
+          potential_revenue: 104366.8
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          capacity_earned_w: 2000.3
+          capacity_price: 5.56
+          performance_factor: 0.5
+          missed_revenue: 20000.3
+          version: V1
+          energy_price_kwh: 6.67
+        - market_group: PGF1_2_PDDP78
+          meter_count: 10
+          nomination_w: 16600.88
+          capacity_revenue: 27600.3
+          energy_revenue: 27600.3
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          monetized_w: 8400.0
+          total_revenue: 20600.3
+          data_coverage_percentage: 55.5
+          capacity_performance_percentage: 50.33
+          energy_performance_percentage: 60.5
+          energy_earned_wh: 2000.3
+          potential_revenue: 104366.8
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          capacity_earned_w: 2000.3
+          capacity_price: 5.56
+          performance_factor: 0.5
+          missed_revenue: 20000.3
+          version: V1
+          energy_price_kwh: 6.67
+        page_token: page_token
+      properties:
+        market_groups:
+          description: The market group detail object.
+          items:
+            $ref: "#/components/schemas/PeriodicMarketGroupAggregation"
+          type: array
+        page_token:
+          description: |
+            If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+          type: string
+      required:
+      - market_groups
+      type: object
+    PeriodicMarketGroupAggregation:
+      additionalProperties: false
+      example:
+        market_group: PGF1_2_PDDP78
+        meter_count: 10
+        nomination_w: 16600.88
+        capacity_revenue: 27600.3
+        energy_revenue: 27600.3
+        delivery_date: ""
+        delivery_start_date: 2023-03
+        delivery_end_date: 2023-03
+        monetized_w: 8400.0
+        total_revenue: 20600.3
+        data_coverage_percentage: 55.5
+        capacity_performance_percentage: 50.33
+        energy_performance_percentage: 60.5
+        energy_earned_wh: 2000.3
+        potential_revenue: 104366.8
+        payment_adjustment: 20.0
+        penalty: 11.0
+        performance_adjustment: 12.0
+        capacity_earned_w: 2000.3
+        capacity_price: 5.56
+        performance_factor: 0.5
+        missed_revenue: 20000.3
+        version: V1
+        energy_price_kwh: 6.67
+      properties:
+        market_group:
+          description: The specific market group or category in which the customer
+            participates.
+          example: PGF1_2_PDDP78
+          type: string
+        meter_count:
+          description: The number of meters
+          example: 10
+          format: int32
+          type: integer
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        capacity_revenue:
+          description: Revenue received by the partner for participating in capacity
+            market.
+          example: 27600.3
+          format: double
+          type: number
+        energy_revenue:
+          description: Revenue received by the partner for actively participating
+            in energy programs.
+          example: 27600.3
+          format: double
+          type: number
+        delivery_date:
+          allOf:
+          - $ref: "#/components/schemas/delivery_date"
+          deprecated: true
+          description: Deprecated. This field contains the delivery start date. Use
+            the delivery_start_date field instead.
+        delivery_start_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        delivery_end_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        monetized_w:
+          description: |
+            Monetized capacity wattage. Partners provide nomination and then Leap will calculate what capacity can be monetized based on program rules.
+          example: 8400.0
+          format: double
+          type: number
+        total_revenue:
+          description: Total revenue
+          example: 20600.3
+          format: double
+          type: number
+        data_coverage_percentage:
+          description: Data coverage percentage
+          example: 55.5
+          format: double
+          type: number
+        capacity_performance_percentage:
+          description: Capacity performance percentage
+          example: 50.33
+          format: double
+          type: number
+        energy_performance_percentage:
+          description: Energy performance percentage
+          example: 60.5
+          format: double
+          type: number
+        energy_earned_wh:
+          description: Energy earned watt hour
+          example: 2000.3
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+        payment_adjustment:
+          description: |
+            A sum of any bonuses, Leap adjustments like missed enrollment, and any adjustment payments if this report has multiple versions (`V2`, `V3`, etc.). In NY CSRP and DLRP adjustments also include any true up payments associated with updated performance factors from  prior participation months
+          example: 20.0
+          format: double
+          type: number
+        penalty:
+          description: |
+            The sum of all penalties or market adjustments that are applied to the revenue.
+          example: 11.0
+          format: double
+          type: number
+        performance_adjustment:
+          description: |
+            Any revenue changes applied to Capacity Revenue. Negative values reflect penalties, when capacity performance  is below nominations. Positive values reflect aggregation benefits, where overperformance from one meter can  offset underperformance elsewhere.
+          example: 12.0
+          format: double
+          type: number
+        capacity_earned_w:
+          description: Capacity earned wattage
+          example: 2000.3
+          format: double
+          type: number
+        capacity_price:
+          description: Capacity price
+          example: 5.56
+          format: double
+          type: number
+        performance_factor:
+          description: The average of the event performance over the month
+          example: 0.5
+          format: double
+          type: number
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        version:
+          description: The report version. If not specified the latest version is
+            returned.
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+        energy_price_kwh:
+          description: Energy price
+          example: 6.67
+          format: double
+          type: number
+      required:
+      - capacity_revenue
+      - delivery_end_date
+      - delivery_start_date
+      - energy_revenue
+      - market_group
+      - meter_count
+      - nomination_w
+      - total_revenue
+      type: object
+    PeriodicMeterAggregationResponse:
+      additionalProperties: false
+      example:
+        meters:
+        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          nomination_w: 16600.88
+          capacity_revenue: 27600.3
+          capacity_price: 5.56
+          energy_revenue: 27600.3
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          monetized_w: 8400.0
+          total_revenue: 20600.3
+          capacity_earned_w: 2000.3
+          energy_earned_wh: 2000.3
+          partner_reference: my-partner-meter-reference
+          capacity_performance_percentage: 50.33
+          energy_performance_percentage: 60.5
+          service_agreement_number: T12245678907
+          customer_group: Store Inc.
+          revenue_type: DELIVERED_CAPACITY
+          potential_revenue: 104366.8
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          data_coverage_percentage: 55.5
+          program: CCA
+          utility: sce
+          load_types:
+          - HVAC
+          - BATTERY_STORAGE
+          customer: John Doe
+          market_group: PGF1_2_PDDP78
+          performance_factor: 0.5
+          missed_revenue: 20000.3
+          version: V1
+          energy_price_kwh: 6.67
+          dispatch_event_response_percentage: 75
+          total_number_of_events: 0
+          diagnosis: UNRESPONSIVE
+          historical_responsiveness: NEVER_RESPONDS
+        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          nomination_w: 16600.88
+          capacity_revenue: 27600.3
+          capacity_price: 5.56
+          energy_revenue: 27600.3
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          monetized_w: 8400.0
+          total_revenue: 20600.3
+          capacity_earned_w: 2000.3
+          energy_earned_wh: 2000.3
+          partner_reference: my-partner-meter-reference
+          capacity_performance_percentage: 50.33
+          energy_performance_percentage: 60.5
+          service_agreement_number: T12245678907
+          customer_group: Store Inc.
+          revenue_type: DELIVERED_CAPACITY
+          potential_revenue: 104366.8
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          data_coverage_percentage: 55.5
+          program: CCA
+          utility: sce
+          load_types:
+          - HVAC
+          - BATTERY_STORAGE
+          customer: John Doe
+          market_group: PGF1_2_PDDP78
+          performance_factor: 0.5
+          missed_revenue: 20000.3
+          version: V1
+          energy_price_kwh: 6.67
+          dispatch_event_response_percentage: 75
+          total_number_of_events: 0
+          diagnosis: UNRESPONSIVE
+          historical_responsiveness: NEVER_RESPONDS
+        page_token: page_token
+      properties:
+        meters:
+          description: The meter detail object.
+          items:
+            $ref: "#/components/schemas/PeriodicMeterAggregation"
+          type: array
+        page_token:
+          description: |
+            If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+          type: string
+      required:
+      - meters
+      type: object
+    PeriodicMeterAggregation:
+      additionalProperties: false
+      example:
+        meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+        nomination_w: 16600.88
+        capacity_revenue: 27600.3
+        capacity_price: 5.56
+        energy_revenue: 27600.3
+        delivery_date: ""
+        delivery_start_date: 2023-03
+        delivery_end_date: 2023-03
+        monetized_w: 8400.0
+        total_revenue: 20600.3
+        capacity_earned_w: 2000.3
+        energy_earned_wh: 2000.3
+        partner_reference: my-partner-meter-reference
+        capacity_performance_percentage: 50.33
+        energy_performance_percentage: 60.5
+        service_agreement_number: T12245678907
+        customer_group: Store Inc.
+        revenue_type: DELIVERED_CAPACITY
+        potential_revenue: 104366.8
+        payment_adjustment: 20.0
+        penalty: 11.0
+        performance_adjustment: 12.0
+        data_coverage_percentage: 55.5
+        program: CCA
+        utility: sce
+        load_types:
+        - HVAC
+        - BATTERY_STORAGE
+        customer: John Doe
+        market_group: PGF1_2_PDDP78
+        performance_factor: 0.5
+        missed_revenue: 20000.3
+        version: V1
+        energy_price_kwh: 6.67
+        dispatch_event_response_percentage: 75
+        total_number_of_events: 0
+        diagnosis: UNRESPONSIVE
+        historical_responsiveness: NEVER_RESPONDS
+      properties:
+        meter_id:
+          description: Meter UUID
+          example: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          format: uuid
+          type: string
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        capacity_revenue:
+          description: Revenue received by the partner for participating in capacity
+            market.
+          example: 27600.3
+          format: double
+          type: number
+        capacity_price:
+          description: Capacity price
+          example: 5.56
+          format: double
+          type: number
+        energy_revenue:
+          description: Revenue received by the partner for actively participating
+            in energy programs.
+          example: 27600.3
+          format: double
+          type: number
+        delivery_date:
+          allOf:
+          - $ref: "#/components/schemas/delivery_date"
+          deprecated: true
+          description: Deprecated. This field contains the delivery start date. Use
+            the delivery_start_date field instead.
+        delivery_start_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        delivery_end_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        monetized_w:
+          description: |
+            Monetized capacity wattage. Partners provide nomination and then Leap will calculate what capacity can be monetized based on program rules.
+          example: 8400.0
+          format: double
+          type: number
+        total_revenue:
+          description: Total revenue
+          example: 20600.3
+          format: double
+          type: number
+        capacity_earned_w:
+          description: Capacity earned wattage
+          example: 2000.3
+          format: double
+          type: number
+        energy_earned_wh:
+          description: Energy earned watt hour
+          example: 2000.3
+          format: double
+          type: number
+        partner_reference:
+          description: "Partner reference, if applicable"
+          example: my-partner-meter-reference
+          type: string
+        capacity_performance_percentage:
+          description: Capacity performance percentage
+          example: 50.33
+          format: double
+          type: number
+        energy_performance_percentage:
+          description: Energy performance percentage
+          example: 60.5
+          format: double
+          type: number
+        service_agreement_number:
+          description: The service agreement number
+          example: T12245678907
+          type: string
+        customer_group:
+          description: The Customer Group associated with the meter
+          example: Store Inc.
+          type: string
+        revenue_type:
+          $ref: "#/components/schemas/RevenueType"
+        potential_revenue:
+          description: "The maximum potential earnings based on the Capacity nominated\
+            \ (kW) * price and the Energy awarded (KwH) * price. Note: does not include\
+            \ \npotential bonuses or additional earnings.\n"
+          example: 104366.8
+          format: double
+          type: number
+        payment_adjustment:
+          description: |
+            A sum of any bonuses, Leap adjustments like missed enrollment, and any adjustment payments if this report has multiple versions (`V2`, `V3`, etc.). In NY CSRP and DLRP adjustments also include any true up payments associated with updated performance factors from  prior participation months
+          example: 20.0
+          format: double
+          type: number
+        penalty:
+          description: |
+            The sum of all penalties or market adjustments that are applied to the revenue.
+          example: 11.0
+          format: double
+          type: number
+        performance_adjustment:
+          description: |
+            Any revenue changes applied to Capacity Revenue. Negative values reflect penalties, when capacity performance  is below nominations. Positive values reflect aggregation benefits, where overperformance from one meter can  offset underperformance elsewhere.
+          example: 12.0
+          format: double
+          type: number
+        data_coverage_percentage:
+          description: Data coverage percentage
+          example: 55.5
+          format: double
+          type: number
+        program:
+          description: The energy program through which the customer participates
+            in the market.
+          example: CCA
+          type: string
+        utility:
+          description: The utility company that provides energy services to the customer.
+          example: sce
+          type: string
+        load_types:
+          description: The types of energy loads or resources available to the customer.
+          example:
+          - HVAC
+          - BATTERY_STORAGE
+          items:
+            $ref: "#/components/schemas/ExtendedLoadType"
+          type: array
+        customer:
+          description: The name of the customer receiving energy services.
+          example: John Doe
+          type: string
+        market_group:
+          description: The specific market group or category in which the customer
+            participates.
+          example: PGF1_2_PDDP78
+          type: string
+        performance_factor:
+          description: The average of the event performance over the month
+          example: 0.5
+          format: double
+          type: number
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        version:
+          description: The report version. If not specified the latest version is
+            returned.
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+        energy_price_kwh:
+          description: Energy price
+          example: 6.67
+          format: double
+          type: number
+        dispatch_event_response_percentage:
+          description: The meter?s event response percentage.
+          example: 75
+          format: double
+          type: number
+        total_number_of_events:
+          description: Total number of events.
+          format: int32
+          type: integer
+        diagnosis:
+          $ref: "#/components/schemas/PerformanceDiagnosis"
+        historical_responsiveness:
+          $ref: "#/components/schemas/HistoricalResponsiveness"
+      required:
+      - capacity_revenue
+      - delivery_end_date
+      - delivery_start_date
+      - energy_revenue
+      - load_types
+      - meter_id
+      - nomination_w
+      - revenue_type
+      - total_revenue
+      type: object
+    PeriodicUtilityAggregationResponse:
+      additionalProperties: false
+      example:
+        utilities:
+        - utility: PG&E
+          capacity_w:
+            earned_capacity:
+              quantity: 5.56
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+              avg_price_kw: 4.4
+            four_hour_capacity_bonus:
+              quantity: 5.56
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+              avg_price_kw: 4.4
+            missed_enrollment:
+              quantity: 5.56
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+              avg_price_kw: 4.4
+          energy_wh:
+            energy_earned:
+              quantity: 1778.59
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+            performance_bonus:
+              quantity: 1778.59
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+          delivery_period: 2023-03
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          total_revenue: 20600.3
+          potential_revenue: 104366.8
+          meter_count: 10
+          meters_dispatched_count: 185
+          nomination_w: 16600.88
+          data_coverage_percentage: 55.5
+          monetized_w: 8400.0
+          capacity_earned_w: 2000.3
+          version: V1
+          missed_revenue: 20000.3
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          capacity_revenue: 27600.3
+          energy_revenue: 27600.3
+          capacity_price: 5.56
+          energy_price_kwh: 6.67
+        - utility: PG&E
+          capacity_w:
+            earned_capacity:
+              quantity: 5.56
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+              avg_price_kw: 4.4
+            four_hour_capacity_bonus:
+              quantity: 5.56
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+              avg_price_kw: 4.4
+            missed_enrollment:
+              quantity: 5.56
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+              avg_price_kw: 4.4
+          energy_wh:
+            energy_earned:
+              quantity: 1778.59
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+            performance_bonus:
+              quantity: 1778.59
+              price: 5.56
+              performance: 5.56
+              revenue: 27600.3
+              potential_revenue: 104366.8
+          delivery_period: 2023-03
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          total_revenue: 20600.3
+          potential_revenue: 104366.8
+          meter_count: 10
+          meters_dispatched_count: 185
+          nomination_w: 16600.88
+          data_coverage_percentage: 55.5
+          monetized_w: 8400.0
+          capacity_earned_w: 2000.3
+          version: V1
+          missed_revenue: 20000.3
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          capacity_revenue: 27600.3
+          energy_revenue: 27600.3
+          capacity_price: 5.56
+          energy_price_kwh: 6.67
+        page_token: page_token
+      properties:
+        utilities:
+          description: The utility detail object.
+          items:
+            $ref: "#/components/schemas/PeriodicUtilityAggregation"
+          type: array
+        page_token:
+          description: |
+            If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+          type: string
+      required:
+      - utilities
+      type: object
+    PeriodicUtilityAggregation:
+      additionalProperties: false
+      example:
+        utility: PG&E
+        capacity_w:
+          earned_capacity:
+            quantity: 5.56
+            price: 5.56
+            performance: 5.56
+            revenue: 27600.3
+            potential_revenue: 104366.8
+            avg_price_kw: 4.4
+          four_hour_capacity_bonus:
+            quantity: 5.56
+            price: 5.56
+            performance: 5.56
+            revenue: 27600.3
+            potential_revenue: 104366.8
+            avg_price_kw: 4.4
+          missed_enrollment:
+            quantity: 5.56
+            price: 5.56
+            performance: 5.56
+            revenue: 27600.3
+            potential_revenue: 104366.8
+            avg_price_kw: 4.4
+        energy_wh:
+          energy_earned:
+            quantity: 1778.59
+            price: 5.56
+            performance: 5.56
+            revenue: 27600.3
+            potential_revenue: 104366.8
+          performance_bonus:
+            quantity: 1778.59
+            price: 5.56
+            performance: 5.56
+            revenue: 27600.3
+            potential_revenue: 104366.8
+        delivery_period: 2023-03
+        delivery_start_date: 2023-03
+        delivery_end_date: 2023-03
+        total_revenue: 20600.3
+        potential_revenue: 104366.8
+        meter_count: 10
+        meters_dispatched_count: 185
+        nomination_w: 16600.88
+        data_coverage_percentage: 55.5
+        monetized_w: 8400.0
+        capacity_earned_w: 2000.3
+        version: V1
+        missed_revenue: 20000.3
+        payment_adjustment: 20.0
+        penalty: 11.0
+        performance_adjustment: 12.0
+        capacity_revenue: 27600.3
+        energy_revenue: 27600.3
+        capacity_price: 5.56
+        energy_price_kwh: 6.67
+      properties:
+        utility:
+          description: Utility
+          example: PG&E
+          type: string
+        capacity_w:
+          $ref: "#/components/schemas/UtilityCapacityMetrics"
+        energy_wh:
+          $ref: "#/components/schemas/UtilityEnergyMetrics"
+        delivery_period:
+          deprecated: true
+          description: Deprecated. This field contains the delivery start date. Use
+            the delivery_start_date field instead.
+          example: 2023-03
+          type: string
+        delivery_start_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        delivery_end_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        total_revenue:
+          description: Total revenue
+          example: 20600.3
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+        meter_count:
+          description: The number of meters
+          example: 10
+          format: int32
+          type: integer
+        meters_dispatched_count:
+          description: Count of dispatched meters
+          example: 185
+          format: int32
+          type: integer
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        data_coverage_percentage:
+          description: Data coverage percentage
+          example: 55.5
+          format: double
+          type: number
+        monetized_w:
+          description: |
+            Monetized capacity wattage. Partners provide nomination and then Leap will calculate what capacity can be monetized based on program rules.
+          example: 8400.0
+          format: double
+          type: number
+        capacity_earned_w:
+          description: Capacity earned wattage
+          example: 2000.3
+          format: double
+          type: number
+        version:
+          description: The report version. If not specified the latest version is
+            returned.
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        payment_adjustment:
+          description: |
+            A sum of any bonuses, Leap adjustments like missed enrollment, and any adjustment payments if this report has multiple versions (`V2`, `V3`, etc.). In NY CSRP and DLRP adjustments also include any true up payments associated with updated performance factors from  prior participation months
+          example: 20.0
+          format: double
+          type: number
+        penalty:
+          description: |
+            The sum of all penalties or market adjustments that are applied to the revenue.
+          example: 11.0
+          format: double
+          type: number
+        performance_adjustment:
+          description: |
+            Any revenue changes applied to Capacity Revenue. Negative values reflect penalties, when capacity performance  is below nominations. Positive values reflect aggregation benefits, where overperformance from one meter can  offset underperformance elsewhere.
+          example: 12.0
+          format: double
+          type: number
+        capacity_revenue:
+          description: Revenue received by the partner for participating in capacity
+            market.
+          example: 27600.3
+          format: double
+          type: number
+        energy_revenue:
+          description: Revenue received by the partner for actively participating
+            in energy programs.
+          example: 27600.3
+          format: double
+          type: number
+        capacity_price:
+          description: Capacity price
+          example: 5.56
+          format: double
+          type: number
+        energy_price_kwh:
+          description: Energy price
+          example: 6.67
+          format: double
+          type: number
+      required:
+      - capacity_w
+      - delivery_end_date
+      - delivery_start_date
+      - energy_wh
+      - meter_count
+      - meters_dispatched_count
+      - potential_revenue
+      - total_revenue
+      - utility
+      type: object
+    UtilityCapacityMetrics:
+      additionalProperties: false
+      description: |
+        Capacity metrics for all meters in a given utility's territory. There are 3 subsections:
+          - `earned_capacity`: Earned capacity metrics;
+          - `four_hour_capacity_bonus`: Four-hour capacity bonus metrics;
+          - `missed_enrollment`: Missed enrollment metrics.
+      example:
+        earned_capacity:
+          quantity: 5.56
+          price: 5.56
+          performance: 5.56
+          revenue: 27600.3
+          potential_revenue: 104366.8
+          avg_price_kw: 4.4
+        four_hour_capacity_bonus:
+          quantity: 5.56
+          price: 5.56
+          performance: 5.56
+          revenue: 27600.3
+          potential_revenue: 104366.8
+          avg_price_kw: 4.4
+        missed_enrollment:
+          quantity: 5.56
+          price: 5.56
+          performance: 5.56
+          revenue: 27600.3
+          potential_revenue: 104366.8
+          avg_price_kw: 4.4
+      properties:
+        earned_capacity:
+          $ref: "#/components/schemas/UtilityCapacityMetric"
+        four_hour_capacity_bonus:
+          $ref: "#/components/schemas/UtilityCapacityMetric"
+        missed_enrollment:
+          $ref: "#/components/schemas/UtilityCapacityMetric"
+      required:
+      - earned_capacity
+      - four_hour_capacity_bonus
+      - missed_enrollment
+      type: object
+    UtilityCapacityMetric:
+      additionalProperties: false
+      example:
+        quantity: 5.56
+        price: 5.56
+        performance: 5.56
+        revenue: 27600.3
+        potential_revenue: 104366.8
+        avg_price_kw: 4.4
+      properties:
+        quantity:
+          description: Quantity metric.
+          example: 5.56
+          format: double
+          type: number
+        price:
+          description: Price
+          example: 5.56
+          format: double
+          type: number
+        performance:
+          description: Performance metrics
+          example: 5.56
+          format: double
+          type: number
+        revenue:
+          description: Revenue received by the partner for participating in capacity
+            market.
+          example: 27600.3
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+        avg_price_kw:
+          description: Average price per KW
+          example: 4.4
+          format: double
+          type: number
+      required:
+      - price
+      - quantity
+      - revenue
+      type: object
+    UtilityEnergyMetrics:
+      additionalProperties: false
+      description: |
+        Capacity metrics for all meters in a given utility's territory. There are 2 subsections:
+          - `energy_earned`: Energy earned metrics;
+          - `performance_bonus`: Four-hour capacity bonus metrics;
+          - `missed_enrollment`: Missed enrollment metrics.
+      example:
+        energy_earned:
+          quantity: 1778.59
+          price: 5.56
+          performance: 5.56
+          revenue: 27600.3
+          potential_revenue: 104366.8
+        performance_bonus:
+          quantity: 1778.59
+          price: 5.56
+          performance: 5.56
+          revenue: 27600.3
+          potential_revenue: 104366.8
+      properties:
+        energy_earned:
+          $ref: "#/components/schemas/UtilityEnergyMetric"
+        performance_bonus:
+          $ref: "#/components/schemas/UtilityEnergyMetric"
+      required:
+      - energy_earned
+      - performance_bonus
+      type: object
+    UtilityEnergyMetric:
+      additionalProperties: false
+      example:
+        quantity: 1778.59
+        price: 5.56
+        performance: 5.56
+        revenue: 27600.3
+        potential_revenue: 104366.8
+      properties:
+        quantity:
+          description: Quantity metric.
+          example: 1778.59
+          format: double
+          type: number
+        price:
+          description: Price
+          example: 5.56
+          format: double
+          type: number
+        performance:
+          description: Performance metrics
+          example: 5.56
+          format: double
+          type: number
+        revenue:
+          description: Revenue received by the partner for actively participating
+            in energy programs.
+          example: 27600.3
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+      required:
+      - revenue
+      type: object
+    program_identifier:
+      description: Identifier of program
+      enum:
+      - CAISO-CCA-SC_ONLY
+      - CAISO-HOLD_OPEN
+      - CCA
+      - CEC-DSGS-OPTION4
+      - CEC-DSGS
+      - CONED-CSRP
+      - CONED-DLRP
+      - DRAM
+      - ELRP
+      - ENERGY-ONLY
+      - ERCOT-ERS
+      - EVERSOURCE-CS
+      - MA_DOER-CPS
+      - NATGRID-CS
+      - NRG-REALTIME
+      - NRG-RED
+      - NYISO-SCR
+      - ONCOR-CLM
+      - PGE-ART
+      - PGE-CBP
+      - PJM-CAPACITY
+      - PSEGLI-CSRP
+      - PSEGLI-DLRP
+      - RIE-CS
+      - UNITIL-CS
+      - PSE-RPO
+      - SRP-RPO
+      - TVA-RPO
+      - CAISO-ELRP-A4
+      - CEC-DSGS-OPTION2
+      - ENERGYHUB-CS
+      - CT_GB-ESS
+      example: CEC-DSGS
+      type: string
+    PeriodicReportResponse:
+      additionalProperties: false
+      example:
+        actual_revenue: 7600.55
+        potential_revenue: 104366.8
+        payment_adjustment: 20.0
+        penalty: 11.0
+        performance_adjustment: 12.0
+        data_coverage_percentage: 55.5
+        meters_dispatched_count: 2000
+        total_meters_count: 2000
+        dispatch_days_count: 11
+        dispatch_quantity_wh: 1200.0
+        average_meter_revenue: 1300.0
+        capacity:
+          revenue: 27600.3
+          earned_w: 11600.88
+          delivered_w: 900
+          performance_percentage: 55.32
+          nomination_w: 16600.88
+          monetized_w: 8400.0
+        energy:
+          revenue: 27600.3
+          earned_wh: 11600.88
+          performance_percentage: 55.32
+          awarded_wh: 450.0
+        settlement_period:
+          period_start: 2023-03
+          period_end: 2023-03
+        programs:
+        - CCA
+        - ENERGY-ONLY
+        report_status:
+        - programs:
+          - CEC-DSGS
+          - CEC-DSGS
+          status: PRELIMINARY
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          version: V1
+        - programs:
+          - CEC-DSGS
+          - CEC-DSGS
+          status: PRELIMINARY
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          delivery_date: ""
+          delivery_start_date: 2023-03
+          delivery_end_date: 2023-03
+          version: V1
+        previous_adjusted_revenue: 104366.8
+        performance_factor_percentage: 55.5
+        missed_revenue: 20000.3
+        capacity_performance_period:
+          start_date_time: 2025-03-01T15:00:00Z
+          end_date_time: 2025-03-01T16:00:00Z
+      properties:
+        actual_revenue:
+          description: "Total of Energy, Capacity and Adjustments for settlement period."
+          example: 7600.55
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+        payment_adjustment:
+          description: |
+            A sum of any bonuses, Leap adjustments like missed enrollment, and any adjustment payments if this report has multiple versions (`V2`, `V3`, etc.). In NY CSRP and DLRP adjustments also include any true up payments associated with updated performance factors from  prior participation months
+          example: 20.0
+          format: double
+          type: number
+        penalty:
+          description: |
+            The sum of all penalties or market adjustments that are applied to the revenue.
+          example: 11.0
+          format: double
+          type: number
+        performance_adjustment:
+          description: |
+            Any revenue changes applied to Capacity Revenue. Negative values reflect penalties, when capacity performance  is below nominations. Positive values reflect aggregation benefits, where overperformance from one meter can  offset underperformance elsewhere.
+          example: 12.0
+          format: double
+          type: number
+        data_coverage_percentage:
+          description: Data coverage percentage
+          example: 55.5
+          format: double
+          type: number
+        meters_dispatched_count:
+          description: Count of dispatched meters
+          example: 2000
+          format: int32
+          type: integer
+        total_meters_count:
+          description: Total count of meters
+          example: 2000
+          format: int32
+          type: integer
+        dispatch_days_count:
+          description: The number of days that were dispatched
+          example: 11
+          format: int32
+          type: integer
+        dispatch_quantity_wh:
+          description: Dispatch quantity wh
+          example: 1200.0
+          format: double
+          type: number
+        average_meter_revenue:
+          description: Average revenue per meter
+          example: 1300.0
+          format: double
+          type: number
+        capacity:
+          $ref: "#/components/schemas/CapacityMetrics"
+        energy:
+          $ref: "#/components/schemas/EnergyMetrics"
+        settlement_period:
+          $ref: "#/components/schemas/SettlementPeriod"
+        programs:
+          description: List of programs
+          example:
+          - CCA
+          - ENERGY-ONLY
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          type: array
+        report_status:
+          description: The statuses of one or multiple reports
+          items:
+            $ref: "#/components/schemas/PeriodicReportStatus"
+          type: array
+        previous_adjusted_revenue:
+          description: Stores the previous adjusted revenue from the previous version
+            before any updates were made
+          example: 104366.8
+          format: double
+          type: number
+        performance_factor_percentage:
+          description: The performance factor percentage metric.
+          example: 55.5
+          format: double
+          type: number
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        capacity_performance_period:
+          $ref: "#/components/schemas/CapacityPerformancePeriod"
+      required:
+      - actual_revenue
+      - average_meter_revenue
+      - capacity
+      - dispatch_days_count
+      - energy
+      - meters_dispatched_count
+      - previous_adjusted_revenue
+      - programs
+      - report_status
+      - settlement_period
+      - total_meters_count
+      type: object
+    CapacityMetrics:
+      additionalProperties: false
+      description: Capacity details
+      example:
+        revenue: 27600.3
+        earned_w: 11600.88
+        delivered_w: 900
+        performance_percentage: 55.32
+        nomination_w: 16600.88
+        monetized_w: 8400.0
+      properties:
+        revenue:
+          description: Revenue received by the partner for participating in capacity
+            market.
+          example: 27600.3
+          format: double
+          type: number
+        earned_w:
+          description: Quantity curtailed by the partner as part of capacity market.
+          example: 11600.88
+          format: double
+          type: number
+        delivered_w:
+          description: |
+            Capacity delivered in the best 2-hour consecutive time block. If two consecutive hours are not available, the best single hour is used.
+          example: 900
+          format: double
+          type: number
+        performance_percentage:
+          description: Partner performance in capacity market; value between 0 and
+            100.
+          example: 55.32
+          format: double
+          type: number
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        monetized_w:
+          description: |
+            Monetized capacity wattage. Partners provide nomination and then Leap will calculate what capacity can be monetized based on program rules.
+          example: 8400.0
+          format: double
+          type: number
+      required:
+      - nomination_w
+      - revenue
+      type: object
+    EnergyMetrics:
+      additionalProperties: false
+      description: Energy details
+      example:
+        revenue: 27600.3
+        earned_wh: 11600.88
+        performance_percentage: 55.32
+        awarded_wh: 450.0
+      properties:
+        revenue:
+          description: Revenue received by the partner for actively participating
+            in energy programs.
+          example: 27600.3
+          format: double
+          type: number
+        earned_wh:
+          description: Earned wattage.
+          example: 11600.88
+          format: double
+          type: number
+        performance_percentage:
+          description: Partner performance in capacity market; value between 0 and
+            100.
+          example: 55.32
+          format: double
+          type: number
+        awarded_wh:
+          description: Awarded Wh
+          example: 450.0
+          format: double
+          type: number
+      required:
+      - revenue
+      type: object
+    SettlementPeriod:
+      additionalProperties: false
+      description: The period for which the revenue report is generated for.
+      example:
+        period_start: 2023-03
+        period_end: 2023-03
+      properties:
+        period_start:
+          description: The start of the period for the report in ISO-8601 formatted
+            year and month (`YYYY-MM`).
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        period_end:
+          description: "The end of the period for the report in ISO 8601 format (`YYYY-MM`),\
+            \ which is inclusive."
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+      required:
+      - period_end
+      - period_start
+      type: object
+    PeriodicReportStatus:
+      additionalProperties: false
+      example:
+        programs:
+        - CEC-DSGS
+        - CEC-DSGS
+        status: PRELIMINARY
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        delivery_date: ""
+        delivery_start_date: 2023-03
+        delivery_end_date: 2023-03
+        version: V1
+      properties:
+        programs:
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          type: array
+        status:
+          $ref: "#/components/schemas/ReportStatusType"
+        updated_at:
+          description: ISO-8601 timestamp of the settlement update date
+          format: date-time
+          type: string
+        delivery_date:
+          allOf:
+          - $ref: "#/components/schemas/delivery_date"
+          deprecated: true
+          description: Deprecated. This field contains the delivery start date. Use
+            the delivery_start_date field instead.
+        delivery_start_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        delivery_end_date:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the settlement delivery period date.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        version:
+          description: The report version. If not specified the latest version is
+            returned.
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+      required:
+      - delivery_end_date
+      - delivery_start_date
+      - programs
+      - status
+      type: object
+    CapacityPerformancePeriod:
+      description: The period in which the capacity performance was calculated.
+      example:
+        start_date_time: 2025-03-01T15:00:00Z
+        end_date_time: 2025-03-01T16:00:00Z
+      properties:
+        start_date_time:
+          description: ISO-8601 timestamp of the start of the period.
+          example: 2025-03-01T15:00:00Z
+          format: date-time
+          type: string
+        end_date_time:
+          description: ISO-8601 timestamp of the end of the period.
+          example: 2025-03-01T16:00:00Z
+          format: date-time
+          type: string
+      type: object
+    PeriodicReportVersionResponse:
+      additionalProperties: false
+      example:
+        version: V1
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        settlement_period:
+          period_start: 2023-03
+          period_end: 2023-03
+      properties:
+        version:
+          description: The report version. If not specified the latest version is
+            returned.
+          example: V1
+          minLength: 2
+          pattern: V.+
+          type: string
+        updated_at:
+          description: ISO-8601 timestamp of the settlement update date
+          format: date-time
+          type: string
+        settlement_period:
+          $ref: "#/components/schemas/SettlementPeriod"
+      required:
+      - settlement_period
+      - updated_at
+      - version
+      type: object
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    ReportStatusType:
+      description: The report status
+      enum:
+      - PRELIMINARY
+      - FINALIZED
+      type: string
+    YearlyOverview:
+      additionalProperties: false
+      example:
+        yearly_summary:
+          actual_revenue: 7600.55
+          preliminary_revenue: 3800.15
+          potential_revenue: 104366.8
+          missed_revenue: 20000.3
+          payment_adjustment: 20.0
+          penalty: 11.0
+          performance_adjustment: 12.0
+          monthly_revenue:
+          - actual_revenue: 7600.55
+            preliminary_revenue: 3800.15
+            potential_revenue: 104366.8
+            month: JANUARY
+          - actual_revenue: 7600.55
+            preliminary_revenue: 3800.15
+            potential_revenue: 104366.8
+            month: JANUARY
+        revenue_sources:
+          capacity:
+            revenue: 27600.3
+            earned_w: 11600.88
+            nomination_w: 16600.88
+            performance_percentage: 55.32
+          energy:
+            revenue: 27600.3
+            earned_wh: 11600.88
+            awarded_wh: 450.0
+            performance_percentage: 55.32
+        regional_economics:
+          regions_revenue:
+          - transmission_region: CAISO
+            revenue: 2600.66
+          - transmission_region: CAISO
+            revenue: 2600.66
+        unit_economics:
+          average_market_group_revenue: 207600.0
+          average_meter_revenue: 207600.0
+          meters_dispatched_count: 0
+          average_kw_revenue: 207600.0
+        reports:
+        - settlement_period:
+            period_start: 2023-03
+            period_end: 2023-03
+          settlement_type: YEAR
+          total_payment: 207600.0
+          total_potential_revenue: 207600.0
+          missed_revenue: 20000.3
+          missed_revenue_by_diagnosis:
+          - missed_revenue: 20000.3
+            diagnosis: UNRESPONSIVE
+          - missed_revenue: 20000.3
+            diagnosis: UNRESPONSIVE
+          statuses:
+          - status: PRELIMINARY
+            updated_at: 2000-01-23T04:56:07.000+00:00
+          - status: PRELIMINARY
+            updated_at: 2000-01-23T04:56:07.000+00:00
+          dispatch_days_count: 6
+          transmission_region: CAISO
+          programs:
+          - CCA
+          - ENERGY-ONLY
+        - settlement_period:
+            period_start: 2023-03
+            period_end: 2023-03
+          settlement_type: YEAR
+          total_payment: 207600.0
+          total_potential_revenue: 207600.0
+          missed_revenue: 20000.3
+          missed_revenue_by_diagnosis:
+          - missed_revenue: 20000.3
+            diagnosis: UNRESPONSIVE
+          - missed_revenue: 20000.3
+            diagnosis: UNRESPONSIVE
+          statuses:
+          - status: PRELIMINARY
+            updated_at: 2000-01-23T04:56:07.000+00:00
+          - status: PRELIMINARY
+            updated_at: 2000-01-23T04:56:07.000+00:00
+          dispatch_days_count: 6
+          transmission_region: CAISO
+          programs:
+          - CCA
+          - ENERGY-ONLY
+      properties:
+        yearly_summary:
+          $ref: "#/components/schemas/YearlySummary"
+        revenue_sources:
+          $ref: "#/components/schemas/RevenueSources"
+        regional_economics:
+          $ref: "#/components/schemas/RegionalEconomics"
+        unit_economics:
+          $ref: "#/components/schemas/UnitEconomics"
+        reports:
+          description: List of all revenue reports for the given year.
+          items:
+            $ref: "#/components/schemas/SettlementReport"
+          type: array
+      required:
+      - regional_economics
+      - reports
+      - revenue_sources
+      - unit_economics
+      - yearly_summary
+      type: object
+    YearlySummary:
+      additionalProperties: false
+      description: Revenue metrics over a whole year.
+      example:
+        actual_revenue: 7600.55
+        preliminary_revenue: 3800.15
+        potential_revenue: 104366.8
+        missed_revenue: 20000.3
+        payment_adjustment: 20.0
+        penalty: 11.0
+        performance_adjustment: 12.0
+        monthly_revenue:
+        - actual_revenue: 7600.55
+          preliminary_revenue: 3800.15
+          potential_revenue: 104366.8
+          month: JANUARY
+        - actual_revenue: 7600.55
+          preliminary_revenue: 3800.15
+          potential_revenue: 104366.8
+          month: JANUARY
+      properties:
+        actual_revenue:
+          description: "Total of Energy, Capacity and Adjustments for settlement period."
+          example: 7600.55
+          format: double
+          type: number
+        preliminary_revenue:
+          description: The sum or all revenue for reports in a preliminary status.
+          example: 3800.15
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        payment_adjustment:
+          description: |
+            A sum of any bonuses, Leap adjustments like missed enrollment, and any adjustment payments if this report has multiple versions (`V2`, `V3`, etc.). In NY CSRP and DLRP adjustments also include any true up payments associated with updated performance factors from  prior participation months
+          example: 20.0
+          format: double
+          type: number
+        penalty:
+          description: |
+            The sum of all penalties or market adjustments that are applied to the revenue.
+          example: 11.0
+          format: double
+          type: number
+        performance_adjustment:
+          description: |
+            Any revenue changes applied to Capacity Revenue. Negative values reflect penalties, when capacity performance  is below nominations. Positive values reflect aggregation benefits, where overperformance from one meter can  offset underperformance elsewhere.
+          example: 12.0
+          format: double
+          type: number
+        monthly_revenue:
+          description: Revenue split by month.
+          items:
+            $ref: "#/components/schemas/RevenueMetrics"
+          type: array
+      required:
+      - actual_revenue
+      - monthly_revenue
+      - potential_revenue
+      - preliminary_revenue
+      type: object
+    RevenueMetrics:
+      additionalProperties: false
+      example:
+        actual_revenue: 7600.55
+        preliminary_revenue: 3800.15
+        potential_revenue: 104366.8
+        month: JANUARY
+      properties:
+        actual_revenue:
+          description: "Total of Energy, Capacity and Adjustments for settlement period."
+          example: 7600.55
+          format: double
+          type: number
+        preliminary_revenue:
+          description: The sum or all revenue for reports in a preliminary status.
+          example: 3800.15
+          format: double
+          type: number
+        potential_revenue:
+          description: Potential revenue if performance reached 100%.
+          example: 104366.8
+          format: double
+          type: number
+        month:
+          description: |
+            The settlement month period. An enum representing the 12 months of the year -  [JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER].
+          example: JANUARY
+          type: string
+      required:
+      - actual_revenue
+      - month
+      - potential_revenue
+      - preliminary_revenue
+      type: object
+    RevenueSources:
+      additionalProperties: false
+      description: Revenue split by source.
+      example:
+        capacity:
+          revenue: 27600.3
+          earned_w: 11600.88
+          nomination_w: 16600.88
+          performance_percentage: 55.32
+        energy:
+          revenue: 27600.3
+          earned_wh: 11600.88
+          awarded_wh: 450.0
+          performance_percentage: 55.32
+      properties:
+        capacity:
+          $ref: "#/components/schemas/CapacityRevenueSource"
+        energy:
+          $ref: "#/components/schemas/EnergyRevenueSource"
+      required:
+      - capacity
+      - energy
+      type: object
+    CapacityRevenueSource:
+      additionalProperties: false
+      description: Revenue information on partner participation in capacity market.
+      example:
+        revenue: 27600.3
+        earned_w: 11600.88
+        nomination_w: 16600.88
+        performance_percentage: 55.32
+      properties:
+        revenue:
+          description: Revenue received by the partner for participating in capacity
+            market.
+          example: 27600.3
+          format: double
+          type: number
+        earned_w:
+          description: Quantity curtailed by the partner as part of capacity market.
+          example: 11600.88
+          format: double
+          type: number
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        performance_percentage:
+          description: Partner performance in capacity market; value between 0 and
+            100.
+          example: 55.32
+          format: double
+          type: number
+      required:
+      - nomination_w
+      - revenue
+      type: object
+    EnergyRevenueSource:
+      additionalProperties: false
+      description: Revenue information on partner participation in the energy market.
+      example:
+        revenue: 27600.3
+        earned_wh: 11600.88
+        awarded_wh: 450.0
+        performance_percentage: 55.32
+      properties:
+        revenue:
+          description: Revenue received by the partner for actively participating
+            in energy programs.
+          example: 27600.3
+          format: double
+          type: number
+        earned_wh:
+          description: Earned wattage.
+          example: 11600.88
+          format: double
+          type: number
+        awarded_wh:
+          description: Awarded Wh
+          example: 450.0
+          format: double
+          type: number
+        performance_percentage:
+          description: Partner performance in capacity market; value between 0 and
+            100.
+          example: 55.32
+          format: double
+          type: number
+      required:
+      - revenue
+      type: object
+    RegionalEconomics:
+      additionalProperties: false
+      description: Revenue split by transmission region.
+      example:
+        regions_revenue:
+        - transmission_region: CAISO
+          revenue: 2600.66
+        - transmission_region: CAISO
+          revenue: 2600.66
+      properties:
+        regions_revenue:
+          description: List of revenues split by transmission region.
+          items:
+            $ref: "#/components/schemas/RegionRevenue"
+          type: array
+      required:
+      - regions_revenue
+      type: object
+    RegionRevenue:
+      additionalProperties: false
+      example:
+        transmission_region: CAISO
+        revenue: 2600.66
+      properties:
+        transmission_region:
+          $ref: "#/components/schemas/transmission_region"
+        revenue:
+          description: The revenue of the given transmission region.
+          example: 2600.66
+          format: double
+          type: number
+      required:
+      - revenue
+      - transmission_region
+      type: object
+    UnitEconomics:
+      additionalProperties: false
+      description: Unit revenue data.
+      example:
+        average_market_group_revenue: 207600.0
+        average_meter_revenue: 207600.0
+        meters_dispatched_count: 0
+        average_kw_revenue: 207600.0
+      properties:
+        average_market_group_revenue:
+          description: Average revenue at market group level.
+          example: 207600.0
+          format: double
+          type: number
+        average_meter_revenue:
+          description: Average revenue at meter level.
+          example: 207600.0
+          format: double
+          type: number
+        meters_dispatched_count:
+          description: Total number of meters dispatched.
+          format: int32
+          type: integer
+        average_kw_revenue:
+          description: Average revenue at kw level.
+          example: 207600.0
+          format: double
+          type: number
+      required:
+      - average_kw_revenue
+      - average_market_group_revenue
+      - average_meter_revenue
+      - meters_dispatched_count
+      type: object
+    SettlementReport:
+      additionalProperties: false
+      example:
+        settlement_period:
+          period_start: 2023-03
+          period_end: 2023-03
+        settlement_type: YEAR
+        total_payment: 207600.0
+        total_potential_revenue: 207600.0
+        missed_revenue: 20000.3
+        missed_revenue_by_diagnosis:
+        - missed_revenue: 20000.3
+          diagnosis: UNRESPONSIVE
+        - missed_revenue: 20000.3
+          diagnosis: UNRESPONSIVE
+        statuses:
+        - status: PRELIMINARY
+          updated_at: 2000-01-23T04:56:07.000+00:00
+        - status: PRELIMINARY
+          updated_at: 2000-01-23T04:56:07.000+00:00
+        dispatch_days_count: 6
+        transmission_region: CAISO
+        programs:
+        - CCA
+        - ENERGY-ONLY
+      properties:
+        settlement_period:
+          $ref: "#/components/schemas/SettlementPeriod"
+        settlement_type:
+          $ref: "#/components/schemas/SettlementType"
+        total_payment:
+          description: The total revenue for the current revenue report.
+          example: 207600.0
+          format: double
+          type: number
+        total_potential_revenue:
+          description: Revenue if performance reached 100%.
+          example: 207600.0
+          format: double
+          type: number
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        missed_revenue_by_diagnosis:
+          description: Missed revenue by diagnosis
+          items:
+            $ref: "#/components/schemas/MissedRevenueByDiagnosis"
+          type: array
+        statuses:
+          description: The revenue report statuses
+          items:
+            $ref: "#/components/schemas/SettlementReportStatus"
+          type: array
+        dispatch_days_count:
+          description: The number of days that were dispatched
+          format: int32
+          type: integer
+        transmission_region:
+          $ref: "#/components/schemas/transmission_region"
+        programs:
+          description: The list of the program identifiers that report is associated
+            with
+          example:
+          - CCA
+          - ENERGY-ONLY
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          type: array
+      required:
+      - dispatch_days_count
+      - programs
+      - settlement_period
+      - settlement_type
+      - statuses
+      - total_payment
+      - total_potential_revenue
+      - transmission_region
+      type: object
+    MissedRevenueByDiagnosis:
+      example:
+        missed_revenue: 20000.3
+        diagnosis: UNRESPONSIVE
+      properties:
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        diagnosis:
+          $ref: "#/components/schemas/PerformanceDiagnosis"
+      type: object
+    SettlementReportStatus:
+      additionalProperties: false
+      example:
+        status: PRELIMINARY
+        updated_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        status:
+          $ref: "#/components/schemas/ReportStatusType"
+        updated_at:
+          description: ISO-8601 timestamp of the settlement update date
+          format: date-time
+          type: string
+      required:
+      - status
+      type: object
+    MonthlyUnresponsiveMetersRequest:
+      example:
+        year_month: 2023-03
+        meter_id_contains: meter_id_contains
+        partner_reference_contains: partner_reference_contains
+        customer_name_contains: customer_name_contains
+        transmission_regions:
+        - CAISO
+        - CAISO
+        programs:
+        - CEC-DSGS
+        - CEC-DSGS
+        historical_responsiveness:
+        - NEVER_RESPONDS
+        - NEVER_RESPONDS
+        include_meter_programs:
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        exclude_meter_programs:
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - program: CEC-DSGS
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        page_token: page_token
+        page_size: 100
+        sort:
+        - direction: DESC
+          field: nomination_kw
+        - direction: ASC
+          field: meter_id
+      properties:
+        year_month:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the performance diagnosis month.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        meter_id_contains:
+          description: Filters meters whose id contains the specified substring.
+          type: string
+        partner_reference_contains:
+          description: Filters meters whose partner reference contains the specified
+            substring.
+          type: string
+        customer_name_contains:
+          description: Filters meters whose customer name contains the specified substring.
+          type: string
+        transmission_regions:
+          description: Filters meters whose transmission region is in the specified
+            list of transmission regions.
+          items:
+            $ref: "#/components/schemas/transmission_region"
+          type: array
+        programs:
+          description: Filters meters whose program is in the specified list of programs.
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          type: array
+        historical_responsiveness:
+          description: Filters meters whose historical responsiveness is in the specified
+            list of historical responsiveness.
+          items:
+            $ref: "#/components/schemas/HistoricalResponsiveness"
+          type: array
+        include_meter_programs:
+          description: "List of meter UUID, program pairs to include in the response."
+          items:
+            $ref: "#/components/schemas/MeterProgram"
+          maxItems: 100
+          type: array
+        exclude_meter_programs:
+          description: "List of meter UUID, program pairs to exclude from the response."
+          items:
+            $ref: "#/components/schemas/MeterProgram"
+          maxItems: 100
+          type: array
+        page_token:
+          description: |
+            If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+          type: string
+        page_size:
+          default: 100
+          description: |
+            Specifies the number of results to return. Defaults to 100 if not set, with a maximum limit of 1000 per page. When requesting a CSV format via Accept header with value 'text/csv', this parameter is not required.
+          example: 100
+          format: int32
+          type: integer
+        sort:
+          description: |
+            Specifies the sorting criteria for the results. It is a list of fields by which the results should be sorted. This parameter is optional. Supported for meter_id, partner_reference, customer_name, customer_group, transmission_region, program, missed_revenue, nomination_kw, response_percentage, number_of_events, historical_responsiveness fields.
+          example:
+          - direction: DESC
+            field: nomination_kw
+          - direction: ASC
+            field: meter_id
+          items:
+            $ref: "#/components/schemas/SortRequest"
+          type: array
+      required:
+      - year_month
+      type: object
+    MeterProgram:
+      example:
+        program: CEC-DSGS
+        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        program:
+          $ref: "#/components/schemas/program_identifier"
+        meter_id:
+          format: uuid
+          type: string
+      required:
+      - meter_id
+      - program
+      type: object
+    MonthlyUnresponsiveMetersResponse:
+      example:
+        summary:
+          number_of_meters: 0
+          missed_revenue: 20000.3
+          average_response_percentage: 75
+        meters:
+        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          partner_reference: partner_reference
+          customer_name: John Doe
+          customer_group: Store Inc.
+          transmission_region: CAISO
+          program: CEC-DSGS
+          missed_revenue: 20000.3
+          nomination_w: 16600.88
+          response_percentage: 75
+          number_of_events: 6
+          historical_responsiveness: NEVER_RESPONDS
+        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          partner_reference: partner_reference
+          customer_name: John Doe
+          customer_group: Store Inc.
+          transmission_region: CAISO
+          program: CEC-DSGS
+          missed_revenue: 20000.3
+          nomination_w: 16600.88
+          response_percentage: 75
+          number_of_events: 6
+          historical_responsiveness: NEVER_RESPONDS
+        year_month: 2023-03
+        page_token: page_token
+      properties:
+        summary:
+          $ref: "#/components/schemas/UnresponsiveMetersSummary"
+        meters:
+          items:
+            $ref: "#/components/schemas/UnresponsiveMeter"
+          type: array
+        year_month:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing
+            the performance diagnosis month.
+          example: 2023-03
+          pattern: "^\\d{4}-\\d{2}$"
+          type: string
+        page_token:
+          description: |
+            If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+          type: string
+      required:
+      - meters
+      type: object
+    UnresponsiveMetersSummary:
+      example:
+        number_of_meters: 0
+        missed_revenue: 20000.3
+        average_response_percentage: 75
+      properties:
+        number_of_meters:
+          description: Total number of unresponsive meters.
+          format: int32
+          type: integer
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        average_response_percentage:
+          description: Monthly average response percentage for meters.
+          example: 75
+          format: double
+          type: number
+      type: object
+    UnresponsiveMeter:
+      example:
+        meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+        partner_reference: partner_reference
+        customer_name: John Doe
+        customer_group: Store Inc.
+        transmission_region: CAISO
+        program: CEC-DSGS
+        missed_revenue: 20000.3
+        nomination_w: 16600.88
+        response_percentage: 75
+        number_of_events: 6
+        historical_responsiveness: NEVER_RESPONDS
+      properties:
+        meter_id:
+          description: Meter UUID
+          example: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          format: uuid
+          type: string
+        partner_reference:
+          description: Meter partner reference.
+          type: string
+        customer_name:
+          description: Customer Name
+          example: John Doe
+          type: string
+        customer_group:
+          description: |
+            The Customer Group(s) associated with the customer. If the customer is part of multiple groups, they will be separated by a comma.
+          example: Store Inc.
+          type: string
+        transmission_region:
+          $ref: "#/components/schemas/transmission_region"
+        program:
+          $ref: "#/components/schemas/program_identifier"
+        missed_revenue:
+          description: |
+            The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+          example: 20000.3
+          format: double
+          type: number
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        response_percentage:
+          description: The meter?s event response percentage.
+          example: 75
+          format: double
+          type: number
+        number_of_events:
+          description: Total number of events.
+          format: int32
+          type: integer
+        historical_responsiveness:
+          $ref: "#/components/schemas/HistoricalResponsiveness"
+      required:
+      - historical_responsiveness
+      - meter_id
+      - number_of_events
+      - program
+      - response_percentage
+      - transmission_region
+      type: object
+    period_start:
+      description: The start of the period for the report in ISO-8601 formatted year
+        and month (`YYYY-MM`).
+      example: 2023-03
+      pattern: "^\\d{4}-\\d{2}$"
+      type: string
+    period_end:
+      description: "The end of the period for the report in ISO 8601 format (`YYYY-MM`),\
+        \ which is inclusive."
+      example: 2023-03
+      pattern: "^\\d{4}-\\d{2}$"
+      type: string
+    page_token:
+      description: |
+        If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+      type: string
+    page_size:
+      default: 100
+      description: |
+        Specifies the number of results to return. Defaults to 100 if not set, with a maximum limit of 1000 per page. When requesting a CSV format via Accept header with value 'text/csv', this parameter is not required.
+      example: 100
+      format: int32
+      type: integer
+    version:
+      description: The report version. If not specified the latest version is returned.
+      example: V1
+      minLength: 2
+      pattern: V.+
+      type: string
+    SortDirection:
+      description: Sort direction for a field. Can be `ASC` for ascending or `DESC`
+        for descending.
+      enum:
+      - ASC
+      - DESC
+      type: string
+    meter_count:
+      description: The number of meters
+      example: 10
+      format: int32
+      type: integer
+    nomination_w:
+      description: Target quantity set for capacity market.
+      example: 16600.88
+      format: double
+      type: number
+    capacity_revenue:
+      description: Revenue received by the partner for participating in capacity market.
+      example: 27600.3
+      format: double
+      type: number
+    energy_revenue:
+      description: Revenue received by the partner for actively participating in energy
+        programs.
+      example: 27600.3
+      format: double
+      type: number
+    delivery_date:
+      description: ISO-8601 formatted year and month (`YYYY-MM`) representing the
+        settlement delivery period date.
+      example: 2023-03
+      pattern: "^\\d{4}-\\d{2}$"
+      type: string
+    monetized_w:
+      description: |
+        Monetized capacity wattage. Partners provide nomination and then Leap will calculate what capacity can be monetized based on program rules.
+      example: 8400.0
+      format: double
+      type: number
+    total_revenue:
+      description: Total revenue
+      example: 20600.3
+      format: double
+      type: number
+    capacity_performance_percentage:
+      description: Capacity performance percentage
+      example: 50.33
+      format: double
+      type: number
+    energy_performance_percentage:
+      description: Energy performance percentage
+      example: 60.5
+      format: double
+      type: number
+    data_coverage_percentage:
+      description: Data coverage percentage
+      example: 55.5
+      format: double
+      type: number
+    energy_earned_wh:
+      description: Energy earned watt hour
+      example: 2000.3
+      format: double
+      type: number
+    potential_revenue:
+      description: Potential revenue if performance reached 100%.
+      example: 104366.8
+      format: double
+      type: number
+    capacity_earned_w:
+      description: Capacity earned wattage
+      example: 2000.3
+      format: double
+      type: number
+    payment_adjustment:
+      description: |
+        A sum of any bonuses, Leap adjustments like missed enrollment, and any adjustment payments if this report has multiple versions (`V2`, `V3`, etc.). In NY CSRP and DLRP adjustments also include any true up payments associated with updated performance factors from  prior participation months
+      example: 20.0
+      format: double
+      type: number
+    penalty:
+      description: |
+        The sum of all penalties or market adjustments that are applied to the revenue.
+      example: 11.0
+      format: double
+      type: number
+    performance_adjustment:
+      description: |
+        Any revenue changes applied to Capacity Revenue. Negative values reflect penalties, when capacity performance  is below nominations. Positive values reflect aggregation benefits, where overperformance from one meter can  offset underperformance elsewhere.
+      example: 12.0
+      format: double
+      type: number
+    missed_revenue:
+      description: |
+        The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+      example: 20000.3
+      format: double
+      type: number
+    capacity_price:
+      description: Capacity price
+      example: 5.56
+      format: double
+      type: number
+    energy_price_kwh:
+      description: Energy price
+      example: 6.67
+      format: double
+      type: number
+    load_type:
+      description: The load type of the device
+      enum:
+      - HVAC
+      - EV_CHARGING
+      - BATTERY_STORAGE
+      - COLD_STORAGE
+      - PUMPING
+      - WATER_HEATING
+      - BUILDING_AUTOMATION
+      - GENERATION
+      - MANUFACTURING
+      - LIGHTING
+      - OTHER
+      example: HVAC
+      type: string
+    UnassignedLoadType:
+      description: Unassigned load type
+      enum:
+      - UNASSIGNED_LOAD_TYPE
+      type: string
+    market_group:
+      description: The specific market group or category in which the customer participates.
+      example: PGF1_2_PDDP78
+      type: string
+    performance_factor:
+      description: The average of the event performance over the month
+      example: 0.5
+      format: double
+      type: number
+    RevenueType:
+      description: Revenue type reflects how a meter generated revenue.
+      enum:
+      - DELIVERED_CAPACITY
+      - NOMINAL_CAPACITY
+      - MISSING_DATA_CAPACITY
+      - MISSED_DISPATCH_CAPACITY
+      - MISSED_ENROLLMENT_CAPACITY
+      - NO_CAPACITY_REVENUE
+      - ENERGY_ONLY
+      - ENERGY_AND_CAPACITY
+      - CAPACITY_ONLY
+      - TARGETED
+      - DAILY
+      example: DELIVERED_CAPACITY
+      type: string
+    PerformanceDiagnosis:
+      enum:
+      - UNRESPONSIVE
+      - NOT_APPLICABLE
+      type: string
+    HistoricalResponsiveness:
+      description: Shows the meter?s responsiveness for the last 12 months.
+      enum:
+      - NEVER_RESPONDS
+      - RARELY_RESPONDS
+      - NORMALLY_RESPONDS
+      - NEW_METER
+      type: string
+    actual_revenue:
+      description: "Total of Energy, Capacity and Adjustments for settlement period."
+      example: 7600.55
+      format: double
+      type: number
+    earned_w:
+      description: Quantity curtailed by the partner as part of capacity market.
+      example: 11600.88
+      format: double
+      type: number
+    performance_percentage:
+      description: Partner performance in capacity market; value between 0 and 100.
+      example: 55.32
+      format: double
+      type: number
+    earned_wh:
+      description: Earned wattage.
+      example: 11600.88
+      format: double
+      type: number
+    awarded_wh:
+      description: Awarded Wh
+      example: 450.0
+      format: double
+      type: number
+    updated_at:
+      description: ISO-8601 timestamp of the settlement update date
+      format: date-time
+      type: string
+    preliminary_revenue:
+      description: The sum or all revenue for reports in a preliminary status.
+      example: 3800.15
+      format: double
+      type: number
+    SettlementType:
+      description: The time period of the revenue report.
+      enum:
+      - YEAR
+      - MONTH
+      - SEASON
+      type: string
+  securitySchemes:
+    Bearer:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http

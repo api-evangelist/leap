@@ -1,0 +1,69 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.leap.energy/docs/test-utilities, https://developer.leap.energy/docs/getting-started,
+  https://developer.leap.energy/docs/webhook-setup, https://developer.leap.energy/docs/event-processing-test-cases
+docs: https://developer.leap.energy/docs/test-utilities
+summary: Leap runs a full staging environment that mirrors production, with separately issued API keys
+  and its own Partner Portal. Because electric utilities generally provide no test environments or test
+  credentials, Leap fills the gap with "Staging Demo Utilities" — synthetic CAISO and NYISO utilities that
+  let a partner drive a Leap Connect authorization flow end to end, create test meters, and simulate
+  connection and meter status scenarios.
+environments:
+- name: production
+  api_base_url: https://api.leap.energy
+  portal: https://partner.leap.energy/actions
+  api_keys: https://partner.leap.energy/account?settings=apiKeys
+- name: staging
+  api_base_url: https://api.staging.leap.energy
+  portal: https://partner.staging.leap.energy/actions
+  api_keys: https://partner.staging.leap.energy/account?settings=apiKeys
+key_model:
+  environment_scoped: true
+  prefixes: none published — Leap API keys carry no documented test/live prefix. The environment is determined
+    by which portal issued the key and which host it is sent to; a mismatch returns 403.
+  credentials_note: The same portal user credentials work in both production and staging.
+demo_utilities:
+  description: Synthetic utilities available only in the staging environment, used to validate the customer
+    experience of a Leap Connect flow, complete a flow and check the final redirect, create test meters
+    in the CA or NY regions, and simulate Connect API and Meters API scenarios.
+  supported_regions:
+  - CAISO
+  - NYISO
+  url_templates:
+  - region: CAISO
+    url: https://staging.addleap.com/<org-name>/staging-test-utility-caiso/getting-started?refId=<refId>
+  - region: NYISO
+    url: https://staging.addleap.com/<org-name>/staging-test-utility-nyiso/getting-started?refId=<refId>
+  url_variables:
+  - name: org-name
+    description: The partner name for your Leap tenant, shown at the top-left of the Partner Account page.
+  - name: refId
+    description: Optional but recommended query parameter carrying your internal identifier for the customer
+      or site, so Leap records can be synchronized with partner systems.
+  discovery: The staging demo utility URL is also available in the Partner Portal under the Connections
+    tab via the "+ Connect link" button.
+  usage: Opening the utility presents a menu of test cases; clicking Send executes the selected scenario
+    against your staging account.
+test_values:
+  published: false
+  note: Leap publishes no fixed magic identifiers, test meter IDs or fixture values. Test meters are generated
+    per partner through the staging demo utility, so no verbatim test values exist to record here.
+production_testing:
+  note: Testing connect and meter statuses in production requires a real meter (an employee or friendly-customer
+    meter). Otherwise testing must be done in staging.
+webhook_testing:
+  external_receiver: 'Leap''s documentation recommends https://webhook.site for standing up a throwaway
+    receiver URL before exposing a real endpoint.'
+  endpoints:
+  - POST /v1.1/webhooks/{webhook_id}/test — testWebhook, sends a test event to the configured receiver_url
+  - POST /v2/dispatch/meter/webhook/integration_test — triggerTestMeterDispatchNotification
+  - POST /v2/dispatch/group/webhook/integration_test — triggerTestGroupDispatchNotification
+  - POST /v2/dispatch/meter/communication_test — triggerCommunicationTestMeterDispatch
+  receiver_requirements: HTTPS on port 443, 8443 or 8843, TLS 1.2 or 1.3, returning any 2xx within 10
+    seconds.
+dispatch_test_cases:
+  url: https://developer.leap.energy/docs/event-processing-test-cases
+  purpose: A published set of test cases to validate a partner's dispatch event processing logic.
+time_simulation:
+  supported: false
+  note: No test clock or time-travel facility is documented.

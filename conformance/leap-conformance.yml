@@ -1,0 +1,77 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/*, https://developer.leap.energy/docs/api-key-authentication, https://developer.leap.energy/docs/webhook-setup,
+  https://www.leap.energy/
+summary: Leap asserts no formal standards conformance and publishes no certifications or compliance program.
+  The findings below are derived from the seven published OpenAPI definitions and the developer documentation.
+  Leap's domain standards are electricity-market rather than IT — it operates inside ISO/RTO wholesale
+  market and utility demand-response program rules (CAISO, NYISO), which are program requirements rather
+  than API specifications.
+standards:
+- id: openapi-3
+  conforms: true
+  evidence: Seven published definitions across OpenAPI 3.0.1, 3.0.2, 3.0.3 and 3.1.0.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme in any definition; authorization is a portal-issued bearer API key.
+- id: oidc
+  conforms: false
+  evidence: No openIdConnect securityScheme and no /.well-known/openid-configuration (404 on all hosts).
+- id: rfc6750-bearer-token
+  conforms: partial
+  evidence: 'Uses the RFC 6750 `Authorization: Bearer` header form, but the credential is a long-lived
+    API key rather than an OAuth 2.0 access token, and no WWW-Authenticate challenge is documented.'
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No application/problem+json media type anywhere. The dominant error envelope reuses the RFC
+    7807 field names `title`, `status` and a `details[]` array over application/json, without a `type`
+    URI.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on api.leap.energy, www.leap.energy and developer.leap.energy.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation response header is declared or documented; deprecation is announced
+    on the developer-portal changelog with a named date instead.
+- id: cursor-pagination
+  conforms: true
+  evidence: page_token / page_size request fields with next_page_token in responses, consistently across
+    the meters, enrollments, nominations and revenue search endpoints.
+- id: idempotency-keys
+  conforms: false
+  evidence: No Idempotency-Key header and no idempotency documentation; unsafe retries are mitigated by
+    the async batch-job model and partner_reference reconciliation.
+- id: asyncapi
+  conforms: false
+  evidence: Leap publishes a webhook event catalog and dispatch webhook registration endpoints but no
+    AsyncAPI document; asyncapi/leap-events-asyncapi.yml in this repo is a derived rendering of the published
+    catalog.
+- id: json-api
+  conforms: false
+  evidence: Plain JSON resource shapes with no JSON:API document structure.
+- id: odata
+  conforms: false
+- id: scim2
+  conforms: false
+- id: fhir-r4
+  conforms: false
+- id: fapi
+  conforms: false
+- id: psd2
+  conforms: false
+- id: openadr
+  conforms: unknown
+  evidence: OpenADR 2.0b/3.0 is the standard demand-response signalling protocol in this domain, and Leap
+    terminates utility/ISO program signals on the market side, but Leap does not document OpenADR conformance
+    on its partner-facing API — dispatch reaches partners as Leap-proprietary JSON webhooks or polled
+    dispatch search results.
+market_programs:
+  note: Regional market participation is a commercial/regulatory posture, not an API standard, and is
+    recorded here for context only.
+  regions_documented:
+  - CAISO
+  - NYISO
+certifications:
+  published: false
+  evidence: No trust center, no SOC 2 / ISO 27001 / PCI / HIPAA / FedRAMP claim found on leap.energy,
+    developer.leap.energy or via search. No `Compliance` pointer is emitted in apis.yml as a result.

@@ -1,0 +1,1635 @@
+openapi: 3.1.0
+info:
+  description: API to retrieve and suggest nominations.
+  title: Meter Nomination API
+  version: 2.0.0
+servers:
+- description: Leap staging API
+  url: https://api.staging.leap.energy
+- description: Leap production API
+  url: https://api.leap.energy
+security:
+- Bearer: []
+tags:
+- name: nominations
+paths:
+  /v2/meters/{meter_id}/nominations/suggestions:
+    get:
+      description: Get suggested nomination details for a meter for each applicable
+        program and time period.
+      operationId: getMeterNominationSuggestions
+      parameters:
+      - description: Meter ID
+        explode: false
+        in: path
+        name: meter_id
+        required: true
+        schema:
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+        style: simple
+      - description: "Start date of the window to look for nomination suggestions,\
+          \ defaults to beginning of this day. Any  suggestion that is ending after\
+          \ this date is included."
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          description: "Start date of the window to look for nomination suggestions,\
+            \ defaults to beginning of this day. Any suggestion that is ending after\
+            \ this date is included."
+          example: 2025-01-01
+          format: date
+          type: string
+        style: form
+      - description: "End date of the window to look for nomination suggestions, defaults\
+          \ to null. Any suggestion that is starting at  or before this date is included."
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          description: "Start date of the window to look for nomination suggestions,\
+            \ defaults to null. Any suggestion that is starting  at or before this\
+            \ date is included."
+          example: 2025-01-01
+          format: date
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_200_response"
+          description: Successful response returning all the affected suggestions.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Get suggested nominations
+      tags:
+      - nominations
+    post:
+      description: "Suggest nominations for individual meters. A suggestion is reviewed\
+        \ by Leap before it becomes an actual nomination. Leap can approve, modify,\
+        \ or deny each suggestion. Modified suggestions are adjusted by Leap before\
+        \ becoming a nomination and will often include communication or coordination\
+        \ with your operations team.  Note that when a more recent suggestion completely\
+        \ eclipses an earlier provided suggestion, the earlier nomination will be\
+        \ deleted.  However, if there are partial overlaps, Leap will not automatically\
+        \ adjust or deduplicate these.  Use the 'Delete suggested nominations' endpoint\
+        \ to remove no longer needed suggestions."
+      operationId: postMeterNominationSuggestions
+      parameters:
+      - description: Meter ID
+        explode: false
+        in: path
+        name: meter_id
+        required: true
+        schema:
+          description: Meter ID
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/postMeterNominationSuggestions_request_inner"
+              maxItems: 10000
+              minItems: 1
+              type: array
+              default: null
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_200_response"
+          description: Successful response returning all the affected suggestions.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Suggest meter nominations
+      tags:
+      - nominations
+  /v2/meters/{meter_id}/nominations/suggestions/{nomination_suggestion_id}:
+    delete:
+      description: "Remove a suggestion that is no longer needed. It is recommended\
+        \ to clean up and delete no longer needed or relevant suggestions so Leap\
+        \ is able to more quickly review outstanding suggestions. Note that a suggestion\
+        \ can only be deleted if it is still in the RECEIVED status.  Once it has\
+        \ been reviewed and processed by Leap, it can no longer be deleted."
+      operationId: deleteMeterNominationSuggestion
+      parameters:
+      - description: Meter ID
+        explode: false
+        in: path
+        name: meter_id
+        required: true
+        schema:
+          description: Meter ID
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+        style: simple
+      - description: Nomination Suggestion ID
+        explode: false
+        in: path
+        name: nomination_suggestion_id
+        required: true
+        schema:
+          description: Nomination Suggestion ID
+          example: 11111111-1111-1111-1111-111111111111
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_200_response_suggestions_inner"
+          description: Successful response returning all the affected suggestions.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Delete suggested nominations
+      tags:
+      - nominations
+  /v2/meters/nominations/suggestions:
+    post:
+      description: "Suggest nominations for multiple meters. A suggestion is reviewed\
+        \ by Leap before it becomes an actual nomination. Leap can approve, modify,\
+        \ or deny each suggestion. Modified suggestions are adjusted by Leap before\
+        \ becoming a nomination and will often include communication or coordination\
+        \ with your operations team.  Note that when a more recent suggestion completely\
+        \ eclipses an earlier provided suggestion, the earlier nomination will be\
+        \ deleted.  However, if there are partial overlaps, Leap will not automatically\
+        \ adjust or deduplicate these.  Use the 'Delete suggested nominations' endpoint\
+        \ to remove no longer needed suggestions."
+      operationId: postNominationSuggestions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/postNominationSuggestions_request_inner"
+              maxItems: 10000
+              minItems: 1
+              type: array
+              default: null
+          text/csv:
+            example:
+            - "meter_id,program_identifier,start_date,end_date,nomination_kw"
+            - "963e4538-1312-425c-ab0b-f3da6cf75ad5,CCA,2025-09-01,2025-10-01,0.23"
+            - "362e9ece-62ef-4d32-a70e-6542cf5d30fc,CCA,2025-09-01,,15.0"
+            schema:
+              items:
+                $ref: "#/components/schemas/postNominationSuggestions_request_inner_1"
+              type: array
+              default: null
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_200_response"
+          description: Successful response returning all the affected suggestions.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Suggest bulk nominations
+      tags:
+      - nominations
+  /v2/meters/nominations/suggestions/search:
+    post:
+      description: Search suggested nominations across all meters and filter based
+        on the request body parameters. Use the 'Accept' header to specify whether
+        you'd like JSON or CSV as the response type.
+      operationId: searchNominationSuggestions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/searchNominationSuggestions_request"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/searchNominationSuggestions_200_response"
+            text/csv:
+              example: |-
+                nomination_suggestion_id,meter_id,program_identifier,start_date,nomination_kw,status,created_at,created_by,end_date
+                "482b4565-3638-45ca-8dc7-b1dca45fb215","963e4538-1312-425c-ab0b-f3da6cf75ad5",CCA,2025-09-01,0.23,RECEIVED,"2025-02-13T14:43:16.001691Z",your-email@your-company.com,
+                "7a5ee9cc-91e9-410b-ac0b-2efc361335af","362e9ece-62ef-4d32-a70e-6542cf5d30fc",CCA,2025-09-01,15.0,MODIFIED,"2025-02-13T14:43:16.001691Z",your-email@your-company.com,2020-10-01
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_200_response"
+          description: Successful response returning all the matching suggestions.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Search suggested nominations
+      tags:
+      - nominations
+  /v2/meters/nominations/search:
+    post:
+      description: Search for nominations on all meters. You can filter on meter IDs
+        and a date range. These are the nominations in kW that will be used for program
+        enrollment. Use the 'Accept' header to specify whether you'd like JSON or
+        CSV as the response type.
+      operationId: searchNominations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/searchNominations_request"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/searchNominations_200_response"
+            text/csv:
+              example: |-
+                meter_id,program_identifier,start_time,source,nomination_kw,end_time
+                "963e4538-1312-425c-ab0b-f3da6cf75ad5",CCA,2020-09-01T00:00:00Z,PARTNER,0.23,
+                "362e9ece-62ef-4d32-a70e-6542cf5d30fc",DRAM,2020-09-01T00:00:00Z,LEAP,15.0,2020-10-01T00:00:00Z
+              schema:
+                $ref: "#/components/schemas/searchNominations_200_response_1"
+          description: Successful response returning all the matching suggestions.
+        "400":
+          content:
+            application/json:
+              examples:
+                Meter id is not a UUID:
+                  value:
+                    title: Meter id is not a UUID
+                    status: 400
+                    details:
+                      meter_id: abcdef
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: The request is not valid
+        "401":
+          content:
+            application/json:
+              examples:
+                Unauthorized:
+                  value:
+                    title: Unauthorized
+                    status: 401
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You are not authorized to perform this operation.
+        "403":
+          content:
+            application/json:
+              examples:
+                Forbidden:
+                  value:
+                    title: You do not have the necessary permissions for this operation
+                    status: 403
+                    details: {}
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: You do not have the necessary permissions for this operation.
+        "404":
+          content:
+            application/json:
+              examples:
+                Meter not found:
+                  value:
+                    title: Meter not found
+                    status: 404
+                    details:
+                      meter_id: f5c5e328-e325-4d6d-b357-5015ed5962a7
+              schema:
+                $ref: "#/components/schemas/getMeterNominationSuggestions_400_response"
+          description: Meter not found
+        "500":
+          content:
+            application/json:
+              examples:
+                Internal Error:
+                  value: An error happened whilst processing your request
+              schema:
+                type: string
+          description: Internal server error
+      summary: Search nominations
+      tags:
+      - nominations
+components:
+  schemas:
+    searchNominations_200_response_1:
+      properties:
+        nominations:
+          items:
+            $ref: "#/components/schemas/searchNominations_200_response_allOf_nominations_inner"
+          type: array
+          default: null
+      required:
+      - nominations
+    getMeterNominationSuggestions_400_response:
+      example:
+        title: Bad Request
+        status: 400
+        details:
+          error: Meter id is not a UUID
+      properties:
+        title:
+          description: Summary of what went wrong
+          example: Bad Request
+          maxLength: 2000
+          minLength: 1
+          type: string
+        status:
+          description: "An error code indicating what went wrong, usually the same\
+            \ as the HTTP Status Code"
+          example: 400
+          type: integer
+        details:
+          description: Extra information about the error.
+          example:
+            error: Meter id is not a UUID
+          type: object
+    searchNominations_200_response_allOf_nominations_inner:
+      allOf:
+      - properties:
+          meter_id:
+            description: Meter ID
+            format: uuid
+            type: string
+        required:
+        - meter_id
+      - properties:
+          program_identifier:
+            description: Identifier of program
+            enum:
+            - CAISO-CCA-SC_ONLY
+            - CCA
+            - CEC-DSGS-OPTION4
+            - CEC-DSGS
+            - CONED-CSRP
+            - CONED-DLRP
+            - DRAM
+            - ELRP
+            - ENERGY-ONLY
+            - ERCOT-ERS
+            - EVERSOURCE-CS
+            - MA_DOER-CPS
+            - NATGRID-CS
+            - NRG-REALTIME
+            - NRG-RED
+            - NYISO-SCR
+            - ONCOR-CLM
+            - PGE-ART
+            - PGE-CBP
+            - PJM-CAPACITY
+            - PSEGLI-CSRP
+            - PSEGLI-DLRP
+            - RIE-CS
+            - UNITIL-CS
+            - PSE-RPO
+            - SRP-RPO
+            - TVA-RPO
+            - CAISO-ELRP-A4
+            - CEC-DSGS-OPTION2
+            - ENERGYHUB-CS
+            - CT_GB-ESS
+            example: CEC-DSGS
+            type: string
+            x-enum-varnames:
+            - CAISO_CCA_SC_ONLY
+            - CCA
+            - CEC_DSGS_OPTION4
+            - CEC_DSGS
+            - CONED_CSRP
+            - CONED_DLRP
+            - DRAM
+            - ELRP
+            - ENERGY_ONLY
+            - ERCOT_ERS
+            - EVERSOURCE_CS
+            - MA_DOER_CPS
+            - NATGRID_CS
+            - NRG_REALTIME
+            - NRG_RED
+            - NYISO_SCR
+            - ONCOR_CLM
+            - PGE_ART
+            - PGE_CBP
+            - PJM_CAPACITY
+            - PSEGLI_CSRP
+            - PSEGLI_DLRP
+            - RIE_CS
+            - UNITIL_CS
+            - PSE_RPO
+            - SRP_RPO
+            - TVA_RPO
+            - CAISO_ELRP_A4
+            - CEC_DSGS_OPTION2
+            - ENERGYHUB_CS
+            - CT_GB_ESS
+      - description: "Start of the date-time-range of the nomination. The start date-time\
+          \ is inclusive. If left empty, defaults to returning current and future\
+          \ nominations."
+        properties:
+          start_time:
+            description: Start of the date-time-range of the nomination. The start
+              date-time is inclusive.
+            example: 2025-05-01T08:00:00Z
+            format: date-time
+            type: string
+      - properties:
+          end_time:
+            description: |-
+              End of the date-time-range of the nomination. The end date-time is exclusive. So for a nomination for the  month of May, the start date-time would be '2025-05-01T08:00:00Z' and the end date-time would be  '2025-06-01T08:00:00Z'.
+              If the end date-time is left empty, the nomination applies to all future date-times.
+            example: 2025-06-01T08:00:00Z
+            format: date-time
+            type: string
+      - properties:
+          source:
+            description: Source of the nomination; either Leap or a suggestion from
+              the Partner.
+            enum:
+            - LEAP
+            - PARTNER
+            type: string
+        required:
+        - source
+      - properties:
+          nomination_kw:
+            description: Nominated curtailable load for this meter in kilowatts. Precision
+              of up to 2 decimal places.
+            example: 1.23
+            format: double
+            maximum: 10000
+            minimum: 0
+            type: number
+        required:
+        - nomination_kw
+      - properties:
+          updated_at:
+            description: Notes the time of the last update to the item.
+            example: 2025-06-01T08:00:00Z
+            format: date-time
+            type: string
+      example:
+        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        program_identifier: CEC-DSGS
+        start_time: 2025-05-01T08:00:00Z
+        end_time: 2025-06-01T08:00:00Z
+        source: LEAP
+        nomination_kw: 1.23
+        updated_at: 2025-06-01T08:00:00Z
+      required:
+      - meter_id
+      - nomination_kw
+      - program_identifier
+      - source
+      - start_date
+      - updated_at
+    searchNominations_200_response:
+      allOf:
+      - properties:
+          next_page_token:
+            description: "If there are more nominations to fetch, this token will\
+              \ be populated as `next_page_token` in the response. Use it to fetch\
+              \ the next page."
+            type: string
+      - properties:
+          nominations:
+            items:
+              $ref: "#/components/schemas/searchNominations_200_response_allOf_nominations_inner"
+            type: array
+            default: null
+        required:
+        - nominations
+      example:
+        next_page_token: next_page_token
+        nominations:
+        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_time: 2025-05-01T08:00:00Z
+          end_time: 2025-06-01T08:00:00Z
+          source: LEAP
+          nomination_kw: 1.23
+          updated_at: 2025-06-01T08:00:00Z
+        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_time: 2025-05-01T08:00:00Z
+          end_time: 2025-06-01T08:00:00Z
+          source: LEAP
+          nomination_kw: 1.23
+          updated_at: 2025-06-01T08:00:00Z
+    postNominationSuggestions_request_inner:
+      allOf:
+      - properties:
+          program_identifier:
+            description: Identifier of program
+            enum:
+            - CAISO-CCA-SC_ONLY
+            - CCA
+            - CEC-DSGS-OPTION4
+            - CEC-DSGS
+            - CONED-CSRP
+            - CONED-DLRP
+            - DRAM
+            - ELRP
+            - ENERGY-ONLY
+            - ERCOT-ERS
+            - EVERSOURCE-CS
+            - MA_DOER-CPS
+            - NATGRID-CS
+            - NRG-REALTIME
+            - NRG-RED
+            - NYISO-SCR
+            - ONCOR-CLM
+            - PGE-ART
+            - PGE-CBP
+            - PJM-CAPACITY
+            - PSEGLI-CSRP
+            - PSEGLI-DLRP
+            - RIE-CS
+            - UNITIL-CS
+            - PSE-RPO
+            - SRP-RPO
+            - TVA-RPO
+            - CAISO-ELRP-A4
+            - CEC-DSGS-OPTION2
+            - ENERGYHUB-CS
+            - CT_GB-ESS
+            example: CEC-DSGS
+            type: string
+            x-enum-varnames:
+            - CAISO_CCA_SC_ONLY
+            - CCA
+            - CEC_DSGS_OPTION4
+            - CEC_DSGS
+            - CONED_CSRP
+            - CONED_DLRP
+            - DRAM
+            - ELRP
+            - ENERGY_ONLY
+            - ERCOT_ERS
+            - EVERSOURCE_CS
+            - MA_DOER_CPS
+            - NATGRID_CS
+            - NRG_REALTIME
+            - NRG_RED
+            - NYISO_SCR
+            - ONCOR_CLM
+            - PGE_ART
+            - PGE_CBP
+            - PJM_CAPACITY
+            - PSEGLI_CSRP
+            - PSEGLI_DLRP
+            - RIE_CS
+            - UNITIL_CS
+            - PSE_RPO
+            - SRP_RPO
+            - TVA_RPO
+            - CAISO_ELRP_A4
+            - CEC_DSGS_OPTION2
+            - ENERGYHUB_CS
+            - CT_GB_ESS
+      - properties:
+          start_date:
+            description: Start of the date-range of the nomination suggestion.
+            example: 2025-05-01
+            format: date
+            type: string
+      - properties:
+          end_date:
+            description: |-
+              End of the date-range of the nomination suggestion. Should be greater than the start date.
+              The end date is exclusive. So to suggest a nomination for the month of May, the start date would be  '2025-05-01' and the end date would be '2025-06-01'.
+              If the end date is left empty, we will assume the intended date-range is open-ended, and the nomination  applies to all future dates.
+            example: 2025-06-01
+            format: date
+            type: string
+      - properties:
+          nomination_kw:
+            description: Nominated curtailable load for this meter in kilowatts. Precision
+              of up to 2 decimal places.
+            example: 1.23
+            format: double
+            maximum: 10000
+            minimum: 0
+            type: number
+        required:
+        - nomination_kw
+      - properties:
+          meter_ids:
+            description: Meter ID
+            items:
+              format: uuid
+              type: string
+            maxItems: 1000
+            minItems: 0
+            type: array
+            uniqueItems: true
+            default: null
+        required:
+        - meter_ids
+      example:
+        program_identifier: CEC-DSGS
+        start_date: 2025-05-01
+        end_date: 2025-06-01
+        nomination_kw: 1.23
+        meter_ids:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      required:
+      - meter_ids
+      - nomination_kw
+      - start_date
+    getMeterNominationSuggestions_200_response:
+      example:
+        suggestions:
+        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_date: 2025-05-01
+          end_date: 2025-06-01
+          nomination_kw: 1.23
+          status: RECEIVED
+          created_at: 2025-01-01T00:00:01.000+00:00
+          created_by: created_by
+          updated_at: 2025-06-01T08:00:00Z
+        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_date: 2025-05-01
+          end_date: 2025-06-01
+          nomination_kw: 1.23
+          status: RECEIVED
+          created_at: 2025-01-01T00:00:01.000+00:00
+          created_by: created_by
+          updated_at: 2025-06-01T08:00:00Z
+      properties:
+        suggestions:
+          items:
+            $ref: "#/components/schemas/getMeterNominationSuggestions_200_response_suggestions_inner"
+          type: array
+          default: null
+      required:
+      - suggestions
+    searchNominations_request:
+      allOf:
+      - properties:
+          meter_ids:
+            description: Meter ID
+            items:
+              format: uuid
+              type: string
+            maxItems: 1000
+            minItems: 0
+            type: array
+            uniqueItems: true
+            default: null
+      - description: "Start of the date-time-range of the nomination. The start date-time\
+          \ is inclusive. If left empty, defaults to returning current and future\
+          \ nominations."
+        properties:
+          start_time:
+            description: Start of the date-time-range of the nomination. The start
+              date-time is inclusive.
+            example: 2025-05-01T08:00:00Z
+            format: date-time
+            type: string
+      - properties:
+          end_time:
+            description: |-
+              End of the date-time-range of the nomination. The end date-time is exclusive. So for a nomination for the  month of May, the start date-time would be '2025-05-01T08:00:00Z' and the end date-time would be  '2025-06-01T08:00:00Z'.
+              If the end date-time is left empty, the nomination applies to all future date-times.
+            example: 2025-06-01T08:00:00Z
+            format: date-time
+            type: string
+      - properties:
+          program_identifier:
+            description: Identifier of program
+            enum:
+            - CAISO-CCA-SC_ONLY
+            - CCA
+            - CEC-DSGS-OPTION4
+            - CEC-DSGS
+            - CONED-CSRP
+            - CONED-DLRP
+            - DRAM
+            - ELRP
+            - ENERGY-ONLY
+            - ERCOT-ERS
+            - EVERSOURCE-CS
+            - MA_DOER-CPS
+            - NATGRID-CS
+            - NRG-REALTIME
+            - NRG-RED
+            - NYISO-SCR
+            - ONCOR-CLM
+            - PGE-ART
+            - PGE-CBP
+            - PJM-CAPACITY
+            - PSEGLI-CSRP
+            - PSEGLI-DLRP
+            - RIE-CS
+            - UNITIL-CS
+            - PSE-RPO
+            - SRP-RPO
+            - TVA-RPO
+            - CAISO-ELRP-A4
+            - CEC-DSGS-OPTION2
+            - ENERGYHUB-CS
+            - CT_GB-ESS
+            example: CEC-DSGS
+            type: string
+            x-enum-varnames:
+            - CAISO_CCA_SC_ONLY
+            - CCA
+            - CEC_DSGS_OPTION4
+            - CEC_DSGS
+            - CONED_CSRP
+            - CONED_DLRP
+            - DRAM
+            - ELRP
+            - ENERGY_ONLY
+            - ERCOT_ERS
+            - EVERSOURCE_CS
+            - MA_DOER_CPS
+            - NATGRID_CS
+            - NRG_REALTIME
+            - NRG_RED
+            - NYISO_SCR
+            - ONCOR_CLM
+            - PGE_ART
+            - PGE_CBP
+            - PJM_CAPACITY
+            - PSEGLI_CSRP
+            - PSEGLI_DLRP
+            - RIE_CS
+            - UNITIL_CS
+            - PSE_RPO
+            - SRP_RPO
+            - TVA_RPO
+            - CAISO_ELRP_A4
+            - CEC_DSGS_OPTION2
+            - ENERGYHUB_CS
+            - CT_GB_ESS
+      - properties:
+          updated_since:
+            description: Flag to search for entries update at or after the given date-time
+            example: 2025-06-01T08:00:00Z
+            format: date-time
+            type: string
+      - properties:
+          page_token:
+            description: "If there are more nominations to fetch, this token will\
+              \ be populated as `next_page_token` in the response. Use it to fetch\
+              \ the next page."
+            type: string
+          page_size:
+            default: 500
+            description: Amount of results to return. Defaults to 500.
+            example: 100
+            format: int32
+            maximum: 500
+            minimum: 1
+            type: integer
+    getMeterNominationSuggestions_200_response_suggestions_inner:
+      allOf:
+      - properties:
+          nomination_suggestion_id:
+            description: Nomination Suggestion ID
+            format: uuid
+            type: string
+        required:
+        - nomination_suggestion_id
+      - properties:
+          meter_id:
+            description: Meter ID
+            format: uuid
+            type: string
+        required:
+        - meter_id
+      - properties:
+          program_identifier:
+            description: Identifier of program
+            enum:
+            - CAISO-CCA-SC_ONLY
+            - CCA
+            - CEC-DSGS-OPTION4
+            - CEC-DSGS
+            - CONED-CSRP
+            - CONED-DLRP
+            - DRAM
+            - ELRP
+            - ENERGY-ONLY
+            - ERCOT-ERS
+            - EVERSOURCE-CS
+            - MA_DOER-CPS
+            - NATGRID-CS
+            - NRG-REALTIME
+            - NRG-RED
+            - NYISO-SCR
+            - ONCOR-CLM
+            - PGE-ART
+            - PGE-CBP
+            - PJM-CAPACITY
+            - PSEGLI-CSRP
+            - PSEGLI-DLRP
+            - RIE-CS
+            - UNITIL-CS
+            - PSE-RPO
+            - SRP-RPO
+            - TVA-RPO
+            - CAISO-ELRP-A4
+            - CEC-DSGS-OPTION2
+            - ENERGYHUB-CS
+            - CT_GB-ESS
+            example: CEC-DSGS
+            type: string
+            x-enum-varnames:
+            - CAISO_CCA_SC_ONLY
+            - CCA
+            - CEC_DSGS_OPTION4
+            - CEC_DSGS
+            - CONED_CSRP
+            - CONED_DLRP
+            - DRAM
+            - ELRP
+            - ENERGY_ONLY
+            - ERCOT_ERS
+            - EVERSOURCE_CS
+            - MA_DOER_CPS
+            - NATGRID_CS
+            - NRG_REALTIME
+            - NRG_RED
+            - NYISO_SCR
+            - ONCOR_CLM
+            - PGE_ART
+            - PGE_CBP
+            - PJM_CAPACITY
+            - PSEGLI_CSRP
+            - PSEGLI_DLRP
+            - RIE_CS
+            - UNITIL_CS
+            - PSE_RPO
+            - SRP_RPO
+            - TVA_RPO
+            - CAISO_ELRP_A4
+            - CEC_DSGS_OPTION2
+            - ENERGYHUB_CS
+            - CT_GB_ESS
+      - properties:
+          start_date:
+            description: Start of the date-range of the nomination suggestion.
+            example: 2025-05-01
+            format: date
+            type: string
+      - properties:
+          end_date:
+            description: |-
+              End of the date-range of the nomination suggestion. Should be greater than the start date.
+              The end date is exclusive. So to suggest a nomination for the month of May, the start date would be  '2025-05-01' and the end date would be '2025-06-01'.
+              If the end date is left empty, we will assume the intended date-range is open-ended, and the nomination  applies to all future dates.
+            example: 2025-06-01
+            format: date
+            type: string
+      - properties:
+          nomination_kw:
+            description: Nominated curtailable load for this meter in kilowatts. Precision
+              of up to 2 decimal places.
+            example: 1.23
+            format: double
+            maximum: 10000
+            minimum: 0
+            type: number
+        required:
+        - nomination_kw
+      - properties:
+          status:
+            description: Status of the nomination suggestion
+            enum:
+            - RECEIVED
+            - APPROVED
+            - MODIFIED
+            - DENIED
+            - DELETED
+            - INVALIDATED
+            type: string
+      - properties:
+          created_at:
+            description: Date of creation
+            example: 2025-01-01T00:00:01.000+00:00
+            format: date-time
+            type: string
+        required:
+        - created_at
+      - properties:
+          created_by:
+            description: "Username of the creator, or the api key."
+            type: string
+        required:
+        - created_by
+      - properties:
+          updated_at:
+            description: Notes the time of the last update to the item.
+            example: 2025-06-01T08:00:00Z
+            format: date-time
+            type: string
+      example:
+        nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        program_identifier: CEC-DSGS
+        start_date: 2025-05-01
+        end_date: 2025-06-01
+        nomination_kw: 1.23
+        status: RECEIVED
+        created_at: 2025-01-01T00:00:01.000+00:00
+        created_by: created_by
+        updated_at: 2025-06-01T08:00:00Z
+      required:
+      - created_at
+      - created_by
+      - meter_id
+      - nomination_kw
+      - nomination_suggestion_id
+      - program_identifier
+      - start_date
+      - status
+      - updated_at
+    postNominationSuggestions_request_inner_1:
+      allOf:
+      - properties:
+          program_identifier:
+            description: Identifier of program
+            enum:
+            - CAISO-CCA-SC_ONLY
+            - CCA
+            - CEC-DSGS-OPTION4
+            - CEC-DSGS
+            - CONED-CSRP
+            - CONED-DLRP
+            - DRAM
+            - ELRP
+            - ENERGY-ONLY
+            - ERCOT-ERS
+            - EVERSOURCE-CS
+            - MA_DOER-CPS
+            - NATGRID-CS
+            - NRG-REALTIME
+            - NRG-RED
+            - NYISO-SCR
+            - ONCOR-CLM
+            - PGE-ART
+            - PGE-CBP
+            - PJM-CAPACITY
+            - PSEGLI-CSRP
+            - PSEGLI-DLRP
+            - RIE-CS
+            - UNITIL-CS
+            - PSE-RPO
+            - SRP-RPO
+            - TVA-RPO
+            - CAISO-ELRP-A4
+            - CEC-DSGS-OPTION2
+            - ENERGYHUB-CS
+            - CT_GB-ESS
+            example: CEC-DSGS
+            type: string
+            x-enum-varnames:
+            - CAISO_CCA_SC_ONLY
+            - CCA
+            - CEC_DSGS_OPTION4
+            - CEC_DSGS
+            - CONED_CSRP
+            - CONED_DLRP
+            - DRAM
+            - ELRP
+            - ENERGY_ONLY
+            - ERCOT_ERS
+            - EVERSOURCE_CS
+            - MA_DOER_CPS
+            - NATGRID_CS
+            - NRG_REALTIME
+            - NRG_RED
+            - NYISO_SCR
+            - ONCOR_CLM
+            - PGE_ART
+            - PGE_CBP
+            - PJM_CAPACITY
+            - PSEGLI_CSRP
+            - PSEGLI_DLRP
+            - RIE_CS
+            - UNITIL_CS
+            - PSE_RPO
+            - SRP_RPO
+            - TVA_RPO
+            - CAISO_ELRP_A4
+            - CEC_DSGS_OPTION2
+            - ENERGYHUB_CS
+            - CT_GB_ESS
+      - properties:
+          start_date:
+            description: Start of the date-range of the nomination suggestion.
+            example: 2025-05-01
+            format: date
+            type: string
+      - properties:
+          end_date:
+            description: |-
+              End of the date-range of the nomination suggestion. Should be greater than the start date.
+              The end date is exclusive. So to suggest a nomination for the month of May, the start date would be  '2025-05-01' and the end date would be '2025-06-01'.
+              If the end date is left empty, we will assume the intended date-range is open-ended, and the nomination  applies to all future dates.
+            example: 2025-06-01
+            format: date
+            type: string
+      - properties:
+          nomination_kw:
+            description: Nominated curtailable load for this meter in kilowatts. Precision
+              of up to 2 decimal places.
+            example: 1.23
+            format: double
+            maximum: 10000
+            minimum: 0
+            type: number
+        required:
+        - nomination_kw
+      - properties:
+          meter_id:
+            description: Meter ID
+            format: uuid
+            type: string
+        required:
+        - meter_id
+      required:
+      - meter_id
+      - nomination_kw
+      - start_date
+    searchNominationSuggestions_request:
+      allOf:
+      - properties:
+          meter_ids:
+            description: Meter ID
+            items:
+              format: uuid
+              type: string
+            maxItems: 1000
+            minItems: 0
+            type: array
+            uniqueItems: true
+            default: null
+      - properties:
+          start_date:
+            description: Start of the date-range of the nomination suggestion.
+            example: 2025-05-01
+            format: date
+            type: string
+      - properties:
+          end_date:
+            description: |-
+              End of the date-range of the nomination suggestion. Should be greater than the start date.
+              The end date is exclusive. So to suggest a nomination for the month of May, the start date would be  '2025-05-01' and the end date would be '2025-06-01'.
+              If the end date is left empty, we will assume the intended date-range is open-ended, and the nomination  applies to all future dates.
+            example: 2025-06-01
+            format: date
+            type: string
+      - properties:
+          status:
+            description: Status of the nomination suggestion
+            enum:
+            - RECEIVED
+            - APPROVED
+            - MODIFIED
+            - DENIED
+            - DELETED
+            - INVALIDATED
+            type: string
+      - properties:
+          program_identifier:
+            description: Identifier of program
+            enum:
+            - CAISO-CCA-SC_ONLY
+            - CCA
+            - CEC-DSGS-OPTION4
+            - CEC-DSGS
+            - CONED-CSRP
+            - CONED-DLRP
+            - DRAM
+            - ELRP
+            - ENERGY-ONLY
+            - ERCOT-ERS
+            - EVERSOURCE-CS
+            - MA_DOER-CPS
+            - NATGRID-CS
+            - NRG-REALTIME
+            - NRG-RED
+            - NYISO-SCR
+            - ONCOR-CLM
+            - PGE-ART
+            - PGE-CBP
+            - PJM-CAPACITY
+            - PSEGLI-CSRP
+            - PSEGLI-DLRP
+            - RIE-CS
+            - UNITIL-CS
+            - PSE-RPO
+            - SRP-RPO
+            - TVA-RPO
+            - CAISO-ELRP-A4
+            - CEC-DSGS-OPTION2
+            - ENERGYHUB-CS
+            - CT_GB-ESS
+            example: CEC-DSGS
+            type: string
+            x-enum-varnames:
+            - CAISO_CCA_SC_ONLY
+            - CCA
+            - CEC_DSGS_OPTION4
+            - CEC_DSGS
+            - CONED_CSRP
+            - CONED_DLRP
+            - DRAM
+            - ELRP
+            - ENERGY_ONLY
+            - ERCOT_ERS
+            - EVERSOURCE_CS
+            - MA_DOER_CPS
+            - NATGRID_CS
+            - NRG_REALTIME
+            - NRG_RED
+            - NYISO_SCR
+            - ONCOR_CLM
+            - PGE_ART
+            - PGE_CBP
+            - PJM_CAPACITY
+            - PSEGLI_CSRP
+            - PSEGLI_DLRP
+            - RIE_CS
+            - UNITIL_CS
+            - PSE_RPO
+            - SRP_RPO
+            - TVA_RPO
+            - CAISO_ELRP_A4
+            - CEC_DSGS_OPTION2
+            - ENERGYHUB_CS
+            - CT_GB_ESS
+      - properties:
+          updated_since:
+            description: Flag to search for entries update at or after the given date-time
+            example: 2025-06-01T08:00:00Z
+            format: date-time
+            type: string
+      - properties:
+          page_token:
+            description: "If there are more nominations to fetch, this token will\
+              \ be populated as `next_page_token` in the response. Use it to fetch\
+              \ the next page."
+            type: string
+          page_size:
+            default: 500
+            description: Amount of results to return. Defaults to 500.
+            example: 100
+            format: int32
+            maximum: 500
+            minimum: 1
+            type: integer
+    searchNominationSuggestions_200_response:
+      allOf:
+      - properties:
+          next_page_token:
+            description: "If there are more nominations to fetch, this token will\
+              \ be populated as `next_page_token` in the response. Use it to fetch\
+              \ the next page."
+            type: string
+      - properties:
+          suggestions:
+            items:
+              $ref: "#/components/schemas/getMeterNominationSuggestions_200_response_suggestions_inner"
+            type: array
+            default: null
+        required:
+        - suggestions
+      example:
+        next_page_token: next_page_token
+        suggestions:
+        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_date: 2025-05-01
+          end_date: 2025-06-01
+          nomination_kw: 1.23
+          status: RECEIVED
+          created_at: 2025-01-01T00:00:01.000+00:00
+          created_by: created_by
+          updated_at: 2025-06-01T08:00:00Z
+        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_date: 2025-05-01
+          end_date: 2025-06-01
+          nomination_kw: 1.23
+          status: RECEIVED
+          created_at: 2025-01-01T00:00:01.000+00:00
+          created_by: created_by
+          updated_at: 2025-06-01T08:00:00Z
+    postMeterNominationSuggestions_request_inner:
+      allOf:
+      - properties:
+          program_identifier:
+            description: Identifier of program
+            enum:
+            - CAISO-CCA-SC_ONLY
+            - CCA
+            - CEC-DSGS-OPTION4
+            - CEC-DSGS
+            - CONED-CSRP
+            - CONED-DLRP
+            - DRAM
+            - ELRP
+            - ENERGY-ONLY
+            - ERCOT-ERS
+            - EVERSOURCE-CS
+            - MA_DOER-CPS
+            - NATGRID-CS
+            - NRG-REALTIME
+            - NRG-RED
+            - NYISO-SCR
+            - ONCOR-CLM
+            - PGE-ART
+            - PGE-CBP
+            - PJM-CAPACITY
+            - PSEGLI-CSRP
+            - PSEGLI-DLRP
+            - RIE-CS
+            - UNITIL-CS
+            - PSE-RPO
+            - SRP-RPO
+            - TVA-RPO
+            - CAISO-ELRP-A4
+            - CEC-DSGS-OPTION2
+            - ENERGYHUB-CS
+            - CT_GB-ESS
+            example: CEC-DSGS
+            type: string
+            x-enum-varnames:
+            - CAISO_CCA_SC_ONLY
+            - CCA
+            - CEC_DSGS_OPTION4
+            - CEC_DSGS
+            - CONED_CSRP
+            - CONED_DLRP
+            - DRAM
+            - ELRP
+            - ENERGY_ONLY
+            - ERCOT_ERS
+            - EVERSOURCE_CS
+            - MA_DOER_CPS
+            - NATGRID_CS
+            - NRG_REALTIME
+            - NRG_RED
+            - NYISO_SCR
+            - ONCOR_CLM
+            - PGE_ART
+            - PGE_CBP
+            - PJM_CAPACITY
+            - PSEGLI_CSRP
+            - PSEGLI_DLRP
+            - RIE_CS
+            - UNITIL_CS
+            - PSE_RPO
+            - SRP_RPO
+            - TVA_RPO
+            - CAISO_ELRP_A4
+            - CEC_DSGS_OPTION2
+            - ENERGYHUB_CS
+            - CT_GB_ESS
+      - properties:
+          start_date:
+            description: Start of the date-range of the nomination suggestion.
+            example: 2025-05-01
+            format: date
+            type: string
+      - properties:
+          end_date:
+            description: |-
+              End of the date-range of the nomination suggestion. Should be greater than the start date.
+              The end date is exclusive. So to suggest a nomination for the month of May, the start date would be  '2025-05-01' and the end date would be '2025-06-01'.
+              If the end date is left empty, we will assume the intended date-range is open-ended, and the nomination  applies to all future dates.
+            example: 2025-06-01
+            format: date
+            type: string
+      - properties:
+          nomination_kw:
+            description: Nominated curtailable load for this meter in kilowatts. Precision
+              of up to 2 decimal places.
+            example: 1.23
+            format: double
+            maximum: 10000
+            minimum: 0
+            type: number
+        required:
+        - nomination_kw
+      example:
+        program_identifier: CEC-DSGS
+        start_date: 2025-05-01
+        end_date: 2025-06-01
+        nomination_kw: 1.23
+      required:
+      - nomination_kw
+      - start_date
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      type: http

@@ -1,0 +1,82 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.leap.energy/docs/api-responses
+docs: https://developer.leap.energy/docs/api-responses
+summary: Leap publishes a numeric validation-code registry for market bid and ask submissions. These are
+  Leap's own application-level validation codes returned in the error body alongside an HTTP 4xx — they
+  are NOT HTTP status codes, despite reusing values in the 400-430 range. A successful bid submission
+  returns HTTP 202; a failed one returns a 4xx with one of the codes below and detail in the message body.
+scope: bidding / market submission (nominations, bids and asks)
+envelope: The validation code and its description are carried in the error response message body; see
+  errors/leap-problem-types.yml for the envelope shapes.
+codes:
+- code: 400
+  area: deadline
+  description: The bid submissions deadline for admins has passed. You are not allowed to make any changes
+    anymore to the bids for that trading day.
+- code: 401
+  area: bid-price
+  description: The bid prices are not in the expected range. All prices have to be less than 1 $/kWh.
+- code: 402
+  area: bid-price
+  description: The bid prices have an invalid scale. Check the precision of the bid prices. The maximum
+    allowed decimals is 5.
+- code: 403
+  area: bid-quantity
+  description: The bid quantities are not in the expected range. Valid quantity is greater than 1 kW.
+- code: 404
+  area: market-window
+  description: The bid contains timeslot(s) for a closed market.
+- code: 405
+  area: resource-assignment
+  description: A bid contains one or more meters not assigned to any resource.
+- code: 406
+  area: market-window
+  description: A bid contains timeslot(s) which do not start at a full hour.
+- code: 407
+  area: market-window
+  description: A bid contains timeslot(s) which do not have a range of one hour.
+- code: 408
+  area: account-scope
+  description: A bid contains meter(s) which are not assigned to this account.
+- code: 409
+  area: resource-assignment
+  description: A bid contains meter(s) which are not assigned to a resource at the tradingDay.
+- code: 410
+  area: bid-curve
+  description: A bid curve does not meet the minimum quantity.
+- code: 411
+  area: bid-curve
+  description: A bid curve price is not within the range of $0.01 to $1.00.
+- code: 412
+  area: bid-curve
+  description: A bid curve is not increasing in power or price.
+- code: 413
+  area: volume-limit
+  description: The maximum number of bids in a single request has been exceeded. The limit is set to 100,000
+    per request.
+- code: 414
+  area: volume-limit
+  description: The maximum number of meters in a single bid request has been exceeded. The limit is set
+    to 100 per request.
+- code: 415
+  area: account-scope
+  description: The ask contains resources which are not assigned to this account.
+- code: 416
+  area: ask-curve
+  description: The ask curve power has quantity that is not positive.
+- code: 417
+  area: ask-curve
+  description: The ask price is not within the range of $0.01 to $1.00.
+- code: 418
+  area: ask-curve
+  description: An ask curve is not increasing in power or price.
+- code: 419
+  area: market-window
+  description: The ask contains timeslots which do not end at a full hour.
+- code: 430
+  area: duplicates
+  description: The file contains duplicate bids for the following (meter id, bid start).
+success_code:
+  status: 202
+  meaning: All market validation rules passed and the bid submission was accepted.

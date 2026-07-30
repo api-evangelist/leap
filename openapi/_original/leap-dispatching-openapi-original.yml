@@ -1,0 +1,1915 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: apiteam@leap.energy
+  description: Receive dispatches through Leap Dispatch API V2
+  termsOfService: https://leap.energy/terms/terms-of-service
+  title: Dispatch
+  version: "2"
+externalDocs:
+  description: Find out more about Leap API
+  url: https://developer.leap.energy/
+servers:
+- url: https://api.staging.leap.energy/v2
+- url: https://api.leap.energy/v2
+security:
+- http: []
+tags:
+- description: Endpoints for meter dispatches
+  name: meter-dispatches
+- description: Endpoints for group dispatches
+  name: group-dispatches
+paths:
+  /dispatch/meter/search:
+    post:
+      description: Search meter dispatches that match the input filters
+      operationId: searchMeterDispatches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchMeterDispatchEventRequest"
+        description: Search meter dispatch request input
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchMeterDispatchEventResponse"
+          description: A list of meter dispatches that match the search input
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Request could not be parsed or is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Search meter dispatches
+      tags:
+      - meter-dispatches
+  /dispatch/group/search:
+    post:
+      description: Search group dispatches that match the input filters
+      operationId: searchGroupDispatches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchGroupDispatchEventRequest"
+        description: Search group dispatch request input
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchGroupDispatchEventResponse"
+          description: The group dispatches that match the search input
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Request could not be parsed or is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Search group dispatches
+      tags:
+      - group-dispatches
+  /dispatch/meter/communication_test:
+    post:
+      description: Create communication test that will trigger a webhook call with
+        the corresponding dispatch notification data
+      operationId: triggerCommunicationTestMeterDispatch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommunicationTestMeterDispatchRequest"
+        description: Meter dispatch communication test
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommunicationTestMeterDispatchResponse"
+          description: Successfully triggered a communication test meter notification
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Request could not be parsed or is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Trigger meter communication test
+      tags:
+      - meter-dispatches
+  /dispatch/meter/webhook:
+    delete:
+      description: Remove an existing webhook URL for meter dispatches
+      operationId: deleteMeterDispatchWebhook
+      responses:
+        "204":
+          description: Webhook URL has been removed
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Delete meter dispatch webhook URL
+      tags:
+      - meter-dispatches
+    get:
+      description: Retrieve the registered webhook URL for meter dispatches
+      operationId: getMeterDispatchWebhook
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Get meter webhook URL
+      tags:
+      - meter-dispatches
+    put:
+      description: Create or update an existing webhook URL for meter dispatches
+      operationId: createOrUpdateMeterDispatchWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Webhook"
+        description: Webhook object that needs to be registered for this partner
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+          description: Webhook URL updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Request could not be parsed or is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Set meter webhook URL
+      tags:
+      - meter-dispatches
+      x-codegen-request-body-name: apiWebhook
+  /dispatch/meter/webhook/integration_test:
+    post:
+      description: Create test notification that will trigger a webhook call with
+        the corresponding dispatch notification data
+      operationId: triggerTestMeterDispatchNotification
+      requestBody:
+        content:
+          application/json:
+            examples:
+              CAISO - CCA Capacity Test:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 1acfced0-16f4-4fb7-b72e-5ff939ae541e
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T01:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - CCA
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - capacity-test
+                    - meter_event_id: 2ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T01:00:00.000Z
+                      end_time: 2023-07-21T02:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - CCA
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - capacity-test
+              CAISO - CCA Market Award:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 3acfced0-16f4-4fb7-b72e-5ff939ae541e
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T01:00:00.000Z
+                      energy_kw: 8
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - CCA
+                      priority: 2
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-site-load
+                      dispatch_event_types:
+                      - day-ahead
+                    - meter_event_id: 4ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T01:00:00.000Z
+                      end_time: 2023-07-21T02:00:00.000Z
+                      energy_kw: 8
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - CCA
+                      priority: 2
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-site-load
+                      dispatch_event_types:
+                      - day-ahead
+              CAISO - ELRP:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 5ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T04:00:00.000Z
+                      energy_kw: null
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - ELRP
+                      priority: 3
+                      is_voluntary: true
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              CAISO - DSGS Option 3:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 6ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T02:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - CEC-DSGS
+                      priority: 4
+                      is_voluntary: true
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              CAISO - DSGS Option 4:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 6ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T02:00:00.000Z
+                      energy_kw: 1
+                      nomination_kw: 1
+                      cancelled: false
+                      programs:
+                      - CEC-DSGS-OPTION4
+                      priority: 4
+                      is_voluntary: false
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              ERCOT - ERS:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 7ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T18:00:00.000Z
+                      end_time: 2023-07-21T22:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - ERCOT-ERS
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+              NYISO - SCR:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 8ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T19:00:00.000Z
+                      end_time: 2023-07-21T20:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - NYISO-SCR
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+              NYISO - CSRP:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 9ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T16:00:00.000Z
+                      end_time: 2023-07-21T20:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - CONED-CSRP
+                      priority: 3
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+              NYISO - DLRP:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 10d4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T14:00:00.000Z
+                      end_time: 2023-07-21T18:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - CONED-DLRP
+                      priority: 5
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+              ISO-NE - Clean Peak Standard:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 11d4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T14:00:00.000Z
+                      end_time: 2023-07-21T18:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - MA_DOER-CPS
+                      priority: 2
+                      is_voluntary: true
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              ISO-NE - Connected Solutions:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 12d4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T15:00:00.000Z
+                      end_time: 2023-07-21T18:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - NATGRID-CS
+                      priority: 1
+                      is_voluntary: true
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              PJM - Capacity:
+                value:
+                  meter_dispatches:
+                  - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - meter_event_id: 12d4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T15:00:00.000Z
+                      end_time: 2023-07-21T18:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - PJM-CAPACITY
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+            schema:
+              $ref: "#/components/schemas/WebhookMeterDispatchIntegrationTestRequest"
+        description: Test meter dispatch notification
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookIntegrationTestResponse"
+          description: |
+            Successfully triggered a test meter notification to be sent to the registered meter webhook url
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Request could not be parsed or is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Trigger test meter notification
+      tags:
+      - meter-dispatches
+  /dispatch/group/webhook:
+    delete:
+      description: Remove an existing webhook URL for group dispatches
+      operationId: deleteGroupDispatchWebhook
+      responses:
+        "204":
+          description: Webhook URL has been removed
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Delete group webhook URL
+      tags:
+      - group-dispatches
+    get:
+      description: Retrieve the registered webhook URL for group dispatches
+      operationId: getGroupDispatchWebhook
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+          description: Success
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Get group webhook URL
+      tags:
+      - group-dispatches
+    put:
+      description: Create or update an existing webhook URL for group dispatches
+      operationId: createOrUpdateGroupDispatchWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Webhook"
+        description: Webhook object that needs to be registered for this account
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+          description: Webhook URL updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Request could not be parsed or is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Set group webhook URL
+      tags:
+      - group-dispatches
+      x-codegen-request-body-name: apiWebhook
+  /dispatch/group/webhook/integration_test:
+    post:
+      description: Create test notification that will trigger a webhook call with
+        the corresponding group dispatch notification data
+      operationId: triggerTestGroupDispatchNotification
+      requestBody:
+        content:
+          application/json:
+            examples:
+              CAISO - CCA Capacity Test:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 1acfced0-16f4-4fb7-b72e-5ff939ae541e
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T01:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - CCA
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - capacity-test
+                    - market_group_event_id: 2ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T01:00:00.000Z
+                      end_time: 2023-07-21T02:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - CCA
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - capacity-test
+              CAISO - CCA Market Award:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 3acfced0-16f4-4fb7-b72e-5ff939ae541e
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T01:00:00.000Z
+                      energy_kw: 80
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - CCA
+                      priority: 2
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-site-load
+                      dispatch_event_types:
+                      - day-ahead
+                    - market_group_event_id: 4ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T01:00:00.000Z
+                      end_time: 2023-07-21T02:00:00.000Z
+                      energy_kw: 80
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - CCA
+                      priority: 2
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-site-load
+                      dispatch_event_types:
+                      - day-ahead
+              CAISO - ELRP:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 5ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T04:00:00.000Z
+                      energy_kw: null
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - ELRP
+                      priority: 3
+                      is_voluntary: true
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              CAISO - DSGS Option 3:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 6ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T02:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - CEC-DSGS
+                      priority: 4
+                      is_voluntary: true
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              CAISO - DSGS Option 4:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 6ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T00:00:00.000Z
+                      end_time: 2023-07-21T02:00:00.000Z
+                      energy_kw: 10
+                      nomination_kw: 10
+                      cancelled: false
+                      programs:
+                      - CEC-DSGS-OPTION4
+                      priority: 4
+                      is_voluntary: false
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              ERCOT - ERS:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 7ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T18:00:00.000Z
+                      end_time: 2023-07-21T22:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - ERCOT-ERS
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+              NYISO - SCR:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 8ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T19:00:00.000Z
+                      end_time: 2023-07-21T20:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - NYISO-SCR
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+              NYISO - CSRP:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 9ad4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T16:00:00.000Z
+                      end_time: 2023-07-21T20:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - CONED-CSRP
+                      priority: 3
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+              NYISO - DLRP:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 10d4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T14:00:00.000Z
+                      end_time: 2023-07-21T18:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - CONED-DLRP
+                      priority: 5
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+              ISO-NE - Clean Peak Standard:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 11d4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T14:00:00.000Z
+                      end_time: 2023-07-21T18:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - MA_DOER-CPS
+                      priority: 2
+                      is_voluntary: true
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              ISO-NE - Connected Solutions:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 12d4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T15:00:00.000Z
+                      end_time: 2023-07-21T18:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - NATGRID-CS
+                      priority: 1
+                      is_voluntary: true
+                      performance_compensation_cap: grid-exports-allowed
+                      dispatch_event_types:
+                      - standard
+              PJM - Capacity:
+                value:
+                  group_dispatches:
+                  - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+                    meter_ids:
+                    - beae2779-e392-4f00-b0cf-32e716204f78
+                    - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+                    timeslots:
+                    - market_group_event_id: 12d4bbde-36ee-401f-92b8-c58aa17aa71d
+                      start_time: 2023-07-21T15:00:00.000Z
+                      end_time: 2023-07-21T18:00:00.000Z
+                      energy_kw: 100
+                      nomination_kw: 100
+                      cancelled: false
+                      programs:
+                      - PJM-CAPACITY
+                      priority: 1
+                      is_voluntary: false
+                      performance_compensation_cap: up-to-nomination
+                      dispatch_event_types:
+                      - standard
+            schema:
+              $ref: "#/components/schemas/WebhookGroupDispatchIntegrationTestRequest"
+        description: Test group dispatch notification
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookIntegrationTestResponse"
+          description: |
+            Successfully triggered a test group notification to be sent to the registered group webhook url
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Request could not be parsed or is invalid
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: No access to this resource
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Resource not found
+        "5XX":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Unexpected error
+      summary: Trigger test group notification
+      tags:
+      - group-dispatches
+components:
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Request could not be parsed or is invalid
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Unauthorized
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: No access to this resource
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Resource not found
+    UnexpectedError:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Unexpected error
+  schemas:
+    BaseSearchDispatchEventRequest:
+      description: |
+        Search parameters for the search dispatches endpoints
+      properties:
+        start_date:
+          description: Start datetime range to get dispatches for (inclusive)
+          format: date-time
+          type: string
+        end_date:
+          description: |
+            End datetime range to get dispatches for (exclusive). End date must be max 31 days after the start date
+          format: date-time
+          type: string
+        exclude_real_time_events:
+          default: true
+          description: "Exclude dispatches for CAISO 5 minute real time events in\
+            \ the response. If empty, 5 min real time events are excluded"
+          type: boolean
+        exclude_voluntary_events:
+          default: false
+          description: "Exclude dispatches for voluntary events in the response. If\
+            \ empty, all dispatches are returned"
+          type: boolean
+        page_token:
+          description: |
+            Token of the page to request. Max results per page is 500. Null to request a new batch of results
+          format: uuid
+          type: string
+      required:
+      - end_date
+      - start_date
+      type: object
+    SearchMeterDispatchEventRequest:
+      allOf:
+      - properties:
+          meter_event_ids:
+            description: Meter event ids to get dispatches for
+            items:
+              format: uuid
+              type: string
+            minItems: 1
+            type: array
+            uniqueItems: true
+          meter_ids:
+            description: Meter ids to get dispatches for
+            items:
+              format: uuid
+              type: string
+            minItems: 1
+            type: array
+            uniqueItems: true
+        type: object
+      - $ref: "#/components/schemas/BaseSearchDispatchEventRequest"
+      example:
+        meter_ids:
+        - 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+        meter_event_ids:
+        - ac5ea4df-db45-4cb5-a0bf-a32677dac736
+        - 242c3e24-43e6-4ad7-88b3-666cda21582b
+        start_date: 2023-02-01T00:00:00.000Z
+        end_date: 2023-02-14T23:59:00.000Z
+      x-all-of-name: SearchMeterDispatchEventRequest
+    SearchMeterDispatchEventResponse:
+      example:
+        next_page_token: 242c3e24-43e6-4ad7-88b3-666cda21582b
+        results:
+        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          timeslots:
+          - meter_event_id: f4cfced0-16f4-4fb7-b72e-5ff939ae541e
+            start_time: 2023-02-21T00:00:00.000Z
+            end_time: 2023-02-21T01:00:00.000Z
+            energy_kw: 80
+            nomination_kw: 100
+            cancelled: false
+            programs:
+            - CCA
+            priority: 1
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+            - capacity-test
+          - meter_event_id: a6d4bbde-36ee-401f-92b8-c58aa17aa71d
+            start_time: 2023-02-21T00:00:00.000Z
+            end_time: 2023-02-21T04:00:00.000Z
+            energy_kw: null
+            nomination_kw: 100
+            cancelled: false
+            programs:
+            - ELRP
+            priority: 3
+            is_voluntary: true
+            performance_compensation_cap: grid-exports-allowed
+            dispatch_event_types:
+            - standard
+      properties:
+        next_page_token:
+          description: |
+            Token to be used in a subsequent request to get the next batch of results. Max results per page is 500. Null when the last page of results has been reached
+          format: uuid
+          type: string
+        results:
+          description: |
+            A list of meter-level dispatches.
+          items:
+            $ref: "#/components/schemas/SearchMeterDispatchEvent"
+          type: array
+      required:
+      - results
+      type: object
+    SearchGroupDispatchEventRequest:
+      allOf:
+      - properties:
+          market_group_ids:
+            description: Market group ids to get group dispatches for
+            items:
+              format: uuid
+              type: string
+            minItems: 1
+            type: array
+            uniqueItems: true
+          market_group_event_ids:
+            description: Market group event ids to get group dispatches for
+            items:
+              format: uuid
+              type: string
+            minItems: 1
+            type: array
+            uniqueItems: true
+        type: object
+      - $ref: "#/components/schemas/BaseSearchDispatchEventRequest"
+      example:
+        market_group_ids:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 242c3e24-43e6-4ad7-88b3-666cda21582b
+        market_group_event_ids: null
+        start_date: 2023-02-21T16:00:00.000Z
+        end_date: 2023-02-21T21:00:00.000Z
+      x-all-of-name: SearchGroupDispatchEventRequest
+    SearchGroupDispatchEventResponse:
+      example:
+        next_page_token: a946dfb9-5dc9-41f4-b9f2-4e5ac8fb5447
+        results:
+        - market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_ids:
+          - a946dfb9-5dc9-41f4-b9f2-4e5ac8fb5447
+          - 74a2444d-7b49-45d1-93f7-dd8c24b33130
+          timeslots:
+          - market_group_event_id: 904751e8-c0df-4d69-8a4f-9e7cebef1f84
+            start_time: 2023-01-23T01:00:00.000Z
+            end_time: 2023-01-23T02:00:00.000Z
+            energy_kw: 95
+            nomination_kw: 100
+            cancelled: false
+            programs:
+            - CCA
+            priority: 2
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+          - market_group_event_id: 3d1394e4-3f4a-4ee0-bd86-bf653ba29537
+            start_time: 2023-01-23T02:00:00.000Z
+            end_time: 2023-01-23T03:00:00.000Z
+            energy_kw: 115
+            nomination_kw: 120
+            cancelled: false
+            programs:
+            - CCA
+            priority: 2
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+            is_communication_test: false
+      properties:
+        next_page_token:
+          description: |
+            Token to be used in a subsequent request to get the next batch of results. Max results per page is 500. Null when the last page of results has been reached
+          format: uuid
+          type: string
+        results:
+          description: |
+            A list of market-group dispatches.
+          items:
+            $ref: "#/components/schemas/SearchMarketGroupDispatchEvent"
+          type: array
+      required:
+      - results
+      type: object
+    Webhook:
+      example:
+        headers:
+        - name: x-your-api-key
+          value: 81819286-3448-4f44-9b1b-3d742666fa5a
+        url: https://webhook.yourcompany.com
+      properties:
+        url:
+          description: Webhook URL
+          format: uri
+          type: string
+        headers:
+          description: Headers that Leap includes in each webhook notification request.
+            They can be used for authentication.
+          items:
+            $ref: "#/components/schemas/HeaderDescription"
+          type: array
+      required:
+      - url
+      type: object
+    HeaderDescription:
+      description: Header name and value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      required:
+      - name
+      - value
+      type: object
+    WebhookMeterDispatchIntegrationTestRequest:
+      example:
+        meter_dispatches:
+        - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+          timeslots:
+          - meter_event_id: f4cfced0-16f4-4fb7-b72e-5ff939ae541e
+            start_time: 2023-02-21T00:00:00.000Z
+            end_time: 2023-02-21T01:00:00.000Z
+            energy_kw: 10
+            nomination_kw: 10
+            cancelled: false
+            programs:
+            - CCA
+            priority: 1
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+            - capacity-test
+          - meter_event_id: a6d4bbde-36ee-401f-92b8-c58aa17aa71d
+            start_time: 2023-02-21T00:00:00.000Z
+            end_time: 2023-02-21T04:00:00.000Z
+            energy_kw: null
+            nomination_kw: 10
+            cancelled: false
+            programs:
+            - ELRP
+            priority: 3
+            is_voluntary: true
+            performance_compensation_cap: grid-exports-allowed
+            dispatch_event_types:
+            - standard
+      properties:
+        meter_dispatches:
+          description: List of meter dispatch events
+          items:
+            $ref: "#/components/schemas/WebhookMeterDispatchEvent"
+          minItems: 1
+          type: array
+      required:
+      - meter_dispatches
+      type: object
+    CommunicationTestMeterDispatchRequest:
+      example:
+        start_time: 2023-02-21T00:00:00Z
+        end_time: 2023-02-21T23:59:00Z
+        test_event: false
+        program: CEC-DSGS
+        meter_uuids:
+        - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+        dispatch_quantity_kw: 1000
+        approved: false
+      properties:
+        start_time:
+          description: Start datetime for the communication test (inclusive)
+          example: 2023-02-21T00:00:00Z
+          format: date-time
+          type: string
+        end_time:
+          description: End datetime for the communication test (exclusive). End date
+            must be max 31 days after the start date
+          example: 2023-02-21T23:59:00Z
+          format: date-time
+          type: string
+        test_event:
+          description: Indicates whether the communication test is a capacity test
+            event
+          example: false
+          type: boolean
+        program:
+          $ref: "#/components/schemas/program_identifier"
+        meter_uuids:
+          description: List of meter UUIDs to run the communication test for
+          example:
+          - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+          items:
+            format: uuid
+            maxItems: 1000
+            type: string
+          type: array
+        dispatch_quantity_kw:
+          description: Quantity of capacity in kW to dispatch for the communication
+            test
+          example: 1000
+          format: double
+          type: number
+        approved:
+          description: "Indicates whether the dispatch has been processed (true),\
+            \ or if this was a dry-run to show the partner impact (false)."
+          example: false
+          type: boolean
+      required:
+      - end_time
+      - meter_uuids
+      - program
+      - start_time
+      type: object
+    CommunicationTestMeterDispatchResponse:
+      example:
+        dispatch_status: dispatch_status
+        start_time: 2021-09-14T22:00:00Z
+        end_time: 2021-09-14T23:00:00Z
+        test_event: true
+        program: CEC-DSGS
+        approved: false
+        transmission_region: CAISO
+        market_type: hour-ahead
+        meter_count: 1034
+      properties:
+        dispatch_status:
+          description: The current/updated/new status of the communication test
+          type: string
+        start_time:
+          description: Start time of communication test
+          example: 2021-09-14T22:00:00Z
+          format: date-time
+          type: string
+        end_time:
+          description: End time of communication test
+          example: 2021-09-14T23:00:00Z
+          format: date-time
+          type: string
+        test_event:
+          description: Indicates whether the communication test is a capacity test
+            event
+          type: boolean
+        program:
+          $ref: "#/components/schemas/program_identifier"
+        approved:
+          description: "Indicates whether the communication test has been processed\
+            \ (true), or if this was a dry-run to show the partner impact (false)."
+          example: false
+          type: boolean
+        transmission_region:
+          $ref: "#/components/schemas/transmission_region"
+        market_type:
+          $ref: "#/components/schemas/MarketType"
+        meter_count:
+          description: Amount of meters in this communication test
+          example: 1034
+          type: integer
+      type: object
+    WebhookGroupDispatchIntegrationTestRequest:
+      example:
+        group_dispatches:
+        - market_group_id: 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+          meter_ids:
+          - beae2779-e392-4f00-b0cf-32e716204f78
+          - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+          timeslots:
+          - market_group_event_id: 904751e8-c0df-4d69-8a4f-9e7cebef1f84
+            start_time: 2023-02-21T00:00:00.000Z
+            end_time: 2023-02-21T01:00:00.000Z
+            energy_kw: 100
+            nomination_kw: 100
+            cancelled: false
+            programs:
+            - CCA
+            priority: 1
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+            - capacity-test
+          - market_group_event_id: 3d1394e4-3f4a-4ee0-bd86-bf653ba29537
+            start_time: 2023-02-21T00:00:00.000Z
+            end_time: 2023-02-21T04:00:00.000Z
+            energy_kw: null
+            nomination_kw: 100
+            cancelled: false
+            programs:
+            - ELRP
+            priority: 3
+            is_voluntary: true
+            performance_compensation_cap: grid-exports-allowed
+            dispatch_event_types:
+            - standard
+            is_communication_test: false
+      properties:
+        group_dispatches:
+          description: List of market group events
+          items:
+            $ref: "#/components/schemas/WebhookMarketGroupDispatchEvent"
+          minItems: 1
+          type: array
+      required:
+      - group_dispatches
+      type: object
+    WebhookIntegrationTestResponse:
+      description: Dispatch notification successfully sent to webhook URL during an
+        integration test
+      example:
+        sent_time: 2023-01-23T04:56:07.000Z
+        headers:
+          key:
+          - x-api-key
+          - your-key
+        http_status: 200
+        received_time: 2023-01-23T04:56:17.000Z
+        body: body that is echoed
+      properties:
+        http_status:
+          description: The http code from the response server for the webhook URL
+            or 'null' if no response was received
+          type: integer
+        sent_time:
+          description: Time when the request was sent
+          format: date-time
+          type: string
+        received_time:
+          description: Time when the response was received
+          format: date-time
+          type: string
+        headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: Http headers received from the server
+          type: object
+        body:
+          description: |
+            Http body received from the server if present (so either a Meter Event Notification or  Market Group Event Notification), 'null' otherwise
+          type: string
+        error_message:
+          description: In case the request to the webhook URL failed this field contains
+            a description of the failure
+          type: string
+      required:
+      - sent_time
+      type: object
+    ErrorResponse:
+      example:
+        code: BAD_REQUEST
+        message: message
+        error_code: LEAP_DISPATCH_INTERNAL_ERROR_001
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - UNSUPPORTED_MEDIA_TYPE
+          - SERVICE_UNAVAILABLE
+          - INTERNAL_SERVER_ERROR
+          type: string
+        message:
+          type: string
+        error_code:
+          enum:
+          - LEAP_DISPATCH_INTERNAL_ERROR_001
+          - LEAP_DISPATCH_INTERNAL_ERROR_002
+          - DISPATCH_INVALID_INPUT
+          - DISPATCH_NO_ACCESS_TO_RESOURCE
+          - DISPATCH_UNAUTHORIZED
+          - DISPATCH_UNEXPECTED_ERROR
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    SearchMeterDispatchEvent:
+      description: |
+        Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+      properties:
+        meter_id:
+          description: Id of the meter that received dispatches from the market
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer
+            or site that a Leap meter correlates to a partner’s internal systems.
+          type: string
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches
+            for this meter
+          items:
+            $ref: "#/components/schemas/SearchMeterDispatchEventTimeslot"
+          minItems: 1
+          type: array
+      required:
+      - meter_id
+      - timeslots
+      type: object
+    SearchMeterDispatchEventTimeslot:
+      allOf:
+      - properties:
+          meter_event_id:
+            description: Unique identifier of the dispatch event
+            format: uuid
+            type: string
+          communication_test:
+            description: Indicates whether the dispatch is a communication test.
+            type: boolean
+        type: object
+      - $ref: "#/components/schemas/BaseDispatchEventTimeslot"
+      required:
+      - meter_event_id
+      x-all-of-name: SearchMeterDispatchEventTimeslot
+    BaseDispatchEventTimeslot:
+      description: A single dispatch interval that describes all aspects of the dispatch.
+      properties:
+        start_time:
+          description: Start time of dispatch
+          example: 2021-09-14T22:00:00Z
+          format: date-time
+          type: string
+        end_time:
+          description: End time of dispatch
+          example: 2021-09-14T23:00:00Z
+          format: date-time
+          type: string
+        cancelled:
+          description: |
+            \'true' if this event has been cancelled
+          type: boolean
+        energy_kw:
+          description: The awarded kW for the dispatch. This represents the expected
+            power in kW to be curtailed/exported for the duration of the event. If
+            the value is 'null' partners should dispatch the maximum they can manage.
+          example: 115
+          format: double
+          maximum: 100000
+          minimum: 0.01
+          type: number
+        nomination_kw:
+          description: The nomination in kW. It represents the commitment amount made
+            to the market for this asset.
+          example: 115
+          format: double
+          maximum: 100000
+          minimum: 0.01
+          type: number
+        performance_compensation_cap:
+          $ref: "#/components/schemas/PerformanceCompensationCap"
+        priority:
+          description: |
+            The priority of the dispatch compared to other dispatches for the same meter. This value is meant to support partners in prioritizing dispatch events in same-day or overlapping scenarios, at times where the asset may not be able to perform across all events. Number 1 reflects the highest priority.
+          maximum: 10
+          minimum: 1
+          type: integer
+        is_voluntary:
+          description: |
+            Indicates whether the dispatch is voluntary or a commitment. Pay-for-performance events, with no energy commitment to achieve, are categorized as true. If a dispatch event constitutes a market or program commitment or carries partner penalties for non-performance, this is set to false.
+          type: boolean
+        dispatch_event_types:
+          description: |
+            Used for programs that have different compensation structures for different types of dispatch events. All programs with a single compensation structure for all events will be set to standard.
+          items:
+            $ref: "#/components/schemas/DispatchEventType"
+          minItems: 1
+          type: array
+          uniqueItems: true
+        programs:
+          description: |
+            Programs associated with the dispatch. This is a fixed list of values depending on your use-case and refers to the program(s) that the meters are enrolled in.
+          items:
+            $ref: "#/components/schemas/program_identifier"
+          minItems: 1
+          type: array
+          uniqueItems: true
+      required:
+      - cancelled
+      - dispatch_event_types
+      - end_time
+      - is_voluntary
+      - performance_compensation_cap
+      - priority
+      - programs
+      - start_time
+      type: object
+    PerformanceCompensationCap:
+      description: |
+        This field can be used to automate a dispatch response that is aligned with the event’s settlement structure, to capitalize on scenarios where over-performance is lucrative versus scenarios where over-performance is not compensated and best reserved for another event.<br/> - UpToNomination - If partners dispatch beyond their nomination value, they will not be compensated.<br/> - UpToSiteLoad - Partners will be compensated for dispatching up to a site load of 0 kW.<br/> - GridExportsAllowed - Partners will be compensated for dispatching beyond a site load of 0 kW, into negative site load.
+      enum:
+      - grid-exports-allowed
+      - up-to-nomination
+      - up-to-site-load
+      type: string
+      x-enum-varnames:
+      - GRID_EXPORTS_ALLOWED
+      - UP_TO_NOMINATION
+      - UP_TO_SITE_LOAD
+    DispatchEventType:
+      enum:
+      - hour-ahead
+      - day-ahead
+      - 5m
+      - capacity-test
+      - standard
+      type: string
+      x-enum-varnames:
+      - HOUR_AHEAD
+      - DAY_AHEAD
+      - FIVE_MINUTES
+      - CAPACITY_TEST
+      - STANDARD
+    SearchMarketGroupDispatchEvent:
+      description: |
+        Aggregates timeslot dispatches per market group. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same market_group_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+      properties:
+        market_group_id:
+          description: The id of the market group that received dispatches from the
+            market.
+          format: uuid
+          type: string
+        meter_ids:
+          description: Ids of the meters that received dispatches from the market
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        partner_references:
+          description: The partner-supplied reference IDs to help identify the customer
+            or site that a Leap meter correlates to a partner’s internal systems.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches
+            for this market group
+          items:
+            $ref: "#/components/schemas/SearchGroupDispatchEventTimeslot"
+          minItems: 1
+          type: array
+      required:
+      - market_group_id
+      - meter_ids
+      - timeslots
+      type: object
+    SearchGroupDispatchEventTimeslot:
+      allOf:
+      - properties:
+          communication_test:
+            description: Indicates whether the dispatch is a communication test.
+            type: boolean
+            x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonIgnore'
+        type: object
+      - $ref: "#/components/schemas/GroupDispatchEventTimeslot"
+      x-all-of-name: SearchGroupDispatchEventTimeslot
+    GroupDispatchEventTimeslot:
+      allOf:
+      - properties:
+          market_group_event_id:
+            description: Unique identifier of the market group dispatch event
+            format: uuid
+            type: string
+        type: object
+      - $ref: "#/components/schemas/BaseDispatchEventTimeslot"
+      required:
+      - market_group_event_id
+      x-all-of-name: GroupDispatchEventTimeslot
+    WebhookMeterDispatchEvent:
+      description: "Aggregates timeslot dispatches per meter. Previously stored dispatches\
+        \ might be updated so when dealing with a dispatch timeslot that has the same\
+        \ meter_event_id  as an existing one, the previously received dispatch has\
+        \ to be updated with the new field values. \n"
+      properties:
+        meter_id:
+          description: Id of the meter that received dispatches from the market
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer
+            or site that a Leap meter correlates to a partner’s internal systems.
+          type: string
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches
+            for this meter
+          items:
+            $ref: "#/components/schemas/MeterDispatchEventTimeslot"
+          minItems: 1
+          type: array
+      required:
+      - meter_id
+      - timeslots
+      type: object
+    MeterDispatchEventTimeslot:
+      allOf:
+      - properties:
+          meter_event_id:
+            description: Unique identifier of the dispatch event
+            format: uuid
+            type: string
+        type: object
+      - $ref: "#/components/schemas/BaseDispatchEventTimeslot"
+      required:
+      - meter_event_id
+      x-all-of-name: MeterDispatchEventTimeslot
+    program_identifier:
+      description: Identifier of program
+      enum:
+      - CAISO-CCA-SC_ONLY
+      - CCA
+      - CEC-DSGS-OPTION4
+      - CEC-DSGS
+      - CONED-CSRP
+      - CONED-DLRP
+      - DRAM
+      - ELRP
+      - ENERGY-ONLY
+      - ERCOT-ERS
+      - EVERSOURCE-CS
+      - MA_DOER-CPS
+      - NATGRID-CS
+      - NRG-REALTIME
+      - NRG-RED
+      - NYISO-SCR
+      - ONCOR-CLM
+      - PGE-ART
+      - PGE-CBP
+      - PJM-CAPACITY
+      - PSEGLI-CSRP
+      - PSEGLI-DLRP
+      - RIE-CS
+      - UNITIL-CS
+      - PSE-RPO
+      - SRP-RPO
+      - TVA-RPO
+      - CAISO-ELRP-A4
+      - CEC-DSGS-OPTION2
+      - ENERGYHUB-CS
+      example: CEC-DSGS
+      type: string
+      x-enum-varnames:
+      - CAISO_CCA_SC_ONLY
+      - CCA
+      - CEC_DSGS_OPTION4
+      - CEC_DSGS
+      - CONED_CSRP
+      - CONED_DLRP
+      - DRAM
+      - ELRP
+      - ENERGY_ONLY
+      - ERCOT_ERS
+      - EVERSOURCE_CS
+      - MA_DOER_CPS
+      - NATGRID_CS
+      - NRG_REALTIME
+      - NRG_RED
+      - NYISO_SCR
+      - ONCOR_CLM
+      - PGE_ART
+      - PGE_CBP
+      - PJM_CAPACITY
+      - PSEGLI_CSRP
+      - PSEGLI_DLRP
+      - RIE_CS
+      - UNITIL_CS
+      - PSE_RPO
+      - SRP_RPO
+      - TVA_RPO
+      - CAISO_ELRP_A4
+      - CEC_DSGS_OPTION2
+      - ENERGYHUB_CS
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    MarketType:
+      description: "Indicates the market “day-ahead”, “hour-ahead”, “15m” or “5m”"
+      enum:
+      - hour-ahead
+      - day-ahead
+      - 15m
+      - 5m
+      type: string
+      x-enum-varnames:
+      - HOUR_AHEAD
+      - DAY_AHEAD
+      - FIFTEEN_MINUTES
+      - FIVE_MINUTES
+    WebhookMarketGroupDispatchEvent:
+      description: |
+        Aggregates timeslot dispatches per market group. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same market_group_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+      properties:
+        market_group_id:
+          description: The id of the market group that received dispatches from the
+            market.
+          format: uuid
+          type: string
+        meter_ids:
+          description: Ids of the meters that received dispatches from the market
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        partner_references:
+          description: The partner-supplied reference IDs to help identify the customer
+            or site that a Leap meter correlates to a partner’s internal systems.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches
+            for this market group
+          items:
+            $ref: "#/components/schemas/GroupDispatchEventTimeslot"
+          minItems: 1
+          type: array
+      required:
+      - market_group_id
+      - meter_ids
+      - timeslots
+      type: object
+  securitySchemes:
+    http:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
