@@ -1,29 +1,376 @@
 aid: leap
 name: Leap
-description: 'Leap is a company surfaced as a portfolio company of accel, creandum, union-square-ventures
-  and added to the API Evangelist network as a stub for enrichment. Sector: web3. This profile is a lead
-  awaiting the enrichment pipeline.'
+description: 'Leap is a San Francisco-based energy software company that lets technology brands build
+  and scale virtual power plants (VPPs). Its platform aggregates distributed energy resources — residential
+  and commercial battery storage, smart thermostats and heat pumps, and EV charging — and gives them a
+  single point of integration into wholesale electricity markets and utility grid-service programs across
+  CAISO, NYISO and other regions. Leap exposes a universal REST API covering meter onboarding and bulk
+  creation, utility data authorization (Leap Connect), enrollment and participation management, market
+  nominations and bidding, real-time dispatch delivery over webhooks or polling, event performance and
+  interval data, and revenue settlement reporting. Partners authenticate with environment-scoped bearer
+  API keys against separate staging and production hosts, and Leap publishes OpenAPI definitions, a dated
+  changelog, an llms.txt index and a public status page.'
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://www.leap.energy/favicon.ico
 url: https://raw.githubusercontent.com/api-evangelist/leap/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
-- accel
-- creandum
 - union-square-ventures
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-identity-note: 'Stub was created from a VC-portfolio name match and originally pointed at leapwallet.io
+  (Leap Wallet, a Cosmos crypto wallet backed by CoinFund/Pantera that announced shutdown effective 2026-05-28).
+  The Union Square Ventures portfolio company named Leap is the energy/VPP platform at leap.energy (Series
+  A led by USV, January 2020), which is the company profiled here. The accel and creandum attributions
+  on the original stub could not be verified against either company and were removed.'
+x-tier: enriched
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-- Web3
-apis: []
+- Energy
+- Electricity
+- Virtual Power Plant
+- Demand Response
+- Distributed Energy Resources
+- Grid Services
+- Energy Markets
+- Battery Storage
+- EV Charging
+- Smart Buildings
+- Metering
+- Webhooks
+- Climate Tech
+apis:
+- aid: leap:leap-create-meters-api
+  name: Leap create meters API
+  description: The create meters API from Leap — 4 operation(s) for create meters.
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - create meters
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-create-meters-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-group-dispatches-api
+  name: Leap group-dispatches API
+  description: Endpoints for group dispatches
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - group-dispatches
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-group-dispatches-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-meter-details-api
+  name: Leap Meter Details API
+  description: The Meter Details API from Leap — 2 operation(s) for meter details.
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - Meter Details
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-meter-details-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-meter-dispatches-api
+  name: Leap meter-dispatches API
+  description: Endpoints for meter dispatches
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - meter-dispatches
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-meter-dispatches-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-meter-enrollment-api
+  name: Leap meter enrollment API
+  description: The meter enrollment API from Leap — 2 operation(s) for meter enrollment.
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - meter enrollment
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-meter-enrollment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-nominations-api
+  name: Leap nominations API
+  description: The nominations API from Leap — 5 operation(s) for nominations.
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - nominations
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-nominations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-performance-api
+  name: Leap performance API
+  description: The performance API from Leap — 1 operation(s) for performance.
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - performance
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-performance-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-provisional-assets-api
+  name: Leap provisional assets API
+  description: The provisional assets API from Leap — 2 operation(s) for provisional assets.
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - provisional assets
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-provisional-assets-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-revenue-api
+  name: Leap revenue API
+  description: The revenue API from Leap — 8 operation(s) for revenue.
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - revenue
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-revenue-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
+- aid: leap:leap-webhooks-api
+  name: Leap webhooks API
+  description: The webhooks API from Leap — 3 operation(s) for webhooks.
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
+  baseURL: https://api.leap.energy
+  tags:
+  - webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/leap-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getmeterdetails
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchmeterenrollments
+  - type: Documentation
+    url: https://developer.leap.energy/reference/createmeterbatchjob
+  - type: Documentation
+    url: https://developer.leap.energy/docs/dispatch-event-processing
+  - type: Documentation
+    url: https://developer.leap.energy/reference/searchnominations
+  - type: Documentation
+    url: https://developer.leap.energy/reference/getperiodicreports
+  - type: Documentation
+    url: https://developer.leap.energy/reference/listwebhooks-2
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/leap-domain-security.yml
 - type: Website
-  url: https://www.leapwallet.io/
+  url: https://www.leap.energy/
+- type: DeveloperPortal
+  url: https://developer.leap.energy/
+- type: Documentation
+  url: https://developer.leap.energy/docs/home
+- type: APIReference
+  url: https://developer.leap.energy/reference/
+- type: GettingStarted
+  url: https://developer.leap.energy/docs/getting-started
+- type: Support
+  url: https://support.leap.energy/support/solutions
+- type: Blog
+  url: https://www.leap.energy/blog
+- type: SignUp
+  url: https://partner.leap.energy/
+- type: TermsOfService
+  url: https://www.leap.energy/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.leap.energy/privacy-policy
+- type: StatusPage
+  url: https://status.leap.energy/
+- type: ChangeLog
+  url: changelog/leap-changelog.yml
+- type: Deprecation
+  url: lifecycle/leap-lifecycle.yml
+- type: Lifecycle
+  url: lifecycle/leap-lifecycle.yml
+- type: LLMsTxt
+  url: llms/leap-llms.txt
+- type: Authentication
+  url: authentication/leap-authentication.yml
+- type: Conventions
+  url: conventions/leap-conventions.yml
+- type: ErrorCatalog
+  url: errors/leap-problem-types.yml
+- type: ErrorCodes
+  url: errors/leap-error-codes.yml
+- type: Conformance
+  url: conformance/leap-conformance.yml
+- type: Sandbox
+  url: sandbox/leap-sandbox.yml
+- type: DataModel
+  url: data-model/leap-data-model.yml
+- type: Webhooks
+  url: asyncapi/leap-events-asyncapi.yml
+- type: AsyncAPI
+  url: asyncapi/leap-events-asyncapi.yml
+- type: MCPServer
+  url: mcp/leap-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: WellKnown
+  url: well-known/leap-well-known.yml
+- type: Packages
+  url: packages/leap-packages.yml
+- type: Components
+  url: components/leap-components.yml
+- type: AgentSkill
+  url: skills/leap-onboard-meters.md
+- type: AgentSkill
+  url: skills/leap-process-dispatch.md
+- type: AgentSkill
+  url: skills/leap-subscribe-webhooks.md
+- type: AgentSkill
+  url: skills/leap-revenue-reporting.md
+- type: AgentSkill
+  url: skills/leap-manage-nominations.md
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
