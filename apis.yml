@@ -34,7 +34,7 @@ x-identity-note: 'Stub was created from a VC-portfolio name match and originally
   A led by USV, January 2020), which is the company profiled here. The accel and creandum attributions
   on the original stub could not be verified against either company and were removed.'
 x-tier: enriched
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-07-19'
 tags:
