@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "create meters meter enrollment API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "meter enrollment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get meter enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v2/meters/:meter_id/enrollments",
+            "params": [
+              {
+                "name": "meter_id",
+                "value": "",
+                "type": "path",
+                "description": "Meter ID"
+              }
+            ]
+          },
+          "docs": "Get enrollment information about a meter including its current enrollment status, participation preferences, associated programs, and any required actions."
+        },
+        {
+          "info": {
+            "name": "Search meter enrollments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v2/meters/enrollments/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieve enrollment information including current enrollment status, participation preferences, associated programs, and any required actions for all meters. Optionally filter by one or more request parameters."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

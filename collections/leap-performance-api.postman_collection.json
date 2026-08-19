@@ -1,0 +1,475 @@
+{
+  "item": [
+    {
+      "id": "b211bd53-9bb9-46fd-9953-273ac31b00c2",
+      "name": "performance",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e24698cb-dbd4-4e5e-9e70-002ed5ab7602",
+          "name": "Monthly unresponsive meters",
+          "request": {
+            "name": "Monthly unresponsive meters",
+            "description": {
+              "content": "Retrieves unresponsive meters in a designated month",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "performance",
+                "diagnosis",
+                "monthly",
+                "unresponsive",
+                "meters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_summary",
+                  "value": "false",
+                  "description": "Boolean flag indicating whether the response should include  a summary of the requested data in addition to the detailed results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"year_month\": \"<string>\",\n  \"meter_id_contains\": \"<string>\",\n  \"partner_reference_contains\": \"<string>\",\n  \"customer_name_contains\": \"<string>\",\n  \"transmission_regions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"programs\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"historical_responsiveness\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"include_meter_programs\": [\n    {\n      \"meter_id\": \"<uuid>\",\n      \"program\": \"<string>\"\n    },\n    {\n      \"meter_id\": \"<uuid>\",\n      \"program\": \"<string>\"\n    }\n  ],\n  \"exclude_meter_programs\": [\n    {\n      \"meter_id\": \"<uuid>\",\n      \"program\": \"<string>\"\n    },\n    {\n      \"meter_id\": \"<uuid>\",\n      \"program\": \"<string>\"\n    }\n  ],\n  \"page_token\": \"<string>\",\n  \"page_size\": 100,\n  \"sort\": [\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    },\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "48fad2b6-c6eb-4a44-be7b-7a80604e901d",
+              "name": "Retrieves monthly unresponsive meters for a specified month",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "performance",
+                    "diagnosis",
+                    "monthly",
+                    "unresponsive",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_summary",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"year_month\": \"2023-03\",\n  \"meter_id_contains\": \"<string>\",\n  \"partner_reference_contains\": \"<string>\",\n  \"customer_name_contains\": \"<string>\",\n  \"transmission_regions\": [\n    \"CAISO\",\n    \"CAISO\"\n  ],\n  \"programs\": [\n    \"CEC-DSGS\",\n    \"CEC-DSGS\"\n  ],\n  \"historical_responsiveness\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"include_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"exclude_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"page_token\": \"<string>\",\n  \"page_size\": 100,\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_kw\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"summary\": {\n    \"number_of_meters\": 0,\n    \"missed_revenue\": 20000.3,\n    \"average_response_percentage\": 75\n  },\n  \"meters\": [\n    {\n      \"meter_id\": \"db0291d1-009d-4393-9a8d-4613a4efcd7a\",\n      \"partner_reference\": \"partner_reference\",\n      \"customer_name\": \"John Doe\",\n      \"customer_group\": \"Store Inc.\",\n      \"transmission_region\": \"CAISO\",\n      \"program\": \"CEC-DSGS\",\n      \"missed_revenue\": 20000.3,\n      \"nomination_w\": 16600.88,\n      \"response_percentage\": 75,\n      \"number_of_events\": 6,\n      \"historical_responsiveness\": \"NEVER_RESPONDS\"\n    },\n    {\n      \"meter_id\": \"db0291d1-009d-4393-9a8d-4613a4efcd7a\",\n      \"partner_reference\": \"partner_reference\",\n      \"customer_name\": \"John Doe\",\n      \"customer_group\": \"Store Inc.\",\n      \"transmission_region\": \"CAISO\",\n      \"program\": \"CEC-DSGS\",\n      \"missed_revenue\": 20000.3,\n      \"nomination_w\": 16600.88,\n      \"response_percentage\": 75,\n      \"number_of_events\": 6,\n      \"historical_responsiveness\": \"NEVER_RESPONDS\"\n    }\n  ],\n  \"year_month\": \"2023-03\",\n  \"page_token\": \"page_token\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f2ed1144-b429-4419-b3a3-edf900c1a99f",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "performance",
+                    "diagnosis",
+                    "monthly",
+                    "unresponsive",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_summary",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"year_month\": \"2023-03\",\n  \"meter_id_contains\": \"<string>\",\n  \"partner_reference_contains\": \"<string>\",\n  \"customer_name_contains\": \"<string>\",\n  \"transmission_regions\": [\n    \"CAISO\",\n    \"CAISO\"\n  ],\n  \"programs\": [\n    \"CEC-DSGS\",\n    \"CEC-DSGS\"\n  ],\n  \"historical_responsiveness\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"include_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"exclude_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"page_token\": \"<string>\",\n  \"page_size\": 100,\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_kw\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a628d4a9-62ca-4e14-975a-fe6c62f19d6e",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "performance",
+                    "diagnosis",
+                    "monthly",
+                    "unresponsive",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_summary",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"year_month\": \"2023-03\",\n  \"meter_id_contains\": \"<string>\",\n  \"partner_reference_contains\": \"<string>\",\n  \"customer_name_contains\": \"<string>\",\n  \"transmission_regions\": [\n    \"CAISO\",\n    \"CAISO\"\n  ],\n  \"programs\": [\n    \"CEC-DSGS\",\n    \"CEC-DSGS\"\n  ],\n  \"historical_responsiveness\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"include_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"exclude_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"page_token\": \"<string>\",\n  \"page_size\": 100,\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_kw\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d17779f-a831-4ac3-a145-0f1ef4a86703",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "performance",
+                    "diagnosis",
+                    "monthly",
+                    "unresponsive",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_summary",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"year_month\": \"2023-03\",\n  \"meter_id_contains\": \"<string>\",\n  \"partner_reference_contains\": \"<string>\",\n  \"customer_name_contains\": \"<string>\",\n  \"transmission_regions\": [\n    \"CAISO\",\n    \"CAISO\"\n  ],\n  \"programs\": [\n    \"CEC-DSGS\",\n    \"CEC-DSGS\"\n  ],\n  \"historical_responsiveness\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"include_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"exclude_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"page_token\": \"<string>\",\n  \"page_size\": 100,\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_kw\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "828d4757-093c-4d2e-8d76-391a39dd21b9",
+              "name": "Returns 415 if provided content in the request is not supported.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "performance",
+                    "diagnosis",
+                    "monthly",
+                    "unresponsive",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_summary",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"year_month\": \"2023-03\",\n  \"meter_id_contains\": \"<string>\",\n  \"partner_reference_contains\": \"<string>\",\n  \"customer_name_contains\": \"<string>\",\n  \"transmission_regions\": [\n    \"CAISO\",\n    \"CAISO\"\n  ],\n  \"programs\": [\n    \"CEC-DSGS\",\n    \"CEC-DSGS\"\n  ],\n  \"historical_responsiveness\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"include_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"exclude_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"page_token\": \"<string>\",\n  \"page_size\": 100,\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_kw\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unsupported Media Type\",\n  \"status\": 415,\n  \"details\": [\n    {\n      \"message\": \"Invalid value in the 'Accept' header.\",\n      \"description\": \"Supported types are application/json and text/csv\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53147b34-bd32-476f-a5f0-7abb756be60f",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "performance",
+                    "diagnosis",
+                    "monthly",
+                    "unresponsive",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_summary",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"year_month\": \"2023-03\",\n  \"meter_id_contains\": \"<string>\",\n  \"partner_reference_contains\": \"<string>\",\n  \"customer_name_contains\": \"<string>\",\n  \"transmission_regions\": [\n    \"CAISO\",\n    \"CAISO\"\n  ],\n  \"programs\": [\n    \"CEC-DSGS\",\n    \"CEC-DSGS\"\n  ],\n  \"historical_responsiveness\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"include_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"exclude_meter_programs\": [\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    },\n    {\n      \"program\": \"CEC-DSGS\",\n      \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n    }\n  ],\n  \"page_token\": \"<string>\",\n  \"page_size\": 100,\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_kw\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Server Error\",\n  \"status\": 500,\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.staging.leap.energy",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ef657d19-e061-4ae3-8afd-71ce6aa1e605",
+    "name": "create meters performance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Endpoints to create or update meters in bulk through Leap's API.",
+      "type": "text/plain"
+    }
+  }
+}

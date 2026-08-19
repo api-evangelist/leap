@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "create meters group-dispatches API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "group-dispatches",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search group dispatches",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/dispatch/group/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search group dispatches that match the input filters"
+        },
+        {
+          "info": {
+            "name": "Get group webhook URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/dispatch/group/webhook"
+          },
+          "docs": "Retrieve the registered webhook URL for group dispatches"
+        },
+        {
+          "info": {
+            "name": "Set group webhook URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.staging.leap.energy/dispatch/group/webhook",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update an existing webhook URL for group dispatches"
+        },
+        {
+          "info": {
+            "name": "Delete group webhook URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.staging.leap.energy/dispatch/group/webhook"
+          },
+          "docs": "Remove an existing webhook URL for group dispatches"
+        },
+        {
+          "info": {
+            "name": "Trigger test group notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/dispatch/group/webhook/integration_test",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create test notification that will trigger a webhook call with the corresponding group dispatch notification data"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

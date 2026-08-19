@@ -1,0 +1,3462 @@
+{
+  "item": [
+    {
+      "id": "d73af808-8105-4b5a-9551-31100db3c291",
+      "name": "revenue",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4518f79a-e585-4b41-ae10-c8f31547c487",
+          "name": "Revenue by customer",
+          "request": {
+            "name": "Revenue by customer",
+            "description": {
+              "content": "Retrieves revenue data for a designated month or months aggregated by customer",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "revenue",
+                "periodic",
+                "aggregation",
+                "customer",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"<string>\",\n  \"period_start\": \"<string>\",\n  \"programs\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    },\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    }\n  ],\n  \"version\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5e260268-53bc-4f5a-803e-e1ecd16eea5e",
+              "name": "Retrieves periodic customer revenue reports for a specified time frame, with a request limit of up to 3 months.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "customer",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"customers\": [\n    {\n      \"capacity_revenue\": 27600.3,\n      \"customer_name\": \"John Doe\",\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"energy_revenue\": 27600.3,\n      \"meter_count\": 10,\n      \"nomination_w\": 16600.88,\n      \"total_revenue\": 20600.3,\n      \"customer_group\": \"Store Inc.\",\n      \"delivery_date\": \"2023-03\",\n      \"monetized_w\": 8400,\n      \"capacity_performance_percentage\": 50.33,\n      \"energy_performance_percentage\": 60.5,\n      \"data_coverage_percentage\": 55.5,\n      \"energy_earned_wh\": 2000.3,\n      \"potential_revenue\": 104366.8,\n      \"capacity_earned_w\": 2000.3,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"missed_revenue\": 20000.3,\n      \"version\": \"V1\",\n      \"capacity_price\": 5.56,\n      \"energy_price_kwh\": 6.67\n    },\n    {\n      \"capacity_revenue\": 27600.3,\n      \"customer_name\": \"John Doe\",\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"energy_revenue\": 27600.3,\n      \"meter_count\": 10,\n      \"nomination_w\": 16600.88,\n      \"total_revenue\": 20600.3,\n      \"customer_group\": \"Store Inc.\",\n      \"delivery_date\": \"2023-03\",\n      \"monetized_w\": 8400,\n      \"capacity_performance_percentage\": 50.33,\n      \"energy_performance_percentage\": 60.5,\n      \"data_coverage_percentage\": 55.5,\n      \"energy_earned_wh\": 2000.3,\n      \"potential_revenue\": 104366.8,\n      \"capacity_earned_w\": 2000.3,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"missed_revenue\": 20000.3,\n      \"version\": \"V1\",\n      \"capacity_price\": 5.56,\n      \"energy_price_kwh\": 6.67\n    }\n  ],\n  \"page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6a50142d-4cb6-4557-bd6a-8758943f800d",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "customer",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ed722e3-dfe5-4555-a23b-82253ec3263a",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "customer",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d521e5d8-f490-47ba-8a9d-f11d95de6764",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "customer",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ba96ffe-aacf-4528-a168-f33d718264ab",
+              "name": "Returns 415 if provided content in the request is not supported.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "customer",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unsupported Media Type\",\n  \"status\": 415,\n  \"details\": [\n    {\n      \"message\": \"Invalid value in the 'Accept' header.\",\n      \"description\": \"Supported types are application/json and text/csv\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53dac588-2614-4a06-8c3b-3cab3a55b3a1",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "customer",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Server Error\",\n  \"status\": 500,\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f02af667-57ef-4056-ae6f-900fbb78a713",
+          "name": "Revenue by load type",
+          "request": {
+            "name": "Revenue by load type",
+            "description": {
+              "content": "Retrieves revenue data for a designated month or months aggregated by load type",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "revenue",
+                "periodic",
+                "aggregation",
+                "load-type",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"<string>\",\n  \"period_start\": \"<string>\",\n  \"programs\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    },\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    }\n  ],\n  \"version\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "314b383f-f25d-4fd5-953e-6ebc46ba2dc4",
+              "name": "Retrieves periodic load type revenue reports for a specified time frame, with a request limit of up to 3 months.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "load-type",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"load_types\": [\n    {\n      \"capacity_revenue\": 27600.3,\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"energy_revenue\": 27600.3,\n      \"load_type\": \"BATTERY_STORAGE\",\n      \"meter_count\": 10,\n      \"total_revenue\": 20600.3,\n      \"nomination_w\": 16600.88,\n      \"delivery_date\": \"2023-03\",\n      \"monetized_w\": 8400,\n      \"capacity_performance_percentage\": 50.33,\n      \"energy_performance_percentage\": 60.5,\n      \"data_coverage_percentage\": 55.5,\n      \"energy_earned_wh\": 2000.3,\n      \"potential_revenue\": 104366.8,\n      \"capacity_earned_w\": 2000.3,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"missed_revenue\": 20000.3,\n      \"version\": \"V1\",\n      \"capacity_price\": 5.56,\n      \"energy_price_kwh\": 6.67\n    },\n    {\n      \"capacity_revenue\": 27600.3,\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"energy_revenue\": 27600.3,\n      \"load_type\": \"BATTERY_STORAGE\",\n      \"meter_count\": 10,\n      \"total_revenue\": 20600.3,\n      \"nomination_w\": 16600.88,\n      \"delivery_date\": \"2023-03\",\n      \"monetized_w\": 8400,\n      \"capacity_performance_percentage\": 50.33,\n      \"energy_performance_percentage\": 60.5,\n      \"data_coverage_percentage\": 55.5,\n      \"energy_earned_wh\": 2000.3,\n      \"potential_revenue\": 104366.8,\n      \"capacity_earned_w\": 2000.3,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"missed_revenue\": 20000.3,\n      \"version\": \"V1\",\n      \"capacity_price\": 5.56,\n      \"energy_price_kwh\": 6.67\n    }\n  ],\n  \"page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98ec9ea1-f729-45c6-910e-caabcc66cda3",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "load-type",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ],\n  \"status\": 400,\n  \"title\": \"Bad Request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd42c2e5-e834-450e-882c-1d6ac83900e0",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "load-type",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "803a2bac-d299-4369-a9a2-c2ebc32e90f3",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "load-type",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7fda34bd-a02f-46d8-96e4-1085a1961847",
+              "name": "Returns 415 if provided content in the request is not supported.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "load-type",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Invalid value in the 'Accept' header.\",\n      \"description\": \"Supported types are application/json and text/csv\"\n    }\n  ],\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67831531-3246-4ff5-96d6-4d499cee2e81",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "load-type",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ],\n  \"status\": 500,\n  \"title\": \"Server Error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f9f677d3-8b91-4074-94e2-fbd354bb051f",
+          "name": "Revenue by market group",
+          "request": {
+            "name": "Revenue by market group",
+            "description": {
+              "content": "Retrieves revenue data for a designated month or months aggregated by market group",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "revenue",
+                "periodic",
+                "aggregation",
+                "market-group",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"<string>\",\n  \"period_start\": \"<string>\",\n  \"programs\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    },\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    }\n  ],\n  \"version\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "95896e62-0d3e-4818-aa85-cf4f4149bd42",
+              "name": "Retrieves periodic market group revenue reports for a specified time frame, with a request limit of up to 3 months.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "market-group",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"market_groups\": [\n    {\n      \"capacity_revenue\": 27600.3,\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"energy_revenue\": 27600.3,\n      \"market_group\": \"PGF1_2_PDDP78\",\n      \"meter_count\": 10,\n      \"nomination_w\": 16600.88,\n      \"total_revenue\": 20600.3,\n      \"delivery_date\": \"2023-03\",\n      \"monetized_w\": 8400,\n      \"data_coverage_percentage\": 55.5,\n      \"capacity_performance_percentage\": 50.33,\n      \"energy_performance_percentage\": 60.5,\n      \"energy_earned_wh\": 2000.3,\n      \"potential_revenue\": 104366.8,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"capacity_earned_w\": 2000.3,\n      \"capacity_price\": 5.56,\n      \"performance_factor\": 0.5,\n      \"missed_revenue\": 20000.3,\n      \"version\": \"V1\",\n      \"energy_price_kwh\": 6.67\n    },\n    {\n      \"capacity_revenue\": 27600.3,\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"energy_revenue\": 27600.3,\n      \"market_group\": \"PGF1_2_PDDP78\",\n      \"meter_count\": 10,\n      \"nomination_w\": 16600.88,\n      \"total_revenue\": 20600.3,\n      \"delivery_date\": \"2023-03\",\n      \"monetized_w\": 8400,\n      \"data_coverage_percentage\": 55.5,\n      \"capacity_performance_percentage\": 50.33,\n      \"energy_performance_percentage\": 60.5,\n      \"energy_earned_wh\": 2000.3,\n      \"potential_revenue\": 104366.8,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"capacity_earned_w\": 2000.3,\n      \"capacity_price\": 5.56,\n      \"performance_factor\": 0.5,\n      \"missed_revenue\": 20000.3,\n      \"version\": \"V1\",\n      \"energy_price_kwh\": 6.67\n    }\n  ],\n  \"page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d26f2948-3199-4269-a885-4e789ef6c206",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "market-group",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ],\n  \"status\": 400,\n  \"title\": \"Bad Request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b38b53e-9840-486e-bc8a-dee6da7ac287",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "market-group",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2beeac2c-4303-4061-afc7-1986e3136eb4",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "market-group",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "af5daf27-2c01-4fa3-9b85-1fc0a65c3f5a",
+              "name": "Returns 415 if provided content in the request is not supported.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "market-group",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Invalid value in the 'Accept' header.\",\n      \"description\": \"Supported types are application/json and text/csv\"\n    }\n  ],\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "88d857ca-f84a-4701-b806-3c0e1793f1f8",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "market-group",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ],\n  \"status\": 500,\n  \"title\": \"Server Error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ae0503bc-e2bf-400f-95fe-a307017788dc",
+          "name": "Revenue by meter",
+          "request": {
+            "name": "Revenue by meter",
+            "description": {
+              "content": "Retrieves revenue data for a designated month or months aggregated by meter",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "revenue",
+                "periodic",
+                "aggregation",
+                "meter",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"<string>\",\n  \"period_start\": \"<string>\",\n  \"programs\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    },\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    }\n  ],\n  \"version\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7341ccfd-56c0-4c31-b371-11ddf1f8f7e9",
+              "name": "Retrieves periodic meter revenue reports for a specified time frame, with a request limit of up to 3 months.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "meter",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"meters\": [\n    {\n      \"capacity_revenue\": 27600.3,\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"energy_revenue\": 27600.3,\n      \"load_types\": [\n        \"HVAC\",\n        \"BATTERY_STORAGE\"\n      ],\n      \"meter_id\": \"db0291d1-009d-4393-9a8d-4613a4efcd7a\",\n      \"nomination_w\": 16600.88,\n      \"revenue_type\": \"DELIVERED_CAPACITY\",\n      \"total_revenue\": 20600.3,\n      \"capacity_price\": 5.56,\n      \"delivery_date\": \"2023-03\",\n      \"monetized_w\": 8400,\n      \"capacity_earned_w\": 2000.3,\n      \"energy_earned_wh\": 2000.3,\n      \"partner_reference\": \"my-partner-meter-reference\",\n      \"capacity_performance_percentage\": 50.33,\n      \"energy_performance_percentage\": 60.5,\n      \"service_agreement_number\": \"T12245678907\",\n      \"customer_group\": \"Store Inc.\",\n      \"potential_revenue\": 104366.8,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"data_coverage_percentage\": 55.5,\n      \"program\": \"CCA\",\n      \"utility\": \"sce\",\n      \"customer\": \"John Doe\",\n      \"market_group\": \"PGF1_2_PDDP78\",\n      \"performance_factor\": 0.5,\n      \"missed_revenue\": 20000.3,\n      \"version\": \"V1\",\n      \"energy_price_kwh\": 6.67,\n      \"dispatch_event_response_percentage\": 75,\n      \"total_number_of_events\": 9597,\n      \"diagnosis\": \"NOT_APPLICABLE\",\n      \"historical_responsiveness\": \"NEVER_RESPONDS\"\n    },\n    {\n      \"capacity_revenue\": 27600.3,\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"energy_revenue\": 27600.3,\n      \"load_types\": [\n        \"HVAC\",\n        \"BATTERY_STORAGE\"\n      ],\n      \"meter_id\": \"db0291d1-009d-4393-9a8d-4613a4efcd7a\",\n      \"nomination_w\": 16600.88,\n      \"revenue_type\": \"DELIVERED_CAPACITY\",\n      \"total_revenue\": 20600.3,\n      \"capacity_price\": 5.56,\n      \"delivery_date\": \"2023-03\",\n      \"monetized_w\": 8400,\n      \"capacity_earned_w\": 2000.3,\n      \"energy_earned_wh\": 2000.3,\n      \"partner_reference\": \"my-partner-meter-reference\",\n      \"capacity_performance_percentage\": 50.33,\n      \"energy_performance_percentage\": 60.5,\n      \"service_agreement_number\": \"T12245678907\",\n      \"customer_group\": \"Store Inc.\",\n      \"potential_revenue\": 104366.8,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"data_coverage_percentage\": 55.5,\n      \"program\": \"CCA\",\n      \"utility\": \"sce\",\n      \"customer\": \"John Doe\",\n      \"market_group\": \"PGF1_2_PDDP78\",\n      \"performance_factor\": 0.5,\n      \"missed_revenue\": 20000.3,\n      \"version\": \"V1\",\n      \"energy_price_kwh\": 6.67,\n      \"dispatch_event_response_percentage\": 75,\n      \"total_number_of_events\": 7076,\n      \"diagnosis\": \"UNRESPONSIVE\",\n      \"historical_responsiveness\": \"NORMALLY_RESPONDS\"\n    }\n  ],\n  \"page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb51a574-583f-4008-bb1c-c024d04100da",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "meter",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ],\n  \"status\": 400,\n  \"title\": \"Bad Request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a869d055-f207-424f-bb1c-29463290ccae",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "meter",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bcea839f-a6a2-4ff4-86fa-2fffd2bd7664",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "meter",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "533a9ae7-099d-4439-a8a5-e6261c097665",
+              "name": "Returns 415 if provided content in the request is not supported.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "meter",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Invalid value in the 'Accept' header.\",\n      \"description\": \"Supported types are application/json and text/csv\"\n    }\n  ],\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39306c3e-b3bb-4859-8707-e1ebb93a3dcb",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "meter",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ],\n  \"status\": 500,\n  \"title\": \"Server Error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "600ce0e4-aef4-4314-8a6a-8384ad589922",
+          "name": "Revenue by utility",
+          "request": {
+            "name": "Revenue by utility",
+            "description": {
+              "content": "Retrieves revenue data for a designated month or months aggregated by utility",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "revenue",
+                "periodic",
+                "aggregation",
+                "utility",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"<string>\",\n  \"period_start\": \"<string>\",\n  \"programs\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    },\n    {\n      \"direction\": \"<string>\",\n      \"field\": \"<string>\"\n    }\n  ],\n  \"version\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3bb8c18b-9cd0-4bff-a9ef-7e8971c3d4e5",
+              "name": "Retrieves periodic utility revenue reports for a specified time frame, with a request limit of up to 3 months.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "utility",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"utilities\": [\n    {\n      \"utility\": \"PG&E\",\n      \"capacity_w\": {\n        \"earned_capacity\": {\n          \"quantity\": 5.56,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8,\n          \"avg_price_kw\": 4.4\n        },\n        \"four_hour_capacity_bonus\": {\n          \"quantity\": 5.56,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8,\n          \"avg_price_kw\": 4.4\n        },\n        \"missed_enrollment\": {\n          \"quantity\": 5.56,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8,\n          \"avg_price_kw\": 4.4\n        }\n      },\n      \"energy_wh\": {\n        \"energy_earned\": {\n          \"quantity\": 1778.59,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8\n        },\n        \"performance_bonus\": {\n          \"quantity\": 1778.59,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8\n        }\n      },\n      \"delivery_period\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"delivery_end_date\": \"2023-03\",\n      \"total_revenue\": 20600.3,\n      \"potential_revenue\": 104366.8,\n      \"meter_count\": 10,\n      \"meters_dispatched_count\": 185,\n      \"nomination_w\": 16600.88,\n      \"data_coverage_percentage\": 55.5,\n      \"monetized_w\": 8400,\n      \"capacity_earned_w\": 2000.3,\n      \"version\": \"V1\",\n      \"missed_revenue\": 20000.3,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"capacity_revenue\": 27600.3,\n      \"energy_revenue\": 27600.3,\n      \"capacity_price\": 5.56,\n      \"energy_price_kwh\": 6.67\n    },\n    {\n      \"utility\": \"PG&E\",\n      \"capacity_w\": {\n        \"earned_capacity\": {\n          \"quantity\": 5.56,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8,\n          \"avg_price_kw\": 4.4\n        },\n        \"four_hour_capacity_bonus\": {\n          \"quantity\": 5.56,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8,\n          \"avg_price_kw\": 4.4\n        },\n        \"missed_enrollment\": {\n          \"quantity\": 5.56,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8,\n          \"avg_price_kw\": 4.4\n        }\n      },\n      \"energy_wh\": {\n        \"energy_earned\": {\n          \"quantity\": 1778.59,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8\n        },\n        \"performance_bonus\": {\n          \"quantity\": 1778.59,\n          \"price\": 5.56,\n          \"performance\": 5.56,\n          \"revenue\": 27600.3,\n          \"potential_revenue\": 104366.8\n        }\n      },\n      \"delivery_period\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"delivery_end_date\": \"2023-03\",\n      \"total_revenue\": 20600.3,\n      \"potential_revenue\": 104366.8,\n      \"meter_count\": 10,\n      \"meters_dispatched_count\": 185,\n      \"nomination_w\": 16600.88,\n      \"data_coverage_percentage\": 55.5,\n      \"monetized_w\": 8400,\n      \"capacity_earned_w\": 2000.3,\n      \"version\": \"V1\",\n      \"missed_revenue\": 20000.3,\n      \"payment_adjustment\": 20,\n      \"penalty\": 11,\n      \"performance_adjustment\": 12,\n      \"capacity_revenue\": 27600.3,\n      \"energy_revenue\": 27600.3,\n      \"capacity_price\": 5.56,\n      \"energy_price_kwh\": 6.67\n    }\n  ],\n  \"page_token\": \"page_token\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c9d4e28-a8a5-412d-a770-60fcdb040bf0",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "utility",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ],\n  \"status\": 400,\n  \"title\": \"Bad Request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "103a653b-7cc5-41e2-a34f-6787c05a4934",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "utility",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5cd96fd-9a98-4449-9ba6-5ce0108a802c",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "utility",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3460bb18-09c2-449f-aae0-698f550c80f6",
+              "name": "Returns 415 if provided content in the request is not supported.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "utility",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Invalid value in the 'Accept' header.\",\n      \"description\": \"Supported types are application/json and text/csv\"\n    }\n  ],\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c65ace8f-98c9-4a81-b2f0-7c6f578e48f6",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "aggregation",
+                    "utility",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page_size\": 100,\n  \"period_end\": \"2023-03\",\n  \"period_start\": \"2023-03\",\n  \"programs\": [\n    \"DRAM\",\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"filters\": [\n    \"SCEC_1_PDRP\",\n    \"PDRP\"\n  ],\n  \"page_token\": \"<string>\",\n  \"sort\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": \"nomination_w\"\n    },\n    {\n      \"direction\": \"ASC\",\n      \"field\": \"meter_id\"\n    }\n  ],\n  \"version\": \"V1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ],\n  \"status\": 500,\n  \"title\": \"Server Error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3ef28fab-4bcf-40b6-a084-7e76154a824a",
+          "name": "Get monthly revenue reports",
+          "request": {
+            "name": "Get monthly revenue reports",
+            "description": {
+              "content": "Retrieves monthly revenue reports for a designated time frame. If a version is not specified, the response will include the latest  version.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "revenue",
+                "periodic",
+                "reports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "period_start",
+                  "value": "<string>",
+                  "description": "(Required) The start of the period for the report in ISO-8601 formatted year and month (`YYYY-MM`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "period_end",
+                  "value": "<string>",
+                  "description": "(Required) The end of the period for the report in ISO-8601 formatted year and month (`YYYY-MM`), which is inclusive."
+                },
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "<string>",
+                  "description": "The report's version. If not specified the latest version is returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "programs",
+                  "value": "<string>",
+                  "description": "The list of programs, separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "programs",
+                  "value": "<string>",
+                  "description": "The list of programs, separated by comma."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "483938e2-35ce-41b3-9f3c-312b27a83712",
+              "name": "Fetches periodic revenue reports for a designated time frame. If a version is not specified, the response will include the latest version.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "version",
+                      "value": "V1"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"actual_revenue\": 7600.55,\n  \"average_meter_revenue\": 1300,\n  \"capacity\": {\n    \"revenue\": 27600.3,\n    \"earned_w\": 11600.88,\n    \"delivered_w\": 900,\n    \"performance_percentage\": 55.32,\n    \"nomination_w\": 16600.88,\n    \"monetized_w\": 8400\n  },\n  \"dispatch_days_count\": 11,\n  \"energy\": {\n    \"revenue\": 27600.3,\n    \"earned_wh\": 11600.88,\n    \"performance_percentage\": 55.32,\n    \"awarded_wh\": 450\n  },\n  \"meters_dispatched_count\": 2000,\n  \"previous_adjusted_revenue\": 104366.8,\n  \"programs\": [\n    \"CCA\",\n    \"ENERGY-ONLY\"\n  ],\n  \"report_status\": [\n    {\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"programs\": [\n        \"CEC-DSGS\",\n        \"CEC-DSGS\"\n      ],\n      \"status\": \"FINALIZED\",\n      \"updated_at\": \"2010-04-18T01:43:22.006Z\",\n      \"delivery_date\": \"2023-03\",\n      \"version\": \"V1\"\n    },\n    {\n      \"delivery_end_date\": \"2023-03\",\n      \"delivery_start_date\": \"2023-03\",\n      \"programs\": [\n        \"CEC-DSGS\",\n        \"CEC-DSGS\"\n      ],\n      \"status\": \"FINALIZED\",\n      \"updated_at\": \"1959-06-01T15:15:40.474Z\",\n      \"delivery_date\": \"2023-03\",\n      \"version\": \"V1\"\n    }\n  ],\n  \"settlement_period\": {\n    \"period_start\": \"2023-03\",\n    \"period_end\": \"2023-03\"\n  },\n  \"total_meters_count\": 2000,\n  \"potential_revenue\": 104366.8,\n  \"payment_adjustment\": 20,\n  \"penalty\": 11,\n  \"performance_adjustment\": 12,\n  \"data_coverage_percentage\": 55.5,\n  \"dispatch_quantity_wh\": 1200,\n  \"performance_factor_percentage\": 55.5,\n  \"missed_revenue\": 20000.3,\n  \"capacity_performance_period\": {\n    \"start_date_time\": \"2025-03-01 15:00:00+00:00\",\n    \"end_date_time\": \"2025-03-01 16:00:00+00:00\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "82b52509-f5f3-4aed-8e74-8be675284db1",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "version",
+                      "value": "V1"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ],\n  \"status\": 400,\n  \"title\": \"Bad Request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e69f9e1-ae0e-4856-82aa-6abe383026f1",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "version",
+                      "value": "V1"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "998b58d9-b191-4ac8-ab32-8d5b1b7773aa",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "version",
+                      "value": "V1"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9a1e72a-3067-4fa3-a19f-82739bbd1093",
+              "name": "Returns 415 if provided content in the request is not supported.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "version",
+                      "value": "V1"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Invalid value in the 'Accept' header.\",\n      \"description\": \"Supported types are application/json and text/csv\"\n    }\n  ],\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c746a964-8555-4c96-abe6-6be31d211d7b",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "version",
+                      "value": "V1"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ],\n  \"status\": 500,\n  \"title\": \"Server Error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bb63a5b3-40f2-4193-b993-d713577f5bd6",
+          "name": "Get revenue report versions",
+          "request": {
+            "name": "Get revenue report versions",
+            "description": {
+              "content": "Retrieves versions of revenue reports for a specified period. The response includes all versions filtered by the provided report type and date range.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "revenue",
+                "periodic",
+                "versions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "programs",
+                  "value": "<string>",
+                  "description": "The list of programs, separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "programs",
+                  "value": "<string>",
+                  "description": "The list of programs, separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "period_start",
+                  "value": "<string>",
+                  "description": "(Required) The start of the period for the report in ISO-8601 formatted year and month (`YYYY-MM`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "period_end",
+                  "value": "<string>",
+                  "description": "(Required) The end of the period for the report in ISO-8601 formatted year and month (`YYYY-MM`), which is inclusive."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6f1991d8-0429-43ec-bab9-1b0a34af9a08",
+              "name": "Versions of revenue reports for a specified period. The response includes the latest revenue report versions filtered by the  provided report type and date range\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"version\": \"V1\",\n    \"updated_at\": \"2000-01-23 04:56:07+00:00\",\n    \"settlement_period\": {\n      \"period_start\": \"2023-03\",\n      \"period_end\": \"2023-03\"\n    }\n  },\n  {\n    \"version\": \"V1\",\n    \"updated_at\": \"2000-01-23 04:56:07+00:00\",\n    \"settlement_period\": {\n      \"period_start\": \"2023-03\",\n      \"period_end\": \"2023-03\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f4cbd8c-5e1f-48f4-9c65-5d85533569cf",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ],\n  \"status\": 400,\n  \"title\": \"Bad Request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f72db7dd-329f-496d-9595-21d43143dd2b",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c26b824-bccb-46df-a888-6f51c76d170c",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c6c40fa-f7b7-4f85-b87c-50039fa7364b",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "periodic",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "period_start",
+                      "value": "2024-05"
+                    },
+                    {
+                      "key": "period_end",
+                      "value": "2024-05"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ],\n  \"status\": 500,\n  \"title\": \"Server Error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "12caae60-1264-49e0-8e7a-e53b15d5972a",
+          "name": "Get annual revenue data",
+          "request": {
+            "name": "Get annual revenue data",
+            "description": {
+              "content": "Retrieves the revenue overview for a given year and transmission regions, if set.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "revenue",
+                "yearly",
+                ":year"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "transmission_region",
+                  "value": "<string>",
+                  "description": "The transmission region to filter the reports by."
+                },
+                {
+                  "disabled": false,
+                  "key": "transmission_regions",
+                  "value": "<string>",
+                  "description": "The transmission regions to filter the reports by."
+                },
+                {
+                  "disabled": false,
+                  "key": "transmission_regions",
+                  "value": "<string>",
+                  "description": "The transmission regions to filter the reports by."
+                },
+                {
+                  "disabled": false,
+                  "key": "programs",
+                  "value": "<string>",
+                  "description": "The list of programs, separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "programs",
+                  "value": "<string>",
+                  "description": "The list of programs, separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "report_statuses",
+                  "value": "<string>",
+                  "description": "The report status to filter the reports by. When left empty, reports with any status are returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "report_statuses",
+                  "value": "<string>",
+                  "description": "The report status to filter the reports by. When left empty, reports with any status are returned."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "year",
+                  "description": "(Required) The year of the report"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5a1475dd-1a6a-4037-bb79-3aa24b122d01",
+              "name": "Yearly overview with metrics and a list of all reports for the given year",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "yearly",
+                    ":year"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transmission_region",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "NYISO"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "report_statuses",
+                      "value": "PRELIMINARY"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "year",
+                      "description": "(Required) The year of the report"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"yearly_summary\": {\n    \"actual_revenue\": 7600.55,\n    \"preliminary_revenue\": 3800.15,\n    \"potential_revenue\": 104366.8,\n    \"missed_revenue\": 20000.3,\n    \"payment_adjustment\": 20,\n    \"penalty\": 11,\n    \"performance_adjustment\": 12,\n    \"monthly_revenue\": [\n      {\n        \"actual_revenue\": 7600.55,\n        \"preliminary_revenue\": 3800.15,\n        \"potential_revenue\": 104366.8,\n        \"month\": \"JANUARY\"\n      },\n      {\n        \"actual_revenue\": 7600.55,\n        \"preliminary_revenue\": 3800.15,\n        \"potential_revenue\": 104366.8,\n        \"month\": \"JANUARY\"\n      }\n    ]\n  },\n  \"revenue_sources\": {\n    \"capacity\": {\n      \"revenue\": 27600.3,\n      \"earned_w\": 11600.88,\n      \"nomination_w\": 16600.88,\n      \"performance_percentage\": 55.32\n    },\n    \"energy\": {\n      \"revenue\": 27600.3,\n      \"earned_wh\": 11600.88,\n      \"awarded_wh\": 450,\n      \"performance_percentage\": 55.32\n    }\n  },\n  \"regional_economics\": {\n    \"regions_revenue\": [\n      {\n        \"transmission_region\": \"CAISO\",\n        \"revenue\": 2600.66\n      },\n      {\n        \"transmission_region\": \"CAISO\",\n        \"revenue\": 2600.66\n      }\n    ]\n  },\n  \"unit_economics\": {\n    \"average_market_group_revenue\": 207600,\n    \"average_meter_revenue\": 207600,\n    \"meters_dispatched_count\": 0,\n    \"average_kw_revenue\": 207600\n  },\n  \"reports\": [\n    {\n      \"settlement_period\": {\n        \"period_start\": \"2023-03\",\n        \"period_end\": \"2023-03\"\n      },\n      \"settlement_type\": \"YEAR\",\n      \"total_payment\": 207600,\n      \"total_potential_revenue\": 207600,\n      \"missed_revenue\": 20000.3,\n      \"missed_revenue_by_diagnosis\": [\n        {\n          \"missed_revenue\": 20000.3,\n          \"diagnosis\": \"UNRESPONSIVE\"\n        },\n        {\n          \"missed_revenue\": 20000.3,\n          \"diagnosis\": \"UNRESPONSIVE\"\n        }\n      ],\n      \"statuses\": [\n        {\n          \"status\": \"PRELIMINARY\",\n          \"updated_at\": \"2000-01-23 04:56:07+00:00\"\n        },\n        {\n          \"status\": \"PRELIMINARY\",\n          \"updated_at\": \"2000-01-23 04:56:07+00:00\"\n        }\n      ],\n      \"dispatch_days_count\": 6,\n      \"transmission_region\": \"CAISO\",\n      \"programs\": [\n        \"CCA\",\n        \"ENERGY-ONLY\"\n      ]\n    },\n    {\n      \"settlement_period\": {\n        \"period_start\": \"2023-03\",\n        \"period_end\": \"2023-03\"\n      },\n      \"settlement_type\": \"YEAR\",\n      \"total_payment\": 207600,\n      \"total_potential_revenue\": 207600,\n      \"missed_revenue\": 20000.3,\n      \"missed_revenue_by_diagnosis\": [\n        {\n          \"missed_revenue\": 20000.3,\n          \"diagnosis\": \"UNRESPONSIVE\"\n        },\n        {\n          \"missed_revenue\": 20000.3,\n          \"diagnosis\": \"UNRESPONSIVE\"\n        }\n      ],\n      \"statuses\": [\n        {\n          \"status\": \"PRELIMINARY\",\n          \"updated_at\": \"2000-01-23 04:56:07+00:00\"\n        },\n        {\n          \"status\": \"PRELIMINARY\",\n          \"updated_at\": \"2000-01-23 04:56:07+00:00\"\n        }\n      ],\n      \"dispatch_days_count\": 6,\n      \"transmission_region\": \"CAISO\",\n      \"programs\": [\n        \"CCA\",\n        \"ENERGY-ONLY\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86a6bb29-ce46-4435-a750-0b4a086659c4",
+              "name": "Returns 400 if the request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "yearly",
+                    ":year"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transmission_region",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "NYISO"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "report_statuses",
+                      "value": "PRELIMINARY"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "year",
+                      "description": "(Required) The year of the report"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Validation Error\",\n      \"description\": \"Missing required parameter(s)\"\n    }\n  ],\n  \"status\": 400,\n  \"title\": \"Bad Request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "722e4558-ee03-4926-8bef-515a6fd34d79",
+              "name": "Returns 401 if the request is unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "yearly",
+                    ":year"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transmission_region",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "NYISO"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "report_statuses",
+                      "value": "PRELIMINARY"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "year",
+                      "description": "(Required) The year of the report"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "acfca485-1bdc-4ee3-904e-e320d623ee77",
+              "name": "Returns 403 if the request doesn't have the right values.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "yearly",
+                    ":year"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transmission_region",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "NYISO"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "report_statuses",
+                      "value": "PRELIMINARY"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "year",
+                      "description": "(Required) The year of the report"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"details\": [\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    },\n    {\n      \"message\": \"message\",\n      \"description\": \"description\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9952c220-13d1-44b9-8cfd-d4daabb3d87c",
+              "name": "Returns 415 if provided content in the request is not supported.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "yearly",
+                    ":year"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transmission_region",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "NYISO"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "report_statuses",
+                      "value": "PRELIMINARY"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "year",
+                      "description": "(Required) The year of the report"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Invalid value in the 'Accept' header.\",\n      \"description\": \"Supported types are application/json and text/csv\"\n    }\n  ],\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "939f38e0-8617-4a77-b200-04f38641b82b",
+              "name": "Returns 500 if the there's an internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "revenue",
+                    "yearly",
+                    ":year"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transmission_region",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "CAISO"
+                    },
+                    {
+                      "key": "transmission_regions",
+                      "value": "NYISO"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "CONED-DLRP"
+                    },
+                    {
+                      "key": "programs",
+                      "value": "PSEGLI-CSRP"
+                    },
+                    {
+                      "key": "report_statuses",
+                      "value": "PRELIMINARY"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "year",
+                      "description": "(Required) The year of the report"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"details\": [\n    {\n      \"message\": \"Internal Error\",\n      \"description\": \"A technical error has occurred\"\n    }\n  ],\n  \"status\": 500,\n  \"title\": \"Server Error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.staging.leap.energy",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "dd68a7ae-4bfe-417a-b71a-7d13083532a2",
+    "name": "create meters revenue API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Endpoints to create or update meters in bulk through Leap's API.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "create meters API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "create meters",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List meter jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v1.1/jobs/meters",
+            "params": [
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "One or more filters to apply. Uses the `AND` approach, so all filters should match for meter jobs to show up.  Use the `/v1.1/jobs/meter-job-filters` endpoint to retrieve all available  filters that can be applied when querying meter jobs. When you provide multiple values for a key (e.g. transmission_region), the IN operator is used. Combine multiple filters like this: `?filter=file_name:Test&filter=status:FAILED`"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "If there are more meter jobs to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page of meter jobs."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Amount of results to return. Defaults to 100."
+              },
+              {
+                "name": "search_query",
+                "value": "partner123",
+                "type": "query",
+                "description": "Search query to apply. Comma-separate multiple values. This is a free-text search that will be applied when searching through the meter jobs. Define the fields to search through in the `search_fields` parameter."
+              },
+              {
+                "name": "search_fields",
+                "value": "partner_reference,file_name",
+                "type": "query",
+                "description": "Fields to search through. Required if `search_query` is provided. If the string from `search_query` is found in any of these fields, the meter jobs will be included in the results."
+              }
+            ]
+          },
+          "docs": "List all meter upload jobs and their status."
+        },
+        {
+          "info": {
+            "name": "Create meters",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v1.1/jobs/meters",
+            "params": [
+              {
+                "name": "update_existing",
+                "value": "",
+                "type": "query",
+                "description": "If set to true, the API will update existing meters with the same partner reference. If set to false or parameter is omitted, the API will create new meters and return a duplicate error for existing meters with the same partner reference."
+              },
+              {
+                "name": "file_name",
+                "value": "",
+                "type": "query",
+                "description": "If set, the API will use this file_name when uploading the file to the API. If not set, the API will use the job_id and file_extension to create a file_name as fallback. The file_name must be a valid string up to 255 characters matching the file naming pattern."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create meters on the Leap platform individually or in bulk. Endpoint accepts both CSV and JSON input. Returns job ID."
+        },
+        {
+          "info": {
+            "name": "List meter upload filters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v1.1/jobs/meter-job-filters"
+          },
+          "docs": "[Leap frontend only] lists filters that can be used to filter meter jobs."
+        },
+        {
+          "info": {
+            "name": "Get meters job status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v1.1/jobs/meters/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "f1080382-ec33-48ed-a511-528af08f747e",
+                "type": "path",
+                "description": "The job ID returned when running a create meters batch job."
+              }
+            ]
+          },
+          "docs": "Get meters job status and associated meter IDs for successfully uploaded assets."
+        },
+        {
+          "info": {
+            "name": "Create a single meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v1.1/meters",
+            "params": [
+              {
+                "name": "update_existing",
+                "value": "",
+                "type": "query",
+                "description": "If set to true, the API will update existing meters with the same partner reference. If set to false or parameter is omitted, the API will create new meters and return a duplicate error for existing meters with the same partner reference."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a single meter on the Leap platform.  Endpoint accepts only JSON input, and returns a synchronous response.  For batch CSV uploads, use the asynchronous endpoint. The meter data needs to be accompanied by a token obtained from the  onboarding service. This token is needed to associate the created meter with a partner.  The token also contains any default values associated with this specific flow."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

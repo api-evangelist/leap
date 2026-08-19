@@ -1,0 +1,866 @@
+{
+  "item": [
+    {
+      "id": "6ad64427-aef8-4f4d-bfbd-db8c0a4c19bd",
+      "name": "create meters",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b57abc98-0c37-4ea9-baed-dddccdb37c54",
+          "name": "List meter jobs",
+          "request": {
+            "name": "List meter jobs",
+            "description": {
+              "content": "List all meter upload jobs and their status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "jobs",
+                "meters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "One or more filters to apply. Uses the `AND` approach, so all filters should match for meter jobs to show up.  Use the `/v1.1/jobs/meter-job-filters` endpoint to retrieve all available  filters that can be applied when querying meter jobs. When you provide multiple values for a key (e.g. transmission_region), the IN operator is used. Combine multiple filters like this: `?filter=file_name:Test&filter=status:FAILED`"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "One or more filters to apply. Uses the `AND` approach, so all filters should match for meter jobs to show up.  Use the `/v1.1/jobs/meter-job-filters` endpoint to retrieve all available  filters that can be applied when querying meter jobs. When you provide multiple values for a key (e.g. transmission_region), the IN operator is used. Combine multiple filters like this: `?filter=file_name:Test&filter=status:FAILED`"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>",
+                  "description": "If there are more meter jobs to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page of meter jobs."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "100",
+                  "description": "Amount of results to return. Defaults to 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_query",
+                  "value": "<string>",
+                  "description": "Search query to apply. Comma-separate multiple values. This is a free-text search that will be applied when searching through the meter jobs. Define the fields to search through in the `search_fields` parameter."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_fields",
+                  "value": "<string>",
+                  "description": "Fields to search through. Required if `search_query` is provided. If the string from `search_query` is found in any of these fields, the meter jobs will be included in the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_fields",
+                  "value": "<string>",
+                  "description": "Fields to search through. Required if `search_query` is provided. If the string from `search_query` is found in any of these fields, the meter jobs will be included in the results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2932b5dc-d74f-432d-8f98-0adceee62b99",
+              "name": "List of jobs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "jobs",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "file_name:Test"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "status:FAILED"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "search_query",
+                      "value": "partner123"
+                    },
+                    {
+                      "key": "search_fields",
+                      "value": "partner_reference"
+                    },
+                    {
+                      "key": "search_fields",
+                      "value": "file_name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"jobs\": [\n    {\n      \"job_id\": \"5961a37f-6325-431c-97cb-82f35e3c09cf\",\n      \"status\": \"COMPLETED\",\n      \"file_name\": \"meters_upload.csv\",\n      \"assets_count\": 10,\n      \"assets_created_count\": 8,\n      \"assets_updated_count\": 2,\n      \"assets_failed_count\": 0,\n      \"transmission_regions\": [\n        \"CAISO\"\n      ],\n      \"created_at\": \"2024-03-21 09:43:51.186000+00:00\",\n      \"updated_at\": \"2024-03-21 09:50:51.186000+00:00\"\n    }\n  ],\n  \"next_page_token\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5098d9f5-ab1e-4730-a791-f43c22a86f81",
+          "name": "Create meters",
+          "request": {
+            "name": "Create meters",
+            "description": {
+              "content": "Create meters on the Leap platform individually or in bulk. Endpoint accepts both CSV and JSON input. Returns job ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "jobs",
+                "meters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "update_existing",
+                  "value": "false",
+                  "description": "If set to true, the API will update existing meters with the same partner reference. If set to false or parameter is omitted, the API will create new meters and return a duplicate error for existing meters with the same partner reference."
+                },
+                {
+                  "disabled": false,
+                  "key": "file_name",
+                  "value": "<string>",
+                  "description": "If set, the API will use this file_name when uploading the file to the API. If not set, the API will use the job_id and file_extension to create a file_name as fallback. The file_name must be a valid string up to 255 characters matching the file naming pattern."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assets\": [\n    \"<object>\",\n    \"<object>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "313817a1-e27a-4d1a-96cb-a8d8d4b2f19e",
+              "name": "The job ID that got created, which you can use to poll the status of the job.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "jobs",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "update_existing",
+                      "value": "false"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "5961a37f-6325-431c-97cb-82f35e3c09cf.csv"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assets\": [\n    {\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n      },\n      \"customer_group\": \"customer_group\"\n    },\n    {\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n      },\n      \"customer_group\": \"customer_group\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"job_id\": \"5961a37f-6325-431c-97cb-82f35e3c09cf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4620fc4-3041-4c57-b351-a7a339171ab0",
+              "name": "Failed to create meter batch job, because the meter batch job request sent was invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "jobs",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "update_existing",
+                      "value": "false"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "5961a37f-6325-431c-97cb-82f35e3c09cf.csv"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assets\": [\n    {\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n      },\n      \"customer_group\": \"customer_group\"\n    },\n    {\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n      },\n      \"customer_group\": \"customer_group\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Meter id is not a UUID\",\n  \"status\": 400,\n  \"details\": [\n    {\n      \"message\": \"Missing required parameter\",\n      \"json_index\": 1,\n      \"problem_field\": \"partner_reference\"\n    },\n    {\n      \"message\": \"Invalid format\",\n      \"json_index\": 3,\n      \"problem_field\": \"transmission_region\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f7b71036-9f3f-4233-a6cd-97fa60ba33f0",
+              "name": "You do not have the necessary permissions for this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "jobs",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "update_existing",
+                      "value": "false"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "5961a37f-6325-431c-97cb-82f35e3c09cf.csv"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assets\": [\n    {\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n      },\n      \"customer_group\": \"customer_group\"\n    },\n    {\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n      },\n      \"customer_group\": \"customer_group\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"You do not have the necessary permissions for this operation\",\n  \"status\": 403,\n  \"details\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e1deb24-1b76-4bd3-afab-8bfe57b1b092",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "jobs",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "update_existing",
+                      "value": "false"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "5961a37f-6325-431c-97cb-82f35e3c09cf.csv"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assets\": [\n    {\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n      },\n      \"customer_group\": \"customer_group\"\n    },\n    {\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n      },\n      \"customer_group\": \"customer_group\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"An error happened whilst processing your request\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2834f75f-130a-4923-9480-7d1cf55e073b",
+          "name": "List meter upload filters",
+          "request": {
+            "name": "List meter upload filters",
+            "description": {
+              "content": "[Leap frontend only] lists filters that can be used to filter meter jobs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "jobs",
+                "meter-job-filters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0e65abef-007d-4675-b0f1-98b2e3975045",
+              "name": "Meter upload filters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "jobs",
+                    "meter-job-filters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"filter_options\": [\n    {\n      \"key\": \"status\",\n      \"values\": [\n        \"PROCESSING\",\n        \"FAILED\",\n        \"COMPLETED\",\n        \"COMPLETED_WITH_ERRORS\"\n      ]\n    },\n    {\n      \"key\": \"transmission_region\",\n      \"values\": [\n        \"CAISO\",\n        \"NYISO\",\n        \"ISONE\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f936942-52d0-437f-b5c9-ebb7b20ab587",
+          "name": "Get meters job status",
+          "request": {
+            "name": "Get meters job status",
+            "description": {
+              "content": "Get meters job status and associated meter IDs for successfully uploaded assets.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "jobs",
+                "meters",
+                ":job_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "job_id",
+                  "description": "(Required) The job ID returned when running a create meters batch job."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c4ddee47-99b0-4b12-89bc-0e968c82aa47",
+              "name": "Job details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "jobs",
+                    "meters",
+                    ":job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "job_id",
+                      "description": "(Required) The job ID returned when running a create meters batch job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"assets\": [\n    {\n      \"partner_reference\": \"test-device-123\",\n      \"status\": \"COMPLETED\",\n      \"status_detail\": {\n        \"name\": \"METER_CREATED\",\n        \"description\": \"A new meter was created.\"\n      },\n      \"created_at\": \"2024-03-21 09:43:51.186000+00:00\",\n      \"meter_id\": \"87654321-4321-8888-6666-2c963f66afa3\"\n    }\n  ],\n  \"job_id\": \"638451c8-4b81-4b91-ab43-c0ba0c5a0336\",\n  \"status\": \"COMPLETED\",\n  \"created_at\": \"2024-03-21 09:43:51.186000+00:00\",\n  \"updated_at\": \"2024-03-21 09:43:51.186000+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "88f38a44-f744-4c13-865c-6c9a10456307",
+          "name": "Create a single meter",
+          "request": {
+            "name": "Create a single meter",
+            "description": {
+              "content": "Create a single meter on the Leap platform.  Endpoint accepts only JSON input, and returns a synchronous response.  For batch CSV uploads, use the asynchronous endpoint. The meter data needs to be accompanied by a token obtained from the  onboarding service. This token is needed to associate the created meter with a partner.  The token also contains any default values associated with this specific flow.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "meters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "update_existing",
+                  "value": "false",
+                  "description": "If set to true, the API will update existing meters with the same partner reference. If set to false or parameter is omitted, the API will create new meters and return a duplicate error for existing meters with the same partner reference."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"onboarding_token\": \"<string>\",\n  \"provisional_asset\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8b47c6f0-47bd-4ad3-9af5-c53cc25d4aca",
+              "name": "A provisional asset. Processing this asset successfully results in a meter being created or updated,  whereas a failure does not create or update a meter.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "update_existing",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"onboarding_token\": \"eyJleGFtcGxlIjoiWW91IHNwZW50IHdheSB0b28gbXVjaCB0aW1lIGludG8gdGhpcyIsImluZm8iOiJMZWFwIHdpbGwgcHJvdmlkZSB0aGUgdG9rZW4ifQ.eyJleGFtcGxlIjoiWW91IHNwZW50IHdheSB0b28gbXVjaCB0aW1lIGludG8gdGhpcyIsImluZm8iOiJMZWFwIHdpbGwgcHJvdmlkZSB0aGUgdG9rZW4ifQ.eyJleGFtcGxlIjoiWW91IHNwZW50IHdheSB0b28gbXVjaCB0aW1lIGludG8gdGhpcyIsImluZm8iOiJMZWFwIHdpbGwgcHJvdmlkZSB0aGUgdG9rZW4ifQ\",\n  \"provisional_asset\": {\n    \"partner_reference\": \"unique-reference-id-12345\",\n    \"transmission_region\": \"CAISO\",\n    \"customer_classification\": \"RESIDENTIAL\",\n    \"load_types\": [\n      \"HVAC\"\n    ],\n    \"meter_type\": \"UTILITY_METER\",\n    \"customer\": {\n      \"street_1\": \"132 My Street\",\n      \"street_2\": \"Apartment 32\",\n      \"postal_code\": \"10001\",\n      \"city\": \"New York\",\n      \"state_or_province_code\": \"NY\",\n      \"country_code\": \"US\",\n      \"end_customer_name\": \"Customer Name\",\n      \"end_customer_title\": \"Mrs.\",\n      \"end_customer_email\": \"email@address.com\",\n      \"end_customer_phone_number\": \"(123) 123-4567\",\n      \"end_customer_company_name\": \"Company Name Inc.\",\n      \"partner_offering_name\": \"Offering Name\",\n      \"partner_offering_date\": \"2000-01-23\",\n      \"is_in_wholesale_capacity_market\": true,\n      \"dispatch_option\": \"DAILY\",\n      \"billing\": {\n        \"street_1\": \"132 My Billing Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"90210\",\n        \"city\": \"Los Angeles\",\n        \"state_or_province_code\": \"CA\",\n        \"country_code\": \"US\"\n      },\n      \"partner_customer_reference\": \"partner-customer-reference-1\"\n    },\n    \"device\": {\n      \"device_type\": \"BATTERY\",\n      \"device_serial_number\": \"device-serial-number\",\n      \"device_model\": \"device-model\",\n      \"device_manufacturer\": \"device-manufacturer\",\n      \"install_date\": \"2000-01-23\",\n      \"battery_power_capacity_kw\": 1.233,\n      \"battery_energy_capacity_kwh\": 9.876,\n      \"battery_duration_hours\": 4,\n      \"permission_to_operate_date\": \"2000-01-23\"\n    },\n    \"site\": {\n      \"load_zone\": \"load-zone\",\n      \"number_of_devices\": 1,\n      \"on_site_fossil_generator\": true,\n      \"renewable_generator\": true,\n      \"generator_capacity_kw\": 1.234,\n      \"generator_model_year\": 2020,\n      \"generator_manufacturer\": \"Manufacturer of the generator\",\n      \"generator_fuel_type\": \"\",\n      \"generator_serial_number\": \"generator-serial-number\",\n      \"site_devices\": [\n        {\n          \"device_type\": \"BATTERY\",\n          \"model\": \"device-model\",\n          \"manufacturer\": \"device-manufacturer\",\n          \"serial_number\": \"device-serial-number\",\n          \"energy_capacity_kwh\": 39.504,\n          \"power_capacity_kw\": 9.876,\n          \"energy_capacity_duration_hours\": 4,\n          \"voltage_level\": \"EVSE_LEVEL_1\",\n          \"model_year\": 2020,\n          \"fuel_type\": \"DIESEL\",\n          \"max_energy_production_rate_kw\": 7.5,\n          \"max_energy_consumption_rate_kw\": 7.5,\n          \"battery_max_state_of_charge_percentage\": 95,\n          \"battery_min_state_of_charge_percentage\": 10,\n          \"installer\": \"Acme Installations Inc.\",\n          \"pv_connected\": true\n        },\n        {\n          \"device_type\": \"BATTERY\",\n          \"model\": \"device-model\",\n          \"manufacturer\": \"device-manufacturer\",\n          \"serial_number\": \"device-serial-number\",\n          \"energy_capacity_kwh\": 39.504,\n          \"power_capacity_kw\": 9.876,\n          \"energy_capacity_duration_hours\": 4,\n          \"voltage_level\": \"EVSE_LEVEL_1\",\n          \"model_year\": 2020,\n          \"fuel_type\": \"DIESEL\",\n          \"max_energy_production_rate_kw\": 7.5,\n          \"max_energy_consumption_rate_kw\": 7.5,\n          \"battery_max_state_of_charge_percentage\": 95,\n          \"battery_min_state_of_charge_percentage\": 10,\n          \"installer\": \"Acme Installations Inc.\",\n          \"pv_connected\": true\n        }\n      ]\n    },\n    \"caiso\": {\n      \"is_receiving_sgip_funding\": true,\n      \"nem_type\": \"NEM2\"\n    },\n    \"isone\": {\n      \"in_connected_solutions\": true\n    },\n    \"nyiso\": {\n      \"cbl_method\": \"AVERAGE_DAY\",\n      \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n      \"existing_nyiso_resource_id\": \"666266\",\n      \"partner_nyiso_resource_name\": \"666266\"\n    },\n    \"utility\": {\n      \"utility_name\": \"PGE\",\n      \"load_serving_entity\": \"PGE\",\n      \"electric_service_account_number\": \"12243243-121\",\n      \"tariff\": \"tariff code\",\n      \"voltage\": \">= 600 V\",\n      \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n    },\n    \"customer_group\": \"customer_group\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"partner_reference\": \"\",\n  \"status\": \"PROCESSING\",\n  \"status_detail\": {\n    \"name\": \"ACCOUNT_MISMATCH\",\n    \"description\": \"description\",\n    \"failed_fields\": {\n      \"key\": \"failed_fields\"\n    }\n  },\n  \"created_at\": \"2000-01-23 04:56:07+00:00\",\n  \"meter_id\": \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"job_id\": \"5961a37f-6325-431c-97cb-82f35e3c09cf\",\n  \"data\": {\n    \"partner_reference\": \"unique-reference-id-12345\",\n    \"transmission_region\": \"CAISO\",\n    \"customer_classification\": \"RESIDENTIAL\",\n    \"load_types\": [\n      \"HVAC\"\n    ],\n    \"meter_type\": \"UTILITY_METER\",\n    \"customer\": {\n      \"street_1\": \"132 My Street\",\n      \"street_2\": \"Apartment 32\",\n      \"postal_code\": \"10001\",\n      \"city\": \"New York\",\n      \"state_or_province_code\": \"NY\",\n      \"country_code\": \"US\",\n      \"end_customer_name\": \"Customer Name\",\n      \"end_customer_title\": \"Mrs.\",\n      \"end_customer_email\": \"email@address.com\",\n      \"end_customer_phone_number\": \"(123) 123-4567\",\n      \"end_customer_company_name\": \"Company Name Inc.\",\n      \"partner_offering_name\": \"Offering Name\",\n      \"partner_offering_date\": \"2000-01-23\",\n      \"is_in_wholesale_capacity_market\": true,\n      \"dispatch_option\": \"DAILY\",\n      \"billing\": {\n        \"street_1\": \"132 My Billing Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"90210\",\n        \"city\": \"Los Angeles\",\n        \"state_or_province_code\": \"CA\",\n        \"country_code\": \"US\"\n      },\n      \"partner_customer_reference\": \"partner-customer-reference-1\"\n    },\n    \"device\": {\n      \"device_type\": \"BATTERY\",\n      \"device_serial_number\": \"device-serial-number\",\n      \"device_model\": \"device-model\",\n      \"device_manufacturer\": \"device-manufacturer\",\n      \"install_date\": \"2000-01-23\",\n      \"battery_power_capacity_kw\": 1.233,\n      \"battery_energy_capacity_kwh\": 9.876,\n      \"battery_duration_hours\": 4,\n      \"permission_to_operate_date\": \"2000-01-23\"\n    },\n    \"site\": {\n      \"load_zone\": \"load-zone\",\n      \"number_of_devices\": 1,\n      \"on_site_fossil_generator\": true,\n      \"renewable_generator\": true,\n      \"generator_capacity_kw\": 1.234,\n      \"generator_model_year\": 2020,\n      \"generator_manufacturer\": \"Manufacturer of the generator\",\n      \"generator_fuel_type\": \"\",\n      \"generator_serial_number\": \"generator-serial-number\",\n      \"site_devices\": [\n        {\n          \"device_type\": \"BATTERY\",\n          \"model\": \"device-model\",\n          \"manufacturer\": \"device-manufacturer\",\n          \"serial_number\": \"device-serial-number\",\n          \"energy_capacity_kwh\": 39.504,\n          \"power_capacity_kw\": 9.876,\n          \"energy_capacity_duration_hours\": 4,\n          \"voltage_level\": \"EVSE_LEVEL_1\",\n          \"model_year\": 2020,\n          \"fuel_type\": \"DIESEL\",\n          \"max_energy_production_rate_kw\": 7.5,\n          \"max_energy_consumption_rate_kw\": 7.5,\n          \"battery_max_state_of_charge_percentage\": 95,\n          \"battery_min_state_of_charge_percentage\": 10,\n          \"installer\": \"Acme Installations Inc.\",\n          \"pv_connected\": true\n        },\n        {\n          \"device_type\": \"BATTERY\",\n          \"model\": \"device-model\",\n          \"manufacturer\": \"device-manufacturer\",\n          \"serial_number\": \"device-serial-number\",\n          \"energy_capacity_kwh\": 39.504,\n          \"power_capacity_kw\": 9.876,\n          \"energy_capacity_duration_hours\": 4,\n          \"voltage_level\": \"EVSE_LEVEL_1\",\n          \"model_year\": 2020,\n          \"fuel_type\": \"DIESEL\",\n          \"max_energy_production_rate_kw\": 7.5,\n          \"max_energy_consumption_rate_kw\": 7.5,\n          \"battery_max_state_of_charge_percentage\": 95,\n          \"battery_min_state_of_charge_percentage\": 10,\n          \"installer\": \"Acme Installations Inc.\",\n          \"pv_connected\": true\n        }\n      ]\n    },\n    \"caiso\": {\n      \"is_receiving_sgip_funding\": true,\n      \"nem_type\": \"NEM2\"\n    },\n    \"isone\": {\n      \"in_connected_solutions\": true\n    },\n    \"nyiso\": {\n      \"cbl_method\": \"AVERAGE_DAY\",\n      \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n      \"existing_nyiso_resource_id\": \"666266\",\n      \"partner_nyiso_resource_name\": \"666266\"\n    },\n    \"utility\": {\n      \"utility_name\": \"PGE\",\n      \"load_serving_entity\": \"PGE\",\n      \"electric_service_account_number\": \"12243243-121\",\n      \"tariff\": \"tariff code\",\n      \"voltage\": \">= 600 V\",\n      \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n    },\n    \"customer_group\": \"customer_group\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c6e3236-5de4-4ae6-b4a2-480eeae99775",
+              "name": "Something went wrong, and the API could not create the provisional asset. The API will return a 200 if  a provisional asset is created, but the meter creation fails. In that case, the response body will contain details on the failure.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "meters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "update_existing",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"onboarding_token\": \"eyJleGFtcGxlIjoiWW91IHNwZW50IHdheSB0b28gbXVjaCB0aW1lIGludG8gdGhpcyIsImluZm8iOiJMZWFwIHdpbGwgcHJvdmlkZSB0aGUgdG9rZW4ifQ.eyJleGFtcGxlIjoiWW91IHNwZW50IHdheSB0b28gbXVjaCB0aW1lIGludG8gdGhpcyIsImluZm8iOiJMZWFwIHdpbGwgcHJvdmlkZSB0aGUgdG9rZW4ifQ.eyJleGFtcGxlIjoiWW91IHNwZW50IHdheSB0b28gbXVjaCB0aW1lIGludG8gdGhpcyIsImluZm8iOiJMZWFwIHdpbGwgcHJvdmlkZSB0aGUgdG9rZW4ifQ\",\n  \"provisional_asset\": {\n    \"partner_reference\": \"unique-reference-id-12345\",\n    \"transmission_region\": \"CAISO\",\n    \"customer_classification\": \"RESIDENTIAL\",\n    \"load_types\": [\n      \"HVAC\"\n    ],\n    \"meter_type\": \"UTILITY_METER\",\n    \"customer\": {\n      \"street_1\": \"132 My Street\",\n      \"street_2\": \"Apartment 32\",\n      \"postal_code\": \"10001\",\n      \"city\": \"New York\",\n      \"state_or_province_code\": \"NY\",\n      \"country_code\": \"US\",\n      \"end_customer_name\": \"Customer Name\",\n      \"end_customer_title\": \"Mrs.\",\n      \"end_customer_email\": \"email@address.com\",\n      \"end_customer_phone_number\": \"(123) 123-4567\",\n      \"end_customer_company_name\": \"Company Name Inc.\",\n      \"partner_offering_name\": \"Offering Name\",\n      \"partner_offering_date\": \"2000-01-23\",\n      \"is_in_wholesale_capacity_market\": true,\n      \"dispatch_option\": \"DAILY\",\n      \"billing\": {\n        \"street_1\": \"132 My Billing Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"90210\",\n        \"city\": \"Los Angeles\",\n        \"state_or_province_code\": \"CA\",\n        \"country_code\": \"US\"\n      },\n      \"partner_customer_reference\": \"partner-customer-reference-1\"\n    },\n    \"device\": {\n      \"device_type\": \"BATTERY\",\n      \"device_serial_number\": \"device-serial-number\",\n      \"device_model\": \"device-model\",\n      \"device_manufacturer\": \"device-manufacturer\",\n      \"install_date\": \"2000-01-23\",\n      \"battery_power_capacity_kw\": 1.233,\n      \"battery_energy_capacity_kwh\": 9.876,\n      \"battery_duration_hours\": 4,\n      \"permission_to_operate_date\": \"2000-01-23\"\n    },\n    \"site\": {\n      \"load_zone\": \"load-zone\",\n      \"number_of_devices\": 1,\n      \"on_site_fossil_generator\": true,\n      \"renewable_generator\": true,\n      \"generator_capacity_kw\": 1.234,\n      \"generator_model_year\": 2020,\n      \"generator_manufacturer\": \"Manufacturer of the generator\",\n      \"generator_fuel_type\": \"\",\n      \"generator_serial_number\": \"generator-serial-number\",\n      \"site_devices\": [\n        {\n          \"device_type\": \"BATTERY\",\n          \"model\": \"device-model\",\n          \"manufacturer\": \"device-manufacturer\",\n          \"serial_number\": \"device-serial-number\",\n          \"energy_capacity_kwh\": 39.504,\n          \"power_capacity_kw\": 9.876,\n          \"energy_capacity_duration_hours\": 4,\n          \"voltage_level\": \"EVSE_LEVEL_1\",\n          \"model_year\": 2020,\n          \"fuel_type\": \"DIESEL\",\n          \"max_energy_production_rate_kw\": 7.5,\n          \"max_energy_consumption_rate_kw\": 7.5,\n          \"battery_max_state_of_charge_percentage\": 95,\n          \"battery_min_state_of_charge_percentage\": 10,\n          \"installer\": \"Acme Installations Inc.\",\n          \"pv_connected\": true\n        },\n        {\n          \"device_type\": \"BATTERY\",\n          \"model\": \"device-model\",\n          \"manufacturer\": \"device-manufacturer\",\n          \"serial_number\": \"device-serial-number\",\n          \"energy_capacity_kwh\": 39.504,\n          \"power_capacity_kw\": 9.876,\n          \"energy_capacity_duration_hours\": 4,\n          \"voltage_level\": \"EVSE_LEVEL_1\",\n          \"model_year\": 2020,\n          \"fuel_type\": \"DIESEL\",\n          \"max_energy_production_rate_kw\": 7.5,\n          \"max_energy_consumption_rate_kw\": 7.5,\n          \"battery_max_state_of_charge_percentage\": 95,\n          \"battery_min_state_of_charge_percentage\": 10,\n          \"installer\": \"Acme Installations Inc.\",\n          \"pv_connected\": true\n        }\n      ]\n    },\n    \"caiso\": {\n      \"is_receiving_sgip_funding\": true,\n      \"nem_type\": \"NEM2\"\n    },\n    \"isone\": {\n      \"in_connected_solutions\": true\n    },\n    \"nyiso\": {\n      \"cbl_method\": \"AVERAGE_DAY\",\n      \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n      \"existing_nyiso_resource_id\": \"666266\",\n      \"partner_nyiso_resource_name\": \"666266\"\n    },\n    \"utility\": {\n      \"utility_name\": \"PGE\",\n      \"load_serving_entity\": \"PGE\",\n      \"electric_service_account_number\": \"12243243-121\",\n      \"tariff\": \"tariff code\",\n      \"voltage\": \">= 600 V\",\n      \"utility_meter_serial_number\": \"utility-meter-serial-number\"\n    },\n    \"customer_group\": \"customer_group\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"field\": \"field\",\n      \"description\": \"description\",\n      \"suggestions\": [\n        {\n          \"suggestions\": [\n            {\n              \"field\": \"field\",\n              \"suggestion\": \"\"\n            },\n            {\n              \"field\": \"field\",\n              \"suggestion\": \"\"\n            }\n          ]\n        },\n        {\n          \"suggestions\": [\n            {\n              \"field\": \"field\",\n              \"suggestion\": \"\"\n            },\n            {\n              \"field\": \"field\",\n              \"suggestion\": \"\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"field\": \"field\",\n      \"description\": \"description\",\n      \"suggestions\": [\n        {\n          \"suggestions\": [\n            {\n              \"field\": \"field\",\n              \"suggestion\": \"\"\n            },\n            {\n              \"field\": \"field\",\n              \"suggestion\": \"\"\n            }\n          ]\n        },\n        {\n          \"suggestions\": [\n            {\n              \"field\": \"field\",\n              \"suggestion\": \"\"\n            },\n            {\n              \"field\": \"field\",\n              \"suggestion\": \"\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.staging.leap.energy",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9b853ce9-889e-4ec9-87a7-64173807a568",
+    "name": "create meters API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Endpoints to create or update meters in bulk through Leap's API.",
+      "type": "text/plain"
+    }
+  }
+}

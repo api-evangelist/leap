@@ -1,0 +1,242 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "create meters revenue API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "revenue",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Revenue by customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v1.1/revenue/periodic/aggregation/customer/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves revenue data for a designated month or months aggregated by customer"
+        },
+        {
+          "info": {
+            "name": "Revenue by load type",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v1.1/revenue/periodic/aggregation/load-type/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves revenue data for a designated month or months aggregated by load type"
+        },
+        {
+          "info": {
+            "name": "Revenue by market group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v1.1/revenue/periodic/aggregation/market-group/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves revenue data for a designated month or months aggregated by market group"
+        },
+        {
+          "info": {
+            "name": "Revenue by meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v1.1/revenue/periodic/aggregation/meter/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves revenue data for a designated month or months aggregated by meter"
+        },
+        {
+          "info": {
+            "name": "Revenue by utility",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v1.1/revenue/periodic/aggregation/utility/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves revenue data for a designated month or months aggregated by utility"
+        },
+        {
+          "info": {
+            "name": "Get monthly revenue reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v1.1/revenue/periodic/reports",
+            "params": [
+              {
+                "name": "period_start",
+                "value": "",
+                "type": "query",
+                "description": "The start of the period for the report in ISO-8601 formatted year and month (`YYYY-MM`)."
+              },
+              {
+                "name": "period_end",
+                "value": "",
+                "type": "query",
+                "description": "The end of the period for the report in ISO-8601 formatted year and month (`YYYY-MM`), which is inclusive."
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "The report's version. If not specified the latest version is returned."
+              },
+              {
+                "name": "programs",
+                "value": "",
+                "type": "query",
+                "description": "The list of programs, separated by comma."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves monthly revenue reports for a designated time frame. If a version is not specified, the response will include the latest  version.\n"
+        },
+        {
+          "info": {
+            "name": "Get revenue report versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v1.1/revenue/periodic/versions",
+            "params": [
+              {
+                "name": "programs",
+                "value": "",
+                "type": "query",
+                "description": "The list of programs, separated by comma."
+              },
+              {
+                "name": "period_start",
+                "value": "",
+                "type": "query",
+                "description": "The start of the period for the report in ISO-8601 formatted year and month (`YYYY-MM`)."
+              },
+              {
+                "name": "period_end",
+                "value": "",
+                "type": "query",
+                "description": "The end of the period for the report in ISO-8601 formatted year and month (`YYYY-MM`), which is inclusive."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves versions of revenue reports for a specified period. The response includes all versions filtered by the provided report type and date range.\n"
+        },
+        {
+          "info": {
+            "name": "Get annual revenue data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v1.1/revenue/yearly/:year",
+            "params": [
+              {
+                "name": "year",
+                "value": "2025",
+                "type": "path",
+                "description": "The year of the report"
+              },
+              {
+                "name": "transmission_region",
+                "value": "",
+                "type": "query",
+                "description": "The transmission region to filter the reports by."
+              },
+              {
+                "name": "transmission_regions",
+                "value": "",
+                "type": "query",
+                "description": "The transmission regions to filter the reports by."
+              },
+              {
+                "name": "programs",
+                "value": "",
+                "type": "query",
+                "description": "The list of programs, separated by comma."
+              },
+              {
+                "name": "report_statuses",
+                "value": "",
+                "type": "query",
+                "description": "The report status to filter the reports by. When left empty, reports with any status are returned."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves the revenue overview for a given year and transmission regions, if set."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

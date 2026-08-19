@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "create meters performance API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "performance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Monthly unresponsive meters",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v1.1/performance/diagnosis/monthly/unresponsive/meters",
+            "params": [
+              {
+                "name": "include_summary",
+                "value": "",
+                "type": "query",
+                "description": "Boolean flag indicating whether the response should include  a summary of the requested data in addition to the detailed results."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves unresponsive meters in a designated month"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

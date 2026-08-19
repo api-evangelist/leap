@@ -1,0 +1,148 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "create meters nominations API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "nominations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get suggested nominations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v2/meters/:meter_id/nominations/suggestions",
+            "params": [
+              {
+                "name": "meter_id",
+                "value": "",
+                "type": "path",
+                "description": "Meter ID"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date of the window to look for nomination suggestions, defaults to beginning of this day. Any  suggestion that is ending after this date is included."
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date of the window to look for nomination suggestions, defaults to null. Any suggestion that is starting at  or before this date is included."
+              }
+            ]
+          },
+          "docs": "Get suggested nomination details for a meter for each applicable program and time period."
+        },
+        {
+          "info": {
+            "name": "Suggest meter nominations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v2/meters/:meter_id/nominations/suggestions",
+            "params": [
+              {
+                "name": "meter_id",
+                "value": "",
+                "type": "path",
+                "description": "Meter ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Suggest nominations for individual meters. A suggestion is reviewed by Leap before it becomes an actual nomination. Leap can approve, modify, or deny each suggestion. Modified suggestions are adjusted by Leap before becoming a nomination and will often include communication or coordination with your operations team.  Note that when a more recent suggestion completely eclipses an earlier provided suggestion, the earlier nomination will be deleted.  However, if there are partial overlaps, Leap wil"
+        },
+        {
+          "info": {
+            "name": "Delete suggested nominations",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.staging.leap.energy/v2/meters/:meter_id/nominations/suggestions/:nomination_suggestion_id",
+            "params": [
+              {
+                "name": "meter_id",
+                "value": "",
+                "type": "path",
+                "description": "Meter ID"
+              },
+              {
+                "name": "nomination_suggestion_id",
+                "value": "",
+                "type": "path",
+                "description": "Nomination Suggestion ID"
+              }
+            ]
+          },
+          "docs": "Remove a suggestion that is no longer needed. It is recommended to clean up and delete no longer needed or relevant suggestions so Leap is able to more quickly review outstanding suggestions. Note that a suggestion can only be deleted if it is still in the RECEIVED status.  Once it has been reviewed and processed by Leap, it can no longer be deleted."
+        },
+        {
+          "info": {
+            "name": "Suggest bulk nominations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v2/meters/nominations/suggestions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Suggest nominations for multiple meters. A suggestion is reviewed by Leap before it becomes an actual nomination. Leap can approve, modify, or deny each suggestion. Modified suggestions are adjusted by Leap before becoming a nomination and will often include communication or coordination with your operations team.  Note that when a more recent suggestion completely eclipses an earlier provided suggestion, the earlier nomination will be deleted.  However, if there are partial overlaps, Leap will "
+        },
+        {
+          "info": {
+            "name": "Search suggested nominations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v2/meters/nominations/suggestions/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search suggested nominations across all meters and filter based on the request body parameters. Use the 'Accept' header to specify whether you'd like JSON or CSV as the response type."
+        },
+        {
+          "info": {
+            "name": "Search nominations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/v2/meters/nominations/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search for nominations on all meters. You can filter on meter IDs and a date range. These are the nominations in kW that will be used for program enrollment. Use the 'Accept' header to specify whether you'd like JSON or CSV as the response type."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

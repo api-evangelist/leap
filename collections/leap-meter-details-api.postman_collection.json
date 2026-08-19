@@ -1,0 +1,772 @@
+{
+  "item": [
+    {
+      "id": "004540c8-ed1b-4304-a359-2e75997f933c",
+      "name": "Meter Details",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b16a8fc5-92c4-42ff-93cc-45910d4bfdbf",
+          "name": "Get meter details",
+          "request": {
+            "name": "Get meter details",
+            "description": {
+              "content": "Get details about a meter such as customer, utility, site, and device information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "meters",
+                ":meter_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "meter_id",
+                  "description": "(Required) Meter ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b69e7ba3-f9df-4bf0-81bc-4107f88e565b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    ":meter_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "meter_id",
+                      "description": "(Required) Meter ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"meter_id\": \"11111111-1111-1111-1111-111111111111\",\n  \"partner_reference\": \"unique-reference-id-12345\",\n  \"transmission_region\": \"CAISO\",\n  \"customer_classification\": \"RESIDENTIAL\",\n  \"load_types\": [\n    \"HVAC\"\n  ],\n  \"meter_type\": \"UTILITY_METER\",\n  \"connection_references\": [\n    \"connection-reference-id-1\",\n    \"connection-reference-id-1\"\n  ],\n  \"customer_group\": \"customer_group\",\n  \"tags\": [\n    \"tags\",\n    \"tags\"\n  ],\n  \"is_archived\": true,\n  \"customer\": {\n    \"street_1\": \"132 My Street\",\n    \"street_2\": \"Apartment 32\",\n    \"postal_code\": \"10001\",\n    \"city\": \"New York\",\n    \"state_or_province_code\": \"NY\",\n    \"country_code\": \"US\",\n    \"end_customer_name\": \"Customer Name\",\n    \"end_customer_title\": \"Mrs.\",\n    \"end_customer_email\": \"email@address.com\",\n    \"end_customer_phone_number\": \"(123) 123-4567\",\n    \"end_customer_company_name\": \"Company Name Inc.\",\n    \"partner_offering_name\": \"Offering Name\",\n    \"partner_offering_date\": \"2000-01-23\",\n    \"is_in_wholesale_capacity_market\": true,\n    \"dispatch_option\": \"DAILY\",\n    \"billing\": {\n      \"street_1\": \"132 My Billing Street\",\n      \"street_2\": \"Apartment 32\",\n      \"postal_code\": \"90210\",\n      \"city\": \"Los Angeles\",\n      \"state_or_province_code\": \"CA\",\n      \"country_code\": \"US\"\n    },\n    \"partner_customer_reference\": \"partner-customer-reference-1\"\n  },\n  \"device\": {\n    \"device_type\": \"BATTERY\",\n    \"device_serial_number\": \"device-serial-number\",\n    \"device_model\": \"device-model\",\n    \"device_manufacturer\": \"device-manufacturer\",\n    \"install_date\": \"2000-01-23\",\n    \"battery_power_capacity_kw\": 1.233,\n    \"battery_energy_capacity_kwh\": 9.876,\n    \"battery_duration_hours\": 4,\n    \"permission_to_operate_date\": \"2000-01-23\"\n  },\n  \"site\": {\n    \"load_zone\": \"load-zone\",\n    \"number_of_devices\": 1,\n    \"on_site_fossil_generator\": true,\n    \"renewable_generator\": true,\n    \"generator_capacity_kw\": 1.234,\n    \"generator_model_year\": 2020,\n    \"generator_manufacturer\": \"Manufacturer of the generator\",\n    \"generator_fuel_type\": \"\",\n    \"generator_serial_number\": \"generator-serial-number\",\n    \"site_devices\": [\n      {\n        \"device_type\": \"BATTERY\",\n        \"model\": \"device-model\",\n        \"manufacturer\": \"device-manufacturer\",\n        \"serial_number\": \"device-serial-number\",\n        \"energy_capacity_kwh\": 39.504,\n        \"power_capacity_kw\": 9.876,\n        \"energy_capacity_duration_hours\": 4,\n        \"voltage_level\": \"EVSE_LEVEL_1\",\n        \"model_year\": 2020,\n        \"fuel_type\": \"DIESEL\",\n        \"max_energy_production_rate_kw\": 7.5,\n        \"max_energy_consumption_rate_kw\": 7.5,\n        \"battery_max_state_of_charge_percentage\": 95,\n        \"battery_min_state_of_charge_percentage\": 10,\n        \"installer\": \"Acme Installations Inc.\",\n        \"pv_connected\": true\n      },\n      {\n        \"device_type\": \"BATTERY\",\n        \"model\": \"device-model\",\n        \"manufacturer\": \"device-manufacturer\",\n        \"serial_number\": \"device-serial-number\",\n        \"energy_capacity_kwh\": 39.504,\n        \"power_capacity_kw\": 9.876,\n        \"energy_capacity_duration_hours\": 4,\n        \"voltage_level\": \"EVSE_LEVEL_1\",\n        \"model_year\": 2020,\n        \"fuel_type\": \"DIESEL\",\n        \"max_energy_production_rate_kw\": 7.5,\n        \"max_energy_consumption_rate_kw\": 7.5,\n        \"battery_max_state_of_charge_percentage\": 95,\n        \"battery_min_state_of_charge_percentage\": 10,\n        \"installer\": \"Acme Installations Inc.\",\n        \"pv_connected\": true\n      }\n    ]\n  },\n  \"caiso\": {\n    \"is_receiving_sgip_funding\": true,\n    \"nem_type\": \"NEM2\"\n  },\n  \"isone\": {\n    \"in_connected_solutions\": true\n  },\n  \"nyiso\": {\n    \"cbl_method\": \"AVERAGE_DAY\",\n    \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n    \"existing_nyiso_resource_id\": \"666266\",\n    \"partner_nyiso_resource_name\": \"666266\"\n  },\n  \"utility\": {\n    \"utility_name\": \"PGE\",\n    \"load_serving_entity\": \"PGE\",\n    \"electric_service_account_number\": \"12243243-121\",\n    \"tariff\": \"tariff code\",\n    \"voltage\": \">= 600 V\",\n    \"utility_meter_serial_number\": \"utility-meter-serial-number\",\n    \"bill_service_agreement_number\": \"bill_service_agreement_number\",\n    \"bill_customer_account_number\": \"bill_customer_account_number\"\n  },\n  \"audit\": {\n    \"created_by\": \"PARTNER\",\n    \"created_at\": \"2000-01-23 04:56:07+00:00\",\n    \"updated_at\": \"2000-01-23 04:56:07+00:00\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ebbf902-ae96-43d7-a6c7-19f0a2c9ff78",
+              "name": "The request is not valid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    ":meter_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "meter_id",
+                      "description": "(Required) Meter ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Meter id is not a UUID\",\n  \"status\": 400,\n  \"details\": {\n    \"meter_id\": \"abcdef\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5417f327-a4d5-48f4-8771-dad97444dee3",
+              "name": "You are not authorized to perform this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    ":meter_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "meter_id",
+                      "description": "(Required) Meter ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a4a76fd7-31eb-4de2-9c3f-6ef454aefce6",
+              "name": "You do not have the necessary permissions for this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    ":meter_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "meter_id",
+                      "description": "(Required) Meter ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"You do not have the necessary permissions for this operation\",\n  \"status\": 403,\n  \"details\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91113477-e8d2-402f-8ebe-9f19b8b56ec4",
+              "name": "Meter not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    ":meter_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "meter_id",
+                      "description": "(Required) Meter ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Meter not found\",\n  \"status\": 404,\n  \"details\": {\n    \"meter_id\": \"f5c5e328-e325-4d6d-b357-5015ed5962a7\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d88fd1d-8a01-4a4a-aa03-c35a3c3dbc02",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    ":meter_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "meter_id",
+                      "description": "(Required) Meter ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"An error happened whilst processing your request\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4a35c555-533b-4103-8524-ad644a7f9de6",
+          "name": "Search meter details",
+          "request": {
+            "name": "Search meter details",
+            "description": {
+              "content": "Retrieve meter details, such as customer, utility, site, and device information for all meters. Optionally filter by one or more request parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "meters",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page_token\": \"<string>\",\n  \"page_size\": 500,\n  \"transmission_region\": \"<string>\",\n  \"customer_classification\": \"<string>\",\n  \"meter_ids\": [\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"partner_references\": [\n    \"<string>\"\n  ],\n  \"global_enrollment_statuses\": [\n    \"<string>\"\n  ],\n  \"meter_types\": [\n    \"<string>\"\n  ],\n  \"load_types\": [\n    \"<string>\"\n  ],\n  \"customer_groups\": [\n    \"<string>\"\n  ],\n  \"tags\": [\n    \"<string>\"\n  ],\n  \"last_modified_date_time\": \"<dateTime>\",\n  \"created_after_date_time\": \"<dateTime>\",\n  \"created_before_date_time\": \"<dateTime>\",\n  \"partner_action_required\": false,\n  \"exclude_archived\": false,\n  \"connection_reference_ids\": [\n    \"<string>\"\n  ],\n  \"action_type\": [\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fd4001f6-bf84-4a38-bf7f-8b3a5302d53a",
+              "name": "Successful response with a list of meters that match the search criteria.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transmission_region\": \"CAISO\",\n  \"customer_classification\": \"RESIDENTIAL\",\n  \"meter_ids\": [\n    \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n  ],\n  \"partner_references\": [\n    \"a-partner-reference\"\n  ],\n  \"global_enrollment_statuses\": [\n    \"ACTIVE\"\n  ],\n  \"meter_types\": [\n    \"UTILITY_METER\"\n  ],\n  \"load_types\": [\n    \"HVAC\"\n  ],\n  \"customer_groups\": [\n    \"CustomerGroup1\"\n  ],\n  \"tags\": [\n    \"tag1\"\n  ],\n  \"last_modified_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_after_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_before_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"partner_action_required\": false,\n  \"exclude_archived\": false,\n  \"connection_reference_ids\": [\n    \"connectionReferenceId1\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"next_page_token\": \"next_page_token\",\n  \"meters\": [\n    {\n      \"meter_id\": \"11111111-1111-1111-1111-111111111111\",\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"connection_references\": [\n        \"connection-reference-id-1\",\n        \"connection-reference-id-1\"\n      ],\n      \"customer_group\": \"customer_group\",\n      \"tags\": [\n        \"tags\",\n        \"tags\"\n      ],\n      \"is_archived\": true,\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\",\n        \"bill_service_agreement_number\": \"bill_service_agreement_number\",\n        \"bill_customer_account_number\": \"bill_customer_account_number\"\n      },\n      \"audit\": {\n        \"created_by\": \"PARTNER\",\n        \"created_at\": \"2000-01-23 04:56:07+00:00\",\n        \"updated_at\": \"2000-01-23 04:56:07+00:00\"\n      }\n    },\n    {\n      \"meter_id\": \"11111111-1111-1111-1111-111111111111\",\n      \"partner_reference\": \"unique-reference-id-12345\",\n      \"transmission_region\": \"CAISO\",\n      \"customer_classification\": \"RESIDENTIAL\",\n      \"load_types\": [\n        \"HVAC\"\n      ],\n      \"meter_type\": \"UTILITY_METER\",\n      \"connection_references\": [\n        \"connection-reference-id-1\",\n        \"connection-reference-id-1\"\n      ],\n      \"customer_group\": \"customer_group\",\n      \"tags\": [\n        \"tags\",\n        \"tags\"\n      ],\n      \"is_archived\": true,\n      \"customer\": {\n        \"street_1\": \"132 My Street\",\n        \"street_2\": \"Apartment 32\",\n        \"postal_code\": \"10001\",\n        \"city\": \"New York\",\n        \"state_or_province_code\": \"NY\",\n        \"country_code\": \"US\",\n        \"end_customer_name\": \"Customer Name\",\n        \"end_customer_title\": \"Mrs.\",\n        \"end_customer_email\": \"email@address.com\",\n        \"end_customer_phone_number\": \"(123) 123-4567\",\n        \"end_customer_company_name\": \"Company Name Inc.\",\n        \"partner_offering_name\": \"Offering Name\",\n        \"partner_offering_date\": \"2000-01-23\",\n        \"is_in_wholesale_capacity_market\": true,\n        \"dispatch_option\": \"DAILY\",\n        \"billing\": {\n          \"street_1\": \"132 My Billing Street\",\n          \"street_2\": \"Apartment 32\",\n          \"postal_code\": \"90210\",\n          \"city\": \"Los Angeles\",\n          \"state_or_province_code\": \"CA\",\n          \"country_code\": \"US\"\n        },\n        \"partner_customer_reference\": \"partner-customer-reference-1\"\n      },\n      \"device\": {\n        \"device_type\": \"BATTERY\",\n        \"device_serial_number\": \"device-serial-number\",\n        \"device_model\": \"device-model\",\n        \"device_manufacturer\": \"device-manufacturer\",\n        \"install_date\": \"2000-01-23\",\n        \"battery_power_capacity_kw\": 1.233,\n        \"battery_energy_capacity_kwh\": 9.876,\n        \"battery_duration_hours\": 4,\n        \"permission_to_operate_date\": \"2000-01-23\"\n      },\n      \"site\": {\n        \"load_zone\": \"load-zone\",\n        \"number_of_devices\": 1,\n        \"on_site_fossil_generator\": true,\n        \"renewable_generator\": true,\n        \"generator_capacity_kw\": 1.234,\n        \"generator_model_year\": 2020,\n        \"generator_manufacturer\": \"Manufacturer of the generator\",\n        \"generator_fuel_type\": \"\",\n        \"generator_serial_number\": \"generator-serial-number\",\n        \"site_devices\": [\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          },\n          {\n            \"device_type\": \"BATTERY\",\n            \"model\": \"device-model\",\n            \"manufacturer\": \"device-manufacturer\",\n            \"serial_number\": \"device-serial-number\",\n            \"energy_capacity_kwh\": 39.504,\n            \"power_capacity_kw\": 9.876,\n            \"energy_capacity_duration_hours\": 4,\n            \"voltage_level\": \"EVSE_LEVEL_1\",\n            \"model_year\": 2020,\n            \"fuel_type\": \"DIESEL\",\n            \"max_energy_production_rate_kw\": 7.5,\n            \"max_energy_consumption_rate_kw\": 7.5,\n            \"battery_max_state_of_charge_percentage\": 95,\n            \"battery_min_state_of_charge_percentage\": 10,\n            \"installer\": \"Acme Installations Inc.\",\n            \"pv_connected\": true\n          }\n        ]\n      },\n      \"caiso\": {\n        \"is_receiving_sgip_funding\": true,\n        \"nem_type\": \"NEM2\"\n      },\n      \"isone\": {\n        \"in_connected_solutions\": true\n      },\n      \"nyiso\": {\n        \"cbl_method\": \"AVERAGE_DAY\",\n        \"company_type\": \"INDIVIDUAL_OR_SOLE_PROPRIETOR\",\n        \"existing_nyiso_resource_id\": \"666266\",\n        \"partner_nyiso_resource_name\": \"666266\"\n      },\n      \"utility\": {\n        \"utility_name\": \"PGE\",\n        \"load_serving_entity\": \"PGE\",\n        \"electric_service_account_number\": \"12243243-121\",\n        \"tariff\": \"tariff code\",\n        \"voltage\": \">= 600 V\",\n        \"utility_meter_serial_number\": \"utility-meter-serial-number\",\n        \"bill_service_agreement_number\": \"bill_service_agreement_number\",\n        \"bill_customer_account_number\": \"bill_customer_account_number\"\n      },\n      \"audit\": {\n        \"created_by\": \"PARTNER\",\n        \"created_at\": \"2000-01-23 04:56:07+00:00\",\n        \"updated_at\": \"2000-01-23 04:56:07+00:00\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb03b672-bbd9-496d-acfc-13784fb3aa53",
+              "name": "The request is not valid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transmission_region\": \"CAISO\",\n  \"customer_classification\": \"RESIDENTIAL\",\n  \"meter_ids\": [\n    \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n  ],\n  \"partner_references\": [\n    \"a-partner-reference\"\n  ],\n  \"global_enrollment_statuses\": [\n    \"ACTIVE\"\n  ],\n  \"meter_types\": [\n    \"UTILITY_METER\"\n  ],\n  \"load_types\": [\n    \"HVAC\"\n  ],\n  \"customer_groups\": [\n    \"CustomerGroup1\"\n  ],\n  \"tags\": [\n    \"tag1\"\n  ],\n  \"last_modified_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_after_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_before_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"partner_action_required\": false,\n  \"exclude_archived\": false,\n  \"connection_reference_ids\": [\n    \"connectionReferenceId1\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Meter id is not a UUID\",\n  \"status\": 400,\n  \"details\": {\n    \"meter_id\": \"abcdef\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b4f8078-f02b-4d9d-b633-15e7825fd1f4",
+              "name": "You are not authorized to perform this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transmission_region\": \"CAISO\",\n  \"customer_classification\": \"RESIDENTIAL\",\n  \"meter_ids\": [\n    \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n  ],\n  \"partner_references\": [\n    \"a-partner-reference\"\n  ],\n  \"global_enrollment_statuses\": [\n    \"ACTIVE\"\n  ],\n  \"meter_types\": [\n    \"UTILITY_METER\"\n  ],\n  \"load_types\": [\n    \"HVAC\"\n  ],\n  \"customer_groups\": [\n    \"CustomerGroup1\"\n  ],\n  \"tags\": [\n    \"tag1\"\n  ],\n  \"last_modified_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_after_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_before_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"partner_action_required\": false,\n  \"exclude_archived\": false,\n  \"connection_reference_ids\": [\n    \"connectionReferenceId1\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"details\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fe331ab-d574-4b6a-9feb-937b0ad31734",
+              "name": "You do not have the necessary permissions for this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transmission_region\": \"CAISO\",\n  \"customer_classification\": \"RESIDENTIAL\",\n  \"meter_ids\": [\n    \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n  ],\n  \"partner_references\": [\n    \"a-partner-reference\"\n  ],\n  \"global_enrollment_statuses\": [\n    \"ACTIVE\"\n  ],\n  \"meter_types\": [\n    \"UTILITY_METER\"\n  ],\n  \"load_types\": [\n    \"HVAC\"\n  ],\n  \"customer_groups\": [\n    \"CustomerGroup1\"\n  ],\n  \"tags\": [\n    \"tag1\"\n  ],\n  \"last_modified_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_after_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_before_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"partner_action_required\": false,\n  \"exclude_archived\": false,\n  \"connection_reference_ids\": [\n    \"connectionReferenceId1\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"You do not have the necessary permissions for this operation\",\n  \"status\": 403,\n  \"details\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "487795ff-b615-4a7d-962c-68aeee5fd8aa",
+              "name": "Meter not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transmission_region\": \"CAISO\",\n  \"customer_classification\": \"RESIDENTIAL\",\n  \"meter_ids\": [\n    \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n  ],\n  \"partner_references\": [\n    \"a-partner-reference\"\n  ],\n  \"global_enrollment_statuses\": [\n    \"ACTIVE\"\n  ],\n  \"meter_types\": [\n    \"UTILITY_METER\"\n  ],\n  \"load_types\": [\n    \"HVAC\"\n  ],\n  \"customer_groups\": [\n    \"CustomerGroup1\"\n  ],\n  \"tags\": [\n    \"tag1\"\n  ],\n  \"last_modified_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_after_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_before_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"partner_action_required\": false,\n  \"exclude_archived\": false,\n  \"connection_reference_ids\": [\n    \"connectionReferenceId1\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Meter not found\",\n  \"status\": 404,\n  \"details\": {\n    \"meter_id\": \"f5c5e328-e325-4d6d-b357-5015ed5962a7\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a3dabc8-02db-469e-8f3a-125f12eb0235",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "meters",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transmission_region\": \"CAISO\",\n  \"customer_classification\": \"RESIDENTIAL\",\n  \"meter_ids\": [\n    \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n  ],\n  \"partner_references\": [\n    \"a-partner-reference\"\n  ],\n  \"global_enrollment_statuses\": [\n    \"ACTIVE\"\n  ],\n  \"meter_types\": [\n    \"UTILITY_METER\"\n  ],\n  \"load_types\": [\n    \"HVAC\"\n  ],\n  \"customer_groups\": [\n    \"CustomerGroup1\"\n  ],\n  \"tags\": [\n    \"tag1\"\n  ],\n  \"last_modified_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_after_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"created_before_date_time\": \"2024-10-21 11:43:05.892000+00:00\",\n  \"partner_action_required\": false,\n  \"exclude_archived\": false,\n  \"connection_reference_ids\": [\n    \"connectionReferenceId1\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"An error happened whilst processing your request\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.staging.leap.energy",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9c15343e-3d97-43f5-a9b0-25320a676d2a",
+    "name": "create meters Meter Details API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Endpoints to create or update meters in bulk through Leap's API.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,346 @@
+{
+  "item": [
+    {
+      "id": "781ca705-6d62-4d0c-be19-13c2a5541b04",
+      "name": "provisional assets",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fe32cd63-a003-49a1-9762-f9e818ee6008",
+          "name": "List provisional assets",
+          "request": {
+            "name": "List provisional assets",
+            "description": {
+              "content": "Lists all provisional assets that were created through Meter Batch Jobs. Especially handy if you create multiple smaller jobs and just want to have an overview of all provisional assets that were created through those.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "provisional-assets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "One or more filters to apply. Uses the `AND` approach, so all filters should match for provisional assets to show up.  Use the `/v1.1/provisional-assets-filters` endpoint to retrieve all available  filters that can be applied when querying provisional assets. When you provide multiple values for a key (e.g. transmission_region), the IN operator is used. Combine multiple filters like this: `?filter=transmission_region:CAISO,NYISO&filter=partner_reference:123`"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "One or more filters to apply. Uses the `AND` approach, so all filters should match for provisional assets to show up.  Use the `/v1.1/provisional-assets-filters` endpoint to retrieve all available  filters that can be applied when querying provisional assets. When you provide multiple values for a key (e.g. transmission_region), the IN operator is used. Combine multiple filters like this: `?filter=transmission_region:CAISO,NYISO&filter=partner_reference:123`"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>",
+                  "description": "If there are more provisional assets to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page of provisional assets."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "100",
+                  "description": "Amount of results to return. Defaults to 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_query",
+                  "value": "<string>",
+                  "description": "Search query to apply. Comma-separate multiple values. This is a free-text search that will be applied when searching through the provisional assets. Define the fields to search through in the `search_fields` parameter."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_fields",
+                  "value": "<string>",
+                  "description": "Fields to search through. Required if `search_query` is provided. If the string from `search_query` is found in any of these fields, the provisional asset will be included in the results."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_fields",
+                  "value": "<string>",
+                  "description": "Fields to search through. Required if `search_query` is provided. If the string from `search_query` is found in any of these fields, the provisional asset will be included in the results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "94b7488f-8eb4-4fa4-b851-ff094a2fcb37",
+              "name": "Provisional assets",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "provisional-assets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "transmission_region:CAISO,NYISO"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "partner_reference:123"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "search_query",
+                      "value": "serial-001"
+                    },
+                    {
+                      "key": "search_fields",
+                      "value": "partner_reference"
+                    },
+                    {
+                      "key": "search_fields",
+                      "value": "device_serial_number"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"provisional_assets\": [\n    {\n      \"job_id\": \"514dc8d0-7dff-4bd3-9737-f1f49a6e99ed\",\n      \"partner_reference\": \"my-caiso-device-serial-2\",\n      \"status\": \"DUPLICATE\",\n      \"status_detail\": {\n        \"name\": \"DUPLICATE_REF_ID\",\n        \"description\": \"Partner reference ID already exists.\"\n      },\n      \"created_at\": \"2024-03-12 10:15:00+00:00\"\n    },\n    {\n      \"job_id\": \"e21fb44f-ecd9-49e4-bade-067f5abf7ded\",\n      \"partner_reference\": \"my-caiso-device-serial-1\",\n      \"status\": \"PROCESSING\",\n      \"status_detail\": {},\n      \"created_at\": \"2024-03-12 09:00:00+00:00\"\n    }\n  ],\n  \"next_page_token\": \"token123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1585c7b-c370-4276-b558-c16a909e4b15",
+              "name": "Validation error if invalid filters are provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "provisional-assets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "transmission_region:CAISO,NYISO"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "partner_reference:123"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "search_query",
+                      "value": "serial-001"
+                    },
+                    {
+                      "key": "search_fields",
+                      "value": "partner_reference"
+                    },
+                    {
+                      "key": "search_fields",
+                      "value": "device_serial_number"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Missing required parameter\",\n  \"json_index\": 1,\n  \"problem_field\": \"partner_reference\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b124a6c-6c53-41f4-9196-e07941219380",
+          "name": "List provisional assets filters",
+          "request": {
+            "name": "List provisional assets filters",
+            "description": {
+              "content": "[Leap frontend only] lists filters that can be used to filter provisional assets.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1.1",
+                "provisional-assets-filters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bde60670-bfa1-484f-86aa-cc09a47dc354",
+              "name": "Provisional assets filters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1.1",
+                    "provisional-assets-filters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"filter_options\": [\n    {\n      \"key\": \"status\",\n      \"values\": [\n        \"PROCESSING\",\n        \"FAILED\",\n        \"DUPLICATE\",\n        \"COMPLETED\",\n        \"MULTIPLE_PARTNER_REFERENCE\"\n      ]\n    },\n    {\n      \"key\": \"transmission_region\",\n      \"values\": [\n        \"CAISO\",\n        \"NYISO\",\n        \"ISONE\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.staging.leap.energy",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "378e87e8-9491-437a-b0e3-b13843809bad",
+    "name": "create meters provisional assets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Endpoints to create or update meters in bulk through Leap's API.",
+      "type": "text/plain"
+    }
+  }
+}

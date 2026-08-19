@@ -1,0 +1,78 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "create meters provisional assets API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "provisional assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List provisional assets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v1.1/provisional-assets",
+            "params": [
+              {
+                "name": "filter",
+                "value": "transmission_region:CAISO,NYISO,partner_reference:123",
+                "type": "query",
+                "description": "One or more filters to apply. Uses the `AND` approach, so all filters should match for provisional assets to show up.  Use the `/v1.1/provisional-assets-filters` endpoint to retrieve all available  filters that can be applied when querying provisional assets. When you provide multiple values for a key (e.g. transmission_region), the IN operator is used. Combine multiple filters like this: `?filter=transmission_region:CAISO,NYISO&filter=partner_reference:123`"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "If there are more provisional assets to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page of provisional assets."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Amount of results to return. Defaults to 100."
+              },
+              {
+                "name": "search_query",
+                "value": "serial-001",
+                "type": "query",
+                "description": "Search query to apply. Comma-separate multiple values. This is a free-text search that will be applied when searching through the provisional assets. Define the fields to search through in the `search_fields` parameter."
+              },
+              {
+                "name": "search_fields",
+                "value": "partner_reference,device_serial_number",
+                "type": "query",
+                "description": "Fields to search through. Required if `search_query` is provided. If the string from `search_query` is found in any of these fields, the provisional asset will be included in the results."
+              }
+            ]
+          },
+          "docs": "Lists all provisional assets that were created through Meter Batch Jobs. Especially handy if you create multiple smaller jobs and just want to have an overview of all provisional assets that were created through those."
+        },
+        {
+          "info": {
+            "name": "List provisional assets filters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/v1.1/provisional-assets-filters"
+          },
+          "docs": "[Leap frontend only] lists filters that can be used to filter provisional assets."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

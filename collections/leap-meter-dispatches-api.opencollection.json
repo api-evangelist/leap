@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "create meters meter-dispatches API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "meter-dispatches",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search meter dispatches",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/dispatch/meter/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search meter dispatches that match the input filters"
+        },
+        {
+          "info": {
+            "name": "Trigger meter communication test",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/dispatch/meter/communication_test",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create communication test that will trigger a webhook call with the corresponding dispatch notification data"
+        },
+        {
+          "info": {
+            "name": "Get meter webhook URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.staging.leap.energy/dispatch/meter/webhook"
+          },
+          "docs": "Retrieve the registered webhook URL for meter dispatches"
+        },
+        {
+          "info": {
+            "name": "Set meter webhook URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.staging.leap.energy/dispatch/meter/webhook",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update an existing webhook URL for meter dispatches"
+        },
+        {
+          "info": {
+            "name": "Delete meter dispatch webhook URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.staging.leap.energy/dispatch/meter/webhook"
+          },
+          "docs": "Remove an existing webhook URL for meter dispatches"
+        },
+        {
+          "info": {
+            "name": "Trigger test meter notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.staging.leap.energy/dispatch/meter/webhook/integration_test",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create test notification that will trigger a webhook call with the corresponding dispatch notification data"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
