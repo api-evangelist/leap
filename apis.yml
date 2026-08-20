@@ -50,6 +50,21 @@ tags:
 - EV Charging
 - Smart Buildings
 - Metering
+- Webhook
+- Climate Tech
+tags_raw:
+- Company
+- Energy
+- Electricity
+- Virtual Power Plant
+- Demand Response
+- Distributed Energy Resources
+- Grid Services
+- Energy Markets
+- Battery Storage
+- EV Charging
+- Smart Buildings
+- Metering
 - Webhooks
 - Climate Tech
 apis:
@@ -59,6 +74,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Create Meters
+  tags_raw:
   - create meters
   properties:
   - type: OpenAPI
@@ -83,6 +100,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Group Dispatches
+  tags_raw:
   - group-dispatches
   properties:
   - type: OpenAPI
@@ -131,6 +150,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Meter Dispatches
+  tags_raw:
   - meter-dispatches
   properties:
   - type: OpenAPI
@@ -155,6 +176,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Meter Enrollment
+  tags_raw:
   - meter enrollment
   properties:
   - type: OpenAPI
@@ -179,6 +202,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Nominations
+  tags_raw:
   - nominations
   properties:
   - type: OpenAPI
@@ -203,6 +228,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Performance
+  tags_raw:
   - performance
   properties:
   - type: OpenAPI
@@ -227,6 +254,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Provisional Assets
+  tags_raw:
   - provisional assets
   properties:
   - type: OpenAPI
@@ -251,6 +280,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Revenue
+  tags_raw:
   - revenue
   properties:
   - type: OpenAPI
@@ -275,6 +306,8 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
+  - Webhook
+  tags_raw:
   - webhooks
   properties:
   - type: OpenAPI
