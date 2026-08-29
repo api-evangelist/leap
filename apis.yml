@@ -344,6 +344,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/leap-capability-edges.yml
+  name: Leap Business Capability Map
 - type: Overlay
   url: overlays/leap-create-meters-overlay.yaml
 - type: DomainSecurity
