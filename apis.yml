@@ -10,6 +10,18 @@ description: 'Leap is a San Francisco-based energy software company that lets te
   interval data, and revenue settlement reporting. Partners authenticate with environment-scoped bearer
   API keys against separate staging and production hosts, and Leap publishes OpenAPI definitions, a dated
   changelog, an llms.txt index and a public status page.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
