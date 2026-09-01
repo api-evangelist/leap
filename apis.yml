@@ -86,7 +86,7 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
-  - Create Meters
+  - create meters
   tags_raw:
   - create meters
   properties:
@@ -112,7 +112,7 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
-  - Group Dispatches
+  - group-dispatches
   tags_raw:
   - group-dispatches
   properties:
@@ -162,7 +162,7 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
-  - Meter Dispatches
+  - meter-dispatches
   tags_raw:
   - meter-dispatches
   properties:
@@ -188,7 +188,7 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
-  - Meter Enrollment
+  - meter enrollment
   tags_raw:
   - meter enrollment
   properties:
@@ -266,7 +266,7 @@ apis:
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
   tags:
-  - Provisional Assets
+  - provisional assets
   tags_raw:
   - provisional assets
   properties:
