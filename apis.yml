@@ -327,105 +327,16 @@ apis:
     url: https://developer.leap.energy/reference/getperiodicreports
   - type: Documentation
     url: https://developer.leap.energy/reference/listwebhooks-2
-- aid: leap:leapfrog-power-group-dispatches-api
-  name: Leap Group Dispatches API
-  description: Endpoints for group dispatches
-  humanURL: https://developer.leap.energy/reference/createmeterbatchjob
-  baseURL: https://api.leap.energy
-  tags:
-  - group-dispatches
-  tags_raw:
-  - group-dispatches
-  properties:
-  - type: OpenAPI
-    url: openapi/leapfrog-power-group-dispatches-api-openapi.yml
-  - type: Documentation
-    url: https://developer.leap.energy/docs/partner-created-meters
-  - type: APIReference
-    url: https://developer.leap.energy/reference/createmeterbatchjob
-  - type: Documentation
-    url: https://developer.leap.energy/docs/sync-meter-inventory-v2
-  - type: APIReference
-    url: https://developer.leap.energy/reference/getmeterenrollment
-  - type: Documentation
-    url: https://developer.leap.energy/docs/utility-meters-vs-devices
-  - type: APIReference
-    url: https://developer.leap.energy/reference/getmeterdetails
-  - type: Documentation
-    url: https://developer.leap.energy/docs/bidding-introduction
-  - type: APIReference
-    url: https://developer.leap.energy/reference/getmeternominationsuggestions
-  - type: Documentation
-    url: https://developer.leap.energy/docs/dispatch-automation-v2
-  - type: APIReference
-    url: https://developer.leap.energy/reference/dispatch-event
-  - type: Documentation
-    url: https://developer.leap.energy/docs/webhook-setup
-  - type: APIReference
-    url: https://developer.leap.energy/reference/listwebhooks-2
-  - type: Documentation
-    url: https://developer.leap.energy/docs/revenue-settlement-data
-  - type: APIReference
-    url: https://developer.leap.energy/reference/getperiodicreports
-  - type: Documentation
-    url: https://developer.leap.energy/docs/event-performance-interval-data
-  - type: Documentation
-    url: https://developer.leap.energy/docs/upload-interval-data-sftp
-- aid: leap:leapfrog-power-interval-data-upload-api
+- aid: leap:leap-interval-data-upload-api
   name: Leap Interval Data Upload API
   description: The interval_data_upload API from Leap — 6 operation(s) for interval_data_upload.
-  humanURL: https://developer.leap.energy/reference/createmeterbatchjob
+  humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
-  tags: []
-  tags_raw:
+  tags:
   - interval_data_upload
   properties:
   - type: OpenAPI
-    url: openapi/leapfrog-power-interval-data-upload-api-openapi.yml
-  - type: Documentation
-    url: https://developer.leap.energy/docs/partner-created-meters
-  - type: APIReference
-    url: https://developer.leap.energy/reference/createmeterbatchjob
-  - type: Documentation
-    url: https://developer.leap.energy/docs/sync-meter-inventory-v2
-  - type: APIReference
-    url: https://developer.leap.energy/reference/getmeterenrollment
-  - type: Documentation
-    url: https://developer.leap.energy/docs/utility-meters-vs-devices
-  - type: APIReference
-    url: https://developer.leap.energy/reference/getmeterdetails
-  - type: Documentation
-    url: https://developer.leap.energy/docs/bidding-introduction
-  - type: APIReference
-    url: https://developer.leap.energy/reference/getmeternominationsuggestions
-  - type: Documentation
-    url: https://developer.leap.energy/docs/dispatch-automation-v2
-  - type: APIReference
-    url: https://developer.leap.energy/reference/dispatch-event
-  - type: Documentation
-    url: https://developer.leap.energy/docs/webhook-setup
-  - type: APIReference
-    url: https://developer.leap.energy/reference/listwebhooks-2
-  - type: Documentation
-    url: https://developer.leap.energy/docs/revenue-settlement-data
-  - type: APIReference
-    url: https://developer.leap.energy/reference/getperiodicreports
-  - type: Documentation
-    url: https://developer.leap.energy/docs/event-performance-interval-data
-  - type: Documentation
-    url: https://developer.leap.energy/docs/upload-interval-data-sftp
-- aid: leap:leapfrog-power-meter-dispatches-api
-  name: Leap Meter Dispatches API
-  description: Endpoints for meter dispatches
-  humanURL: https://developer.leap.energy/reference/createmeterbatchjob
-  baseURL: https://api.leap.energy
-  tags:
-  - meter-dispatches
-  tags_raw:
-  - meter-dispatches
-  properties:
-  - type: OpenAPI
-    url: openapi/leapfrog-power-meter-dispatches-api-openapi.yml
+    url: openapi/leap-interval-data-upload-api-openapi.yml
   - type: Documentation
     url: https://developer.leap.energy/docs/partner-created-meters
   - type: APIReference
