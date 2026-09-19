@@ -332,7 +332,8 @@ apis:
   description: The interval_data_upload API from Leap — 6 operation(s) for interval_data_upload.
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
-  tags:
+  tags: []
+  tags_raw:
   - interval_data_upload
   properties:
   - type: OpenAPI
