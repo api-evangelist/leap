@@ -1,8 +1,8 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  description: Endpoints to create or update meters in bulk through Leap's API.
-  title: create meters performance API
-  version: 1.1.0
+  description: Retrieves partner settlements
+  title: Revenue & Analytics Performance API
+  version: '1.1'
 servers:
 - description: Leap staging API
   url: https://api.staging.leap.energy
@@ -11,7 +11,7 @@ servers:
 security:
 - Bearer: []
 tags:
-- name: performance
+- name: Performance
 paths:
   /v1.1/performance/diagnosis/monthly/unresponsive/meters:
     post:
@@ -78,22 +78,63 @@ paths:
       - Bearer: []
       summary: Monthly unresponsive meters
       tags:
-      - performance
+      - Performance
 components:
   schemas:
-    ErrorResponseDetail:
+    ErrorResponseForbidden:
       additionalProperties: false
       example:
-        message: message
-        description: description
+        title: Forbidden
+        status: 403
+        details:
+        - message: message
+          description: description
+        - message: message
+          description: description
       properties:
-        message:
+        title:
+          example: Forbidden
           type: string
-        description:
-          type: string
+        status:
+          example: 403
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
       required:
-      - description
-      - message
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseInternalServerError:
+      additionalProperties: false
+      example:
+        title: Server Error
+        status: 500
+        details:
+        - message: Internal Error
+          description: A technical error has occurred
+      properties:
+        title:
+          example: Server Error
+          type: string
+        status:
+          example: 500
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Internal Error
+            description: A technical error has occurred
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
       type: object
     ErrorResponseUnauthorized:
       additionalProperties: false
@@ -121,6 +162,111 @@ components:
       - details
       - status
       - title
+      type: object
+    HistoricalResponsiveness:
+      description: Shows the meter?s responsiveness for the last 12 months.
+      enum:
+      - NEVER_RESPONDS
+      - RARELY_RESPONDS
+      - NORMALLY_RESPONDS
+      - NEW_METER
+      type: string
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    MeterProgram:
+      example:
+        program: CEC-DSGS
+        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        program:
+          $ref: '#/components/schemas/program_identifier'
+        meter_id:
+          format: uuid
+          type: string
+      required:
+      - meter_id
+      - program
+      type: object
+    ErrorResponseBadRequest:
+      additionalProperties: false
+      example:
+        title: Bad Request
+        status: 400
+        details:
+        - message: Validation Error
+          description: Missing required parameter(s)
+      properties:
+        title:
+          example: Bad Request
+          type: string
+        status:
+          example: 400
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Validation Error
+            description: Missing required parameter(s)
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseUnsupportedMediaType:
+      additionalProperties: false
+      example:
+        title: Unsupported Media Type
+        status: 415
+        details:
+        - message: Invalid value in the 'Accept' header.
+          description: Supported types are application/json and text/csv
+      properties:
+        title:
+          example: Unsupported Media Type
+          type: string
+        status:
+          example: 415
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Invalid value in the 'Accept' header.
+            description: Supported types are application/json and text/csv
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseDetail:
+      additionalProperties: false
+      example:
+        message: message
+        description: description
+      properties:
+        message:
+          type: string
+        description:
+          type: string
+      required:
+      - description
+      - message
       type: object
     SortDirection:
       description: Sort direction for a field. Can be `ASC` for ascending or `DESC` for descending.
@@ -194,276 +340,6 @@ components:
       - program
       - response_percentage
       - transmission_region
-      type: object
-    MeterProgram:
-      example:
-        program: CEC-DSGS
-        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-      properties:
-        program:
-          $ref: '#/components/schemas/program_identifier'
-        meter_id:
-          format: uuid
-          type: string
-      required:
-      - meter_id
-      - program
-      type: object
-    ErrorResponseUnsupportedMediaType:
-      additionalProperties: false
-      example:
-        title: Unsupported Media Type
-        status: 415
-        details:
-        - message: Invalid value in the 'Accept' header.
-          description: Supported types are application/json and text/csv
-      properties:
-        title:
-          example: Unsupported Media Type
-          type: string
-        status:
-          example: 415
-          format: int32
-          type: integer
-        details:
-          example:
-          - message: Invalid value in the 'Accept' header.
-            description: Supported types are application/json and text/csv
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    HistoricalResponsiveness:
-      description: Shows the meter?s responsiveness for the last 12 months.
-      enum:
-      - NEVER_RESPONDS
-      - RARELY_RESPONDS
-      - NORMALLY_RESPONDS
-      - NEW_METER
-      type: string
-    MonthlyUnresponsiveMetersResponse:
-      example:
-        summary:
-          number_of_meters: 0
-          missed_revenue: 20000.3
-          average_response_percentage: 75
-        meters:
-        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
-          partner_reference: partner_reference
-          customer_name: John Doe
-          customer_group: Store Inc.
-          transmission_region: CAISO
-          program: CEC-DSGS
-          missed_revenue: 20000.3
-          nomination_w: 16600.88
-          response_percentage: 75
-          number_of_events: 6
-          historical_responsiveness: NEVER_RESPONDS
-        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
-          partner_reference: partner_reference
-          customer_name: John Doe
-          customer_group: Store Inc.
-          transmission_region: CAISO
-          program: CEC-DSGS
-          missed_revenue: 20000.3
-          nomination_w: 16600.88
-          response_percentage: 75
-          number_of_events: 6
-          historical_responsiveness: NEVER_RESPONDS
-        year_month: 2023-03
-        page_token: page_token
-      properties:
-        summary:
-          $ref: '#/components/schemas/UnresponsiveMetersSummary'
-        meters:
-          items:
-            $ref: '#/components/schemas/UnresponsiveMeter'
-          type: array
-        year_month:
-          description: ISO-8601 formatted year and month (`YYYY-MM`) representing the performance diagnosis month.
-          example: 2023-03
-          pattern: ^\d{4}-\d{2}$
-          type: string
-        page_token:
-          description: 'If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
-
-            '
-          type: string
-      required:
-      - meters
-      type: object
-    ErrorResponseForbidden:
-      additionalProperties: false
-      example:
-        title: Forbidden
-        status: 403
-        details:
-        - message: message
-          description: description
-        - message: message
-          description: description
-      properties:
-        title:
-          example: Forbidden
-          type: string
-        status:
-          example: 403
-          format: int32
-          type: integer
-        details:
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    program_identifier:
-      description: Identifier of program
-      enum:
-      - CAISO-CCA-SC_ONLY
-      - CAISO-HOLD_OPEN
-      - CCA
-      - CEC-DSGS-OPTION4
-      - CEC-DSGS
-      - CONED-CSRP
-      - CONED-DLRP
-      - DRAM
-      - ELRP
-      - ENERGY-ONLY
-      - ERCOT-ERS
-      - EVERSOURCE-CS
-      - MA_DOER-CPS
-      - NATGRID-CS
-      - NRG-REALTIME
-      - NRG-RED
-      - NYISO-SCR
-      - ONCOR-CLM
-      - PGE-ART
-      - PGE-CBP
-      - PJM-CAPACITY
-      - PSEGLI-CSRP
-      - PSEGLI-DLRP
-      - RIE-CS
-      - UNITIL-CS
-      - PSE-RPO
-      - SRP-RPO
-      - TVA-RPO
-      - CAISO-ELRP-A4
-      - CEC-DSGS-OPTION2
-      - ENERGYHUB-CS
-      - CT_GB-ESS
-      example: CEC-DSGS
-      type: string
-    transmission_region:
-      description: Defines the transmission region of the meter
-      enum:
-      - CAISO
-      - ERCOT
-      - NYISO
-      - ISONE
-      - PJM
-      - SERC
-      - WECC_SW
-      - WECC_PC
-      example: CAISO
-      type: string
-    ErrorResponseInternalServerError:
-      additionalProperties: false
-      example:
-        title: Server Error
-        status: 500
-        details:
-        - message: Internal Error
-          description: A technical error has occurred
-      properties:
-        title:
-          example: Server Error
-          type: string
-        status:
-          example: 500
-          format: int32
-          type: integer
-        details:
-          example:
-          - message: Internal Error
-            description: A technical error has occurred
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    UnresponsiveMetersSummary:
-      example:
-        number_of_meters: 0
-        missed_revenue: 20000.3
-        average_response_percentage: 75
-      properties:
-        number_of_meters:
-          description: Total number of unresponsive meters.
-          format: int32
-          type: integer
-        missed_revenue:
-          description: 'The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
-
-            '
-          example: 20000.3
-          format: double
-          type: number
-        average_response_percentage:
-          description: Monthly average response percentage for meters.
-          example: 75
-          format: double
-          type: number
-      type: object
-    ErrorResponseBadRequest:
-      additionalProperties: false
-      example:
-        title: Bad Request
-        status: 400
-        details:
-        - message: Validation Error
-          description: Missing required parameter(s)
-      properties:
-        title:
-          example: Bad Request
-          type: string
-        status:
-          example: 400
-          format: int32
-          type: integer
-        details:
-          example:
-          - message: Validation Error
-            description: Missing required parameter(s)
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    SortRequest:
-      additionalProperties: false
-      properties:
-        field:
-          description: The field used to perform the sort operation
-          example: nomination_w
-          type: string
-        direction:
-          $ref: '#/components/schemas/SortDirection'
-      required:
-      - direction
-      - field
       type: object
     MonthlyUnresponsiveMetersRequest:
       example:
@@ -579,7 +455,132 @@ components:
       required:
       - year_month
       type: object
+    program_identifier:
+      description: Identifier of program
+      enum:
+      - CAISO-CCA-SC_ONLY
+      - CAISO-HOLD_OPEN
+      - CCA
+      - CEC-DSGS-OPTION4
+      - CEC-DSGS
+      - CONED-CSRP
+      - CONED-DLRP
+      - DRAM
+      - ELRP
+      - ENERGY-ONLY
+      - ERCOT-ERS
+      - EVERSOURCE-CS
+      - MA_DOER-CPS
+      - NATGRID-CS
+      - NRG-REALTIME
+      - NRG-RED
+      - NYISO-SCR
+      - ONCOR-CLM
+      - PGE-ART
+      - PGE-CBP
+      - PJM-CAPACITY
+      - PSEGLI-CSRP
+      - PSEGLI-DLRP
+      - RIE-CS
+      - UNITIL-CS
+      - PSE-RPO
+      - SRP-RPO
+      - TVA-RPO
+      - CAISO-ELRP-A4
+      - CEC-DSGS-OPTION2
+      - ENERGYHUB-CS
+      - CT_GB-ESS
+      example: CEC-DSGS
+      type: string
+    SortRequest:
+      additionalProperties: false
+      properties:
+        field:
+          description: The field used to perform the sort operation
+          example: nomination_w
+          type: string
+        direction:
+          $ref: '#/components/schemas/SortDirection'
+      required:
+      - direction
+      - field
+      type: object
+    UnresponsiveMetersSummary:
+      example:
+        number_of_meters: 0
+        missed_revenue: 20000.3
+        average_response_percentage: 75
+      properties:
+        number_of_meters:
+          description: Total number of unresponsive meters.
+          format: int32
+          type: integer
+        missed_revenue:
+          description: 'The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+
+            '
+          example: 20000.3
+          format: double
+          type: number
+        average_response_percentage:
+          description: Monthly average response percentage for meters.
+          example: 75
+          format: double
+          type: number
+      type: object
+    MonthlyUnresponsiveMetersResponse:
+      example:
+        summary:
+          number_of_meters: 0
+          missed_revenue: 20000.3
+          average_response_percentage: 75
+        meters:
+        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          partner_reference: partner_reference
+          customer_name: John Doe
+          customer_group: Store Inc.
+          transmission_region: CAISO
+          program: CEC-DSGS
+          missed_revenue: 20000.3
+          nomination_w: 16600.88
+          response_percentage: 75
+          number_of_events: 6
+          historical_responsiveness: NEVER_RESPONDS
+        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          partner_reference: partner_reference
+          customer_name: John Doe
+          customer_group: Store Inc.
+          transmission_region: CAISO
+          program: CEC-DSGS
+          missed_revenue: 20000.3
+          nomination_w: 16600.88
+          response_percentage: 75
+          number_of_events: 6
+          historical_responsiveness: NEVER_RESPONDS
+        year_month: 2023-03
+        page_token: page_token
+      properties:
+        summary:
+          $ref: '#/components/schemas/UnresponsiveMetersSummary'
+        meters:
+          items:
+            $ref: '#/components/schemas/UnresponsiveMeter'
+          type: array
+        year_month:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing the performance diagnosis month.
+          example: 2023-03
+          pattern: ^\d{4}-\d{2}$
+          type: string
+        page_token:
+          description: 'If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+
+            '
+          type: string
+      required:
+      - meters
+      type: object
   securitySchemes:
     Bearer:
+      bearerFormat: JWT
       scheme: bearer
       type: http

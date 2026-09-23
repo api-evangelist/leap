@@ -1,8 +1,8 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  description: Endpoints to create or update meters in bulk through Leap's API.
-  title: create meters nominations API
-  version: 1.1.0
+  description: API to retrieve and suggest nominations.
+  title: Meter Nomination Nominations API
+  version: 2.0.0
 servers:
 - description: Leap staging API
   url: https://api.staging.leap.energy
@@ -11,7 +11,7 @@ servers:
 security:
 - Bearer: []
 tags:
-- name: nominations
+- name: Nominations
 paths:
   /v2/meters/{meter_id}/nominations/suggestions:
     get:
@@ -118,9 +118,9 @@ paths:
           description: Internal server error
       summary: Get suggested nominations
       tags:
-      - nominations
+      - Nominations
     post:
-      description: Suggest nominations for individual meters. A suggestion is reviewed by Leap before it becomes an actual nomination. Leap can approve, modify, or deny each suggestion. Modified suggestions are adjusted by Leap before becoming a nomination and will often include communication or coordination with your operations team.  Note that when a more recent suggestion completely eclipses an earlier provided suggestion, the earlier nomination will be deleted.  However, if there are partial overlaps, Leap will not automatically adjust or deduplicate these.  Use the 'Delete suggested nominations' endpoint to remove no longer needed suggestions.
+      description: Suggest nominations for individual meters. A suggestion is reviewed by Leap before it becomes an actual nomination. Leap can approve, modify, or deny each suggestion. Modified suggestions are adjusted by Leap before becoming a nomination and will often include communication or coordination with your operations team. Note that when a more recent suggestion completely eclipses an earlier provided suggestion, the earlier nomination will be deleted. However, if there are partial overlaps, Leap will not automatically adjust or deduplicate these. Use the 'Delete suggested nominations' endpoint to remove no longer needed suggestions.
       operationId: postMeterNominationSuggestions
       parameters:
       - description: Meter ID
@@ -212,10 +212,10 @@ paths:
           description: Internal server error
       summary: Suggest meter nominations
       tags:
-      - nominations
+      - Nominations
   /v2/meters/{meter_id}/nominations/suggestions/{nomination_suggestion_id}:
     delete:
-      description: Remove a suggestion that is no longer needed. It is recommended to clean up and delete no longer needed or relevant suggestions so Leap is able to more quickly review outstanding suggestions. Note that a suggestion can only be deleted if it is still in the RECEIVED status.  Once it has been reviewed and processed by Leap, it can no longer be deleted.
+      description: Remove a suggestion that is no longer needed. It is recommended to clean up and delete no longer needed or relevant suggestions so Leap is able to more quickly review outstanding suggestions. Note that a suggestion can only be deleted if it is still in the RECEIVED status. Once it has been reviewed and processed by Leap, it can no longer be deleted.
       operationId: deleteMeterNominationSuggestion
       parameters:
       - description: Meter ID
@@ -308,10 +308,10 @@ paths:
           description: Internal server error
       summary: Delete suggested nominations
       tags:
-      - nominations
+      - Nominations
   /v2/meters/nominations/suggestions:
     post:
-      description: Suggest nominations for multiple meters. A suggestion is reviewed by Leap before it becomes an actual nomination. Leap can approve, modify, or deny each suggestion. Modified suggestions are adjusted by Leap before becoming a nomination and will often include communication or coordination with your operations team.  Note that when a more recent suggestion completely eclipses an earlier provided suggestion, the earlier nomination will be deleted.  However, if there are partial overlaps, Leap will not automatically adjust or deduplicate these.  Use the 'Delete suggested nominations' endpoint to remove no longer needed suggestions.
+      description: Suggest nominations for multiple meters. A suggestion is reviewed by Leap before it becomes an actual nomination. Leap can approve, modify, or deny each suggestion. Modified suggestions are adjusted by Leap before becoming a nomination and will often include communication or coordination with your operations team. Note that when a more recent suggestion completely eclipses an earlier provided suggestion, the earlier nomination will be deleted. However, if there are partial overlaps, Leap will not automatically adjust or deduplicate these. Use the 'Delete suggested nominations' endpoint to remove no longer needed suggestions.
       operationId: postNominationSuggestions
       requestBody:
         content:
@@ -401,7 +401,7 @@ paths:
           description: Internal server error
       summary: Suggest bulk nominations
       tags:
-      - nominations
+      - Nominations
   /v2/meters/nominations/suggestions/search:
     post:
       description: Search suggested nominations across all meters and filter based on the request body parameters. Use the 'Accept' header to specify whether you'd like JSON or CSV as the response type.
@@ -487,7 +487,7 @@ paths:
           description: Internal server error
       summary: Search suggested nominations
       tags:
-      - nominations
+      - Nominations
   /v2/meters/nominations/search:
     post:
       description: Search for nominations on all meters. You can filter on meter IDs and a date range. These are the nominations in kW that will be used for program enrollment. Use the 'Accept' header to specify whether you'd like JSON or CSV as the response type.
@@ -573,68 +573,9 @@ paths:
           description: Internal server error
       summary: Search nominations
       tags:
-      - nominations
+      - Nominations
 components:
   schemas:
-    getMeterNominationSuggestions_400_response:
-      example:
-        title: Bad Request
-        status: 400
-        details:
-          error: Meter id is not a UUID
-      properties:
-        title:
-          description: Summary of what went wrong
-          example: Bad Request
-          maxLength: 2000
-          minLength: 1
-          type: string
-        status:
-          description: An error code indicating what went wrong, usually the same as the HTTP Status Code
-          example: 400
-          type: integer
-        details:
-          description: Extra information about the error.
-          example:
-            error: Meter id is not a UUID
-          type: object
-    searchNominationSuggestions_200_response:
-      allOf:
-      - properties:
-          next_page_token:
-            description: If there are more nominations to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page.
-            type: string
-      - properties:
-          suggestions:
-            items:
-              $ref: '#/components/schemas/getMeterNominationSuggestions_200_response_suggestions_inner'
-            type: array
-            default: null
-        required:
-        - suggestions
-      example:
-        next_page_token: next_page_token
-        suggestions:
-        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          program_identifier: CEC-DSGS
-          start_date: 2025-05-01
-          end_date: 2025-06-01
-          nomination_kw: 1.23
-          status: RECEIVED
-          created_at: 2025-01-01 00:00:01+00:00
-          created_by: created_by
-          updated_at: 2025-06-01 08:00:00+00:00
-        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          program_identifier: CEC-DSGS
-          start_date: 2025-05-01
-          end_date: 2025-06-01
-          nomination_kw: 1.23
-          status: RECEIVED
-          created_at: 2025-01-01 00:00:01+00:00
-          created_by: created_by
-          updated_at: 2025-06-01 08:00:00+00:00
     postNominationSuggestions_request_inner_1:
       allOf:
       - properties:
@@ -743,146 +684,41 @@ components:
       - meter_id
       - nomination_kw
       - start_date
-    searchNominations_200_response:
-      allOf:
-      - properties:
-          next_page_token:
-            description: If there are more nominations to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page.
-            type: string
-      - properties:
-          nominations:
-            items:
-              $ref: '#/components/schemas/searchNominations_200_response_allOf_nominations_inner'
-            type: array
-            default: null
-        required:
-        - nominations
+    getMeterNominationSuggestions_400_response:
       example:
-        next_page_token: next_page_token
-        nominations:
-        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          program_identifier: CEC-DSGS
-          start_time: 2025-05-01 08:00:00+00:00
-          end_time: 2025-06-01 08:00:00+00:00
-          source: LEAP
-          nomination_kw: 1.23
-          updated_at: 2025-06-01 08:00:00+00:00
-        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          program_identifier: CEC-DSGS
-          start_time: 2025-05-01 08:00:00+00:00
-          end_time: 2025-06-01 08:00:00+00:00
-          source: LEAP
-          nomination_kw: 1.23
-          updated_at: 2025-06-01 08:00:00+00:00
-    getMeterNominationSuggestions_200_response:
-      example:
-        suggestions:
-        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          program_identifier: CEC-DSGS
-          start_date: 2025-05-01
-          end_date: 2025-06-01
-          nomination_kw: 1.23
-          status: RECEIVED
-          created_at: 2025-01-01 00:00:01+00:00
-          created_by: created_by
-          updated_at: 2025-06-01 08:00:00+00:00
-        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          program_identifier: CEC-DSGS
-          start_date: 2025-05-01
-          end_date: 2025-06-01
-          nomination_kw: 1.23
-          status: RECEIVED
-          created_at: 2025-01-01 00:00:01+00:00
-          created_by: created_by
-          updated_at: 2025-06-01 08:00:00+00:00
+        title: Bad Request
+        status: 400
+        details:
+          error: Meter id is not a UUID
       properties:
-        suggestions:
-          items:
-            $ref: '#/components/schemas/getMeterNominationSuggestions_200_response_suggestions_inner'
-          type: array
-          default: null
-      required:
-      - suggestions
-    searchNominations_200_response_allOf_nominations_inner:
+        title:
+          description: Summary of what went wrong
+          example: Bad Request
+          maxLength: 2000
+          minLength: 1
+          type: string
+        status:
+          description: An error code indicating what went wrong, usually the same as the HTTP Status Code
+          example: 400
+          type: integer
+        details:
+          description: Extra information about the error.
+          example:
+            error: Meter id is not a UUID
+          type: object
+    searchNominations_request:
       allOf:
       - properties:
-          meter_id:
+          meter_ids:
             description: Meter ID
-            format: uuid
-            type: string
-        required:
-        - meter_id
-      - properties:
-          program_identifier:
-            description: Identifier of program
-            enum:
-            - CAISO-CCA-SC_ONLY
-            - CCA
-            - CEC-DSGS-OPTION4
-            - CEC-DSGS
-            - CONED-CSRP
-            - CONED-DLRP
-            - DRAM
-            - ELRP
-            - ENERGY-ONLY
-            - ERCOT-ERS
-            - EVERSOURCE-CS
-            - MA_DOER-CPS
-            - NATGRID-CS
-            - NRG-REALTIME
-            - NRG-RED
-            - NYISO-SCR
-            - ONCOR-CLM
-            - PGE-ART
-            - PGE-CBP
-            - PJM-CAPACITY
-            - PSEGLI-CSRP
-            - PSEGLI-DLRP
-            - RIE-CS
-            - UNITIL-CS
-            - PSE-RPO
-            - SRP-RPO
-            - TVA-RPO
-            - CAISO-ELRP-A4
-            - CEC-DSGS-OPTION2
-            - ENERGYHUB-CS
-            - CT_GB-ESS
-            example: CEC-DSGS
-            type: string
-            x-enum-varnames:
-            - CAISO_CCA_SC_ONLY
-            - CCA
-            - CEC_DSGS_OPTION4
-            - CEC_DSGS
-            - CONED_CSRP
-            - CONED_DLRP
-            - DRAM
-            - ELRP
-            - ENERGY_ONLY
-            - ERCOT_ERS
-            - EVERSOURCE_CS
-            - MA_DOER_CPS
-            - NATGRID_CS
-            - NRG_REALTIME
-            - NRG_RED
-            - NYISO_SCR
-            - ONCOR_CLM
-            - PGE_ART
-            - PGE_CBP
-            - PJM_CAPACITY
-            - PSEGLI_CSRP
-            - PSEGLI_DLRP
-            - RIE_CS
-            - UNITIL_CS
-            - PSE_RPO
-            - SRP_RPO
-            - TVA_RPO
-            - CAISO_ELRP_A4
-            - CEC_DSGS_OPTION2
-            - ENERGYHUB_CS
-            - CT_GB_ESS
+            items:
+              format: uuid
+              type: string
+            maxItems: 1000
+            minItems: 0
+            type: array
+            uniqueItems: true
+            default: null
       - description: Start of the date-time-range of the nomination. The start date-time is inclusive. If left empty, defaults to returning current and future nominations.
         properties:
           start_time:
@@ -899,62 +735,6 @@ components:
             format: date-time
             type: string
       - properties:
-          source:
-            description: Source of the nomination; either Leap or a suggestion from the Partner.
-            enum:
-            - LEAP
-            - PARTNER
-            type: string
-        required:
-        - source
-      - properties:
-          nomination_kw:
-            description: Nominated curtailable load for this meter in kilowatts. Precision of up to 2 decimal places.
-            example: 1.23
-            format: double
-            maximum: 10000
-            minimum: 0
-            type: number
-        required:
-        - nomination_kw
-      - properties:
-          updated_at:
-            description: Notes the time of the last update to the item.
-            example: 2025-06-01 08:00:00+00:00
-            format: date-time
-            type: string
-      example:
-        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        program_identifier: CEC-DSGS
-        start_time: 2025-05-01 08:00:00+00:00
-        end_time: 2025-06-01 08:00:00+00:00
-        source: LEAP
-        nomination_kw: 1.23
-        updated_at: 2025-06-01 08:00:00+00:00
-      required:
-      - meter_id
-      - nomination_kw
-      - program_identifier
-      - source
-      - start_date
-      - updated_at
-    getMeterNominationSuggestions_200_response_suggestions_inner:
-      allOf:
-      - properties:
-          nomination_suggestion_id:
-            description: Nomination Suggestion ID
-            format: uuid
-            type: string
-        required:
-        - nomination_suggestion_id
-      - properties:
-          meter_id:
-            description: Meter ID
-            format: uuid
-            type: string
-        required:
-        - meter_id
-      - properties:
           program_identifier:
             description: Identifier of program
             enum:
@@ -1024,83 +804,60 @@ components:
             - ENERGYHUB_CS
             - CT_GB_ESS
       - properties:
-          start_date:
-            description: Start of the date-range of the nomination suggestion.
-            example: 2025-05-01
-            format: date
-            type: string
-      - properties:
-          end_date:
-            description: 'End of the date-range of the nomination suggestion. Should be greater than the start date.
-
-              The end date is exclusive. So to suggest a nomination for the month of May, the start date would be  ''2025-05-01'' and the end date would be ''2025-06-01''.
-
-              If the end date is left empty, we will assume the intended date-range is open-ended, and the nomination  applies to all future dates.'
-            example: 2025-06-01
-            format: date
-            type: string
-      - properties:
-          nomination_kw:
-            description: Nominated curtailable load for this meter in kilowatts. Precision of up to 2 decimal places.
-            example: 1.23
-            format: double
-            maximum: 10000
-            minimum: 0
-            type: number
-        required:
-        - nomination_kw
-      - properties:
-          status:
-            description: Status of the nomination suggestion
-            enum:
-            - RECEIVED
-            - APPROVED
-            - MODIFIED
-            - DENIED
-            - DELETED
-            - INVALIDATED
-            type: string
-      - properties:
-          created_at:
-            description: Date of creation
-            example: 2025-01-01 00:00:01+00:00
-            format: date-time
-            type: string
-        required:
-        - created_at
-      - properties:
-          created_by:
-            description: Username of the creator, or the api key.
-            type: string
-        required:
-        - created_by
-      - properties:
-          updated_at:
-            description: Notes the time of the last update to the item.
+          updated_since:
+            description: Flag to search for entries update at or after the given date-time
             example: 2025-06-01 08:00:00+00:00
             format: date-time
             type: string
+      - properties:
+          page_token:
+            description: If there are more nominations to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page.
+            type: string
+          page_size:
+            default: 500
+            description: Amount of results to return. Defaults to 500.
+            example: 100
+            format: int32
+            maximum: 500
+            minimum: 1
+            type: integer
+    searchNominationSuggestions_200_response:
+      allOf:
+      - properties:
+          next_page_token:
+            description: If there are more nominations to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page.
+            type: string
+      - properties:
+          suggestions:
+            items:
+              $ref: '#/components/schemas/getMeterNominationSuggestions_200_response_suggestions_inner'
+            type: array
+            default: null
+        required:
+        - suggestions
       example:
-        nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        program_identifier: CEC-DSGS
-        start_date: 2025-05-01
-        end_date: 2025-06-01
-        nomination_kw: 1.23
-        status: RECEIVED
-        created_at: 2025-01-01 00:00:01+00:00
-        created_by: created_by
-        updated_at: 2025-06-01 08:00:00+00:00
-      required:
-      - created_at
-      - created_by
-      - meter_id
-      - nomination_kw
-      - nomination_suggestion_id
-      - program_identifier
-      - start_date
-      - status
-      - updated_at
+        next_page_token: next_page_token
+        suggestions:
+        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_date: 2025-05-01
+          end_date: 2025-06-01
+          nomination_kw: 1.23
+          status: RECEIVED
+          created_at: 2025-01-01 00:00:01+00:00
+          created_by: created_by
+          updated_at: 2025-06-01 08:00:00+00:00
+        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_date: 2025-05-01
+          end_date: 2025-06-01
+          nomination_kw: 1.23
+          status: RECEIVED
+          created_at: 2025-01-01 00:00:01+00:00
+          created_by: created_by
+          updated_at: 2025-06-01 08:00:00+00:00
     postMeterNominationSuggestions_request_inner:
       allOf:
       - properties:
@@ -1206,15 +963,6 @@ components:
       required:
       - nomination_kw
       - start_date
-    searchNominations_200_response_1:
-      properties:
-        nominations:
-          items:
-            $ref: '#/components/schemas/searchNominations_200_response_allOf_nominations_inner'
-          type: array
-          default: null
-      required:
-      - nominations
     searchNominationSuggestions_request:
       allOf:
       - properties:
@@ -1467,34 +1215,62 @@ components:
       - meter_ids
       - nomination_kw
       - start_date
-    searchNominations_request:
+    searchNominations_200_response:
       allOf:
       - properties:
-          meter_ids:
-            description: Meter ID
-            items:
-              format: uuid
-              type: string
-            maxItems: 1000
-            minItems: 0
-            type: array
-            uniqueItems: true
-            default: null
-      - description: Start of the date-time-range of the nomination. The start date-time is inclusive. If left empty, defaults to returning current and future nominations.
-        properties:
-          start_time:
-            description: Start of the date-time-range of the nomination. The start date-time is inclusive.
-            example: 2025-05-01 08:00:00+00:00
-            format: date-time
+          next_page_token:
+            description: If there are more nominations to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page.
             type: string
       - properties:
-          end_time:
-            description: 'End of the date-time-range of the nomination. The end date-time is exclusive. So for a nomination for the  month of May, the start date-time would be ''2025-05-01T08:00:00Z'' and the end date-time would be  ''2025-06-01T08:00:00Z''.
-
-              If the end date-time is left empty, the nomination applies to all future date-times.'
-            example: 2025-06-01 08:00:00+00:00
-            format: date-time
+          nominations:
+            items:
+              $ref: '#/components/schemas/searchNominations_200_response_allOf_nominations_inner'
+            type: array
+            default: null
+        required:
+        - nominations
+      example:
+        next_page_token: next_page_token
+        nominations:
+        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_time: 2025-05-01 08:00:00+00:00
+          end_time: 2025-06-01 08:00:00+00:00
+          source: LEAP
+          nomination_kw: 1.23
+          updated_at: 2025-06-01 08:00:00+00:00
+        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_time: 2025-05-01 08:00:00+00:00
+          end_time: 2025-06-01 08:00:00+00:00
+          source: LEAP
+          nomination_kw: 1.23
+          updated_at: 2025-06-01 08:00:00+00:00
+    searchNominations_200_response_1:
+      properties:
+        nominations:
+          items:
+            $ref: '#/components/schemas/searchNominations_200_response_allOf_nominations_inner'
+          type: array
+          default: null
+      required:
+      - nominations
+    getMeterNominationSuggestions_200_response_suggestions_inner:
+      allOf:
+      - properties:
+          nomination_suggestion_id:
+            description: Nomination Suggestion ID
+            format: uuid
             type: string
+        required:
+        - nomination_suggestion_id
+      - properties:
+          meter_id:
+            description: Meter ID
+            format: uuid
+            type: string
+        required:
+        - meter_id
       - properties:
           program_identifier:
             description: Identifier of program
@@ -1565,23 +1341,247 @@ components:
             - ENERGYHUB_CS
             - CT_GB_ESS
       - properties:
-          updated_since:
-            description: Flag to search for entries update at or after the given date-time
+          start_date:
+            description: Start of the date-range of the nomination suggestion.
+            example: 2025-05-01
+            format: date
+            type: string
+      - properties:
+          end_date:
+            description: 'End of the date-range of the nomination suggestion. Should be greater than the start date.
+
+              The end date is exclusive. So to suggest a nomination for the month of May, the start date would be  ''2025-05-01'' and the end date would be ''2025-06-01''.
+
+              If the end date is left empty, we will assume the intended date-range is open-ended, and the nomination  applies to all future dates.'
+            example: 2025-06-01
+            format: date
+            type: string
+      - properties:
+          nomination_kw:
+            description: Nominated curtailable load for this meter in kilowatts. Precision of up to 2 decimal places.
+            example: 1.23
+            format: double
+            maximum: 10000
+            minimum: 0
+            type: number
+        required:
+        - nomination_kw
+      - properties:
+          status:
+            description: Status of the nomination suggestion
+            enum:
+            - RECEIVED
+            - APPROVED
+            - MODIFIED
+            - DENIED
+            - DELETED
+            - INVALIDATED
+            type: string
+      - properties:
+          created_at:
+            description: Date of creation
+            example: 2025-01-01 00:00:01+00:00
+            format: date-time
+            type: string
+        required:
+        - created_at
+      - properties:
+          created_by:
+            description: Username of the creator, or the api key.
+            type: string
+        required:
+        - created_by
+      - properties:
+          updated_at:
+            description: Notes the time of the last update to the item.
+            example: 2025-06-01 08:00:00+00:00
+            format: date-time
+            type: string
+      example:
+        nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        program_identifier: CEC-DSGS
+        start_date: 2025-05-01
+        end_date: 2025-06-01
+        nomination_kw: 1.23
+        status: RECEIVED
+        created_at: 2025-01-01 00:00:01+00:00
+        created_by: created_by
+        updated_at: 2025-06-01 08:00:00+00:00
+      required:
+      - created_at
+      - created_by
+      - meter_id
+      - nomination_kw
+      - nomination_suggestion_id
+      - program_identifier
+      - start_date
+      - status
+      - updated_at
+    getMeterNominationSuggestions_200_response:
+      example:
+        suggestions:
+        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_date: 2025-05-01
+          end_date: 2025-06-01
+          nomination_kw: 1.23
+          status: RECEIVED
+          created_at: 2025-01-01 00:00:01+00:00
+          created_by: created_by
+          updated_at: 2025-06-01 08:00:00+00:00
+        - nomination_suggestion_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          program_identifier: CEC-DSGS
+          start_date: 2025-05-01
+          end_date: 2025-06-01
+          nomination_kw: 1.23
+          status: RECEIVED
+          created_at: 2025-01-01 00:00:01+00:00
+          created_by: created_by
+          updated_at: 2025-06-01 08:00:00+00:00
+      properties:
+        suggestions:
+          items:
+            $ref: '#/components/schemas/getMeterNominationSuggestions_200_response_suggestions_inner'
+          type: array
+          default: null
+      required:
+      - suggestions
+    searchNominations_200_response_allOf_nominations_inner:
+      allOf:
+      - properties:
+          meter_id:
+            description: Meter ID
+            format: uuid
+            type: string
+        required:
+        - meter_id
+      - properties:
+          program_identifier:
+            description: Identifier of program
+            enum:
+            - CAISO-CCA-SC_ONLY
+            - CCA
+            - CEC-DSGS-OPTION4
+            - CEC-DSGS
+            - CONED-CSRP
+            - CONED-DLRP
+            - DRAM
+            - ELRP
+            - ENERGY-ONLY
+            - ERCOT-ERS
+            - EVERSOURCE-CS
+            - MA_DOER-CPS
+            - NATGRID-CS
+            - NRG-REALTIME
+            - NRG-RED
+            - NYISO-SCR
+            - ONCOR-CLM
+            - PGE-ART
+            - PGE-CBP
+            - PJM-CAPACITY
+            - PSEGLI-CSRP
+            - PSEGLI-DLRP
+            - RIE-CS
+            - UNITIL-CS
+            - PSE-RPO
+            - SRP-RPO
+            - TVA-RPO
+            - CAISO-ELRP-A4
+            - CEC-DSGS-OPTION2
+            - ENERGYHUB-CS
+            - CT_GB-ESS
+            example: CEC-DSGS
+            type: string
+            x-enum-varnames:
+            - CAISO_CCA_SC_ONLY
+            - CCA
+            - CEC_DSGS_OPTION4
+            - CEC_DSGS
+            - CONED_CSRP
+            - CONED_DLRP
+            - DRAM
+            - ELRP
+            - ENERGY_ONLY
+            - ERCOT_ERS
+            - EVERSOURCE_CS
+            - MA_DOER_CPS
+            - NATGRID_CS
+            - NRG_REALTIME
+            - NRG_RED
+            - NYISO_SCR
+            - ONCOR_CLM
+            - PGE_ART
+            - PGE_CBP
+            - PJM_CAPACITY
+            - PSEGLI_CSRP
+            - PSEGLI_DLRP
+            - RIE_CS
+            - UNITIL_CS
+            - PSE_RPO
+            - SRP_RPO
+            - TVA_RPO
+            - CAISO_ELRP_A4
+            - CEC_DSGS_OPTION2
+            - ENERGYHUB_CS
+            - CT_GB_ESS
+      - description: Start of the date-time-range of the nomination. The start date-time is inclusive. If left empty, defaults to returning current and future nominations.
+        properties:
+          start_time:
+            description: Start of the date-time-range of the nomination. The start date-time is inclusive.
+            example: 2025-05-01 08:00:00+00:00
+            format: date-time
+            type: string
+      - properties:
+          end_time:
+            description: 'End of the date-time-range of the nomination. The end date-time is exclusive. So for a nomination for the  month of May, the start date-time would be ''2025-05-01T08:00:00Z'' and the end date-time would be  ''2025-06-01T08:00:00Z''.
+
+              If the end date-time is left empty, the nomination applies to all future date-times.'
             example: 2025-06-01 08:00:00+00:00
             format: date-time
             type: string
       - properties:
-          page_token:
-            description: If there are more nominations to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page.
+          source:
+            description: Source of the nomination; either Leap or a suggestion from the Partner.
+            enum:
+            - LEAP
+            - PARTNER
             type: string
-          page_size:
-            default: 500
-            description: Amount of results to return. Defaults to 500.
-            example: 100
-            format: int32
-            maximum: 500
-            minimum: 1
-            type: integer
+        required:
+        - source
+      - properties:
+          nomination_kw:
+            description: Nominated curtailable load for this meter in kilowatts. Precision of up to 2 decimal places.
+            example: 1.23
+            format: double
+            maximum: 10000
+            minimum: 0
+            type: number
+        required:
+        - nomination_kw
+      - properties:
+          updated_at:
+            description: Notes the time of the last update to the item.
+            example: 2025-06-01 08:00:00+00:00
+            format: date-time
+            type: string
+      example:
+        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        program_identifier: CEC-DSGS
+        start_time: 2025-05-01 08:00:00+00:00
+        end_time: 2025-06-01 08:00:00+00:00
+        source: LEAP
+        nomination_kw: 1.23
+        updated_at: 2025-06-01 08:00:00+00:00
+      required:
+      - meter_id
+      - nomination_kw
+      - program_identifier
+      - source
+      - start_date
+      - updated_at
   securitySchemes:
     Bearer:
       scheme: bearer

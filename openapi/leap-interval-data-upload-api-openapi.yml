@@ -1,0 +1,826 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: apiteam@leap.energy
+  description: Get insights into the ingestion of interval data submitted through the Leap SFTP Server or Partner Portal. Don't forget to select the right server, and to authorize with your JWT or API Key.
+  title: Interval Data Upload API
+  version: '1.1'
+servers:
+- url: https://api.staging.leap.energy
+- url: https://api.leap.energy
+tags:
+- name: interval_data_upload
+paths:
+  /v1.1/jobs/interval-data-uploads:
+    get:
+      description: Lists the uploaded interval files, regardless of whether they were uploaded through Leap's SFTP server or the Partner Portal.
+      operationId: listIntervalDataUploads
+      parameters:
+      - description: Filter uploads with an uploaded_at_date_time on or after this timestamp (UTC, RFC 3339).
+        explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          example: '2024-05-24T00:00:00Z'
+          format: date-time
+          type: string
+        style: form
+      - description: Filter uploads with an uploaded_at_date_time on or before this timestamp (UTC, RFC 3339).
+        explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          example: '2024-05-24T23:59:59Z'
+          format: date-time
+          type: string
+        style: form
+      - description: Filter by the original upload path on the Leap SFTP server (must start with `/interval-data/`).
+        explode: true
+        in: query
+        name: file_path
+        required: false
+        schema:
+          example: /interval-data/devices-hvac-january-2024.72.csv
+          maxLength: 1024
+          minLength: 1
+          pattern: ^/interval-data/[A-Za-z0-9._/-]+$
+          type: string
+        style: form
+      - description: Filter uploads by ingestion status.
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          $ref: '#/components/schemas/JobStatus'
+        style: form
+      - description: Number of uploads to return per page (1-500).
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 50
+          type: integer
+        style: form
+      - description: Continuation token for pagination returned by a previous request.
+        explode: true
+        in: query
+        name: page_token
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                uploads:
+                - last_job_id: 34af68c0-5317-4844-b0c6-4ac4cd35b63f
+                  uploaded_file_path: /interval-data/devices-hvac-january-2024.72.csv
+                  current_file_path: /interval-data/accepted/devices-hvac-january-2024.72.csv/devices-hvac-january-2024.72.csv
+                  uploaded_at_date_time: '2024-05-24T15:17:35Z'
+                  status: COMPLETED
+              schema:
+                $ref: '#/components/schemas/GetUploadsResponse'
+          description: Successfully queried the uploads.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Malformed or invalid query.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseUnauthorized'
+          description: You are not authorized to perform this operation.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseForbidden'
+          description: You do not have the necessary permissions for this operation.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseInternalServerError'
+          description: An internal server error occurred.
+      security:
+      - http: []
+      summary: List interval data upload statuses
+      tags:
+      - interval_data_upload
+  /v1.1/jobs/interval-data-uploads/{job_id}:
+    get:
+      description: Lists the validation errors produced while processing the file associated with the specified ingestion job ID. You can find these ingestion job IDs in the 'List all interval data uploads' endpoint or in the Partner Portal.
+      operationId: listIntervalDataUploadErrors
+      parameters:
+      - description: Ingestion job ID (UUID).
+        explode: false
+        in: path
+        name: job_id
+        required: true
+        schema:
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+                error_csv_file_path: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.errors.csv
+                errors:
+                - line: 12
+                  column: meter_id
+                  errors:
+                  - ba82dd27-8b52-479c-8b19-0a717d88c87z is not a valid UUID.
+              schema:
+                $ref: '#/components/schemas/GetUploadIngestionErrorsResponse'
+          description: Successfully queried the ingestion attempt.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Malformed or invalid query.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseUnauthorized'
+          description: You are not authorized to perform this operation.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Not authorized to access the requested information.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Information not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseInternalServerError'
+          description: An internal server error occurred.
+      security:
+      - http: []
+      summary: List data validation errors
+      tags:
+      - interval_data_upload
+  /v1.1/jobs/interval-data-uploads/presigned-url/{job_id}:
+    get:
+      description: Returns a presigned S3 URL to download the file originally uploaded for the specified ingestion job. You can find the ingestion job IDs in the 'List all interval data uploads' endpoint or in the Partner Portal.
+      operationId: intervalDataPresignedUrl
+      parameters:
+      - description: Ingestion job ID (UUID).
+        explode: false
+        in: path
+        name: job_id
+        required: true
+        schema:
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        '302':
+          content: {}
+          description: Found the file to dowload
+          headers:
+            Location:
+              description: The S3 Presigned URI to redirect to temporarily
+              explode: false
+              schema:
+                type: string
+              style: simple
+            Cache-Control:
+              description: no-cache, no-store, must-revalidate
+              explode: false
+              schema:
+                type: string
+              style: simple
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Malformed or invalid query.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseUnauthorized'
+          description: You are not authorized to perform this operation.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Not authorized to access the requested information.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Information not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseInternalServerError'
+          description: An internal server error occurred.
+      security:
+      - http: []
+      summary: Returns a presigned S3 URL to download the file that was uploaded previously.
+      tags:
+      - interval_data_upload
+  /v1.1/jobs/interval-data-uploads/file-preview/{job_id}:
+    get:
+      description: The interval data processed during the file upload. You can find these ingestion job IDs in the 'List all interval data uploads' endpoint or in the Partner Portal.
+      operationId: intervalDataFilePreview
+      parameters:
+      - description: Ingestion job ID (UUID).
+        explode: false
+        in: path
+        name: job_id
+        required: true
+        schema:
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                file_data:
+                - meter_id,interval_start_time_utc,interval_end_time_utc,energy_net_kwh,energy_consumed_kwh,energy_generated_kwh,final,region
+                - 12345678 Test,5:00,6:00,100,200,300,100,CAISO
+                job_id: 638451c8-4b81-4b91-ab43-c0ba0c5a0336
+                status: COMPLETED
+                created_at: '2024-03-21T09:43:51.186Z'
+                updated_at: '2024-03-21T09:43:51.186Z'
+                is_limited: true
+              schema:
+                $ref: '#/components/schemas/GetIntervalDataFilePreviewResponse'
+          description: Successfully queried the ingestion attempt.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Malformed or invalid query.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseUnauthorized'
+          description: You are not authorized to perform this operation.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Not authorized to access the requested information.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Information not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseInternalServerError'
+          description: An internal server error occurred.
+      security:
+      - http: []
+      summary: Provides a preview of interval data uploaded during the specified job
+      tags:
+      - interval_data_upload
+  /v1.1/missing-interval-data/search:
+    post:
+      description: Returns the intervals for which interval data is missing for the requested meters within the given time window. Results are paginated; when more results are available the response includes a `next_page_token`, which you pass back as `page_token` to fetch the next page.
+      operationId: searchMissingIntervalData
+      requestBody:
+        content:
+          application/json:
+            example:
+              meter_ids:
+              - c09240ce-8942-4eaf-a642-1c728e8d61a3
+              start_date_time_utc: '2026-01-01T00:00:00Z'
+              end_date_time_utc: '2026-12-31T00:00:00Z'
+              page_size: 100
+            schema:
+              $ref: '#/components/schemas/SearchMissingIntervalDataRequest'
+        description: Optional filters that narrow the search for missing interval data. Omitting a filter (or the whole body) applies no constraint for that dimension.
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                missing_intervals:
+                - meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+                  data_type: LOAD_DATA
+                  start_date_time_utc: '2026-04-01T21:00:00Z'
+                  end_date_time_utc: '2026-04-01T23:00:00Z'
+                  status: OPEN
+                - meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+                  data_type: RUNTIME_DATA
+                  start_date_time_utc: '2026-04-02T21:00:00Z'
+                  end_date_time_utc: '2026-04-02T23:00:00Z'
+                  status: PROCESSING
+                next_page_token: eyJvZmZzZXQiOjEwMH0=
+              schema:
+                $ref: '#/components/schemas/SearchMissingIntervalDataResponse'
+          description: Successfully searched for missing interval data.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Malformed or invalid query.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseUnauthorized'
+          description: You are not authorized to perform this operation.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseForbidden'
+          description: You do not have the necessary permissions for this operation.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseInternalServerError'
+          description: An internal server error occurred.
+      security:
+      - http: []
+      summary: Search for missing interval data
+      tags:
+      - interval_data_upload
+  /v1.1/interval-data:
+    post:
+      description: Uploads a file of load interval data and starts its ingestion. The file format is determined by the request `Content-Type` header (e.g. `text/csv`). Returns the ingestion ID used to track progress.
+      operationId: uploadIntervalData
+      parameters:
+      - description: The schema this upload should adhere to.
+        example: load
+        explode: true
+        in: query
+        name: schema
+        required: true
+        schema:
+          enum:
+          - load
+          - runtime
+          - performance
+          type: string
+        style: form
+      requestBody:
+        content:
+          text/csv:
+            schema:
+              type: string
+        description: The raw load interval data file contents.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+              schema:
+                $ref: '#/components/schemas/IngestionResponse'
+          description: The file was accepted and its ingestion was started.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+          description: Malformed or invalid request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseUnauthorized'
+          description: You are not authorized to perform this operation.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseForbidden'
+          description: You do not have the necessary permissions for this operation.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseInternalServerError'
+          description: An internal server error occurred.
+      security:
+      - http: []
+      summary: Upload load interval data
+      tags:
+      - interval_data_upload
+components:
+  schemas:
+    ErrorResponseInternalServerError:
+      type: object
+    IngestionResponse:
+      example:
+        job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+      properties:
+        job_id:
+          description: The ingestion job that was started for the uploaded file. Use this to track progress and look up validation errors via the 'List interval data uploads' and 'List data validation errors' endpoints.
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+      required:
+      - job_id
+      type: object
+    GetUploadsResponse:
+      example:
+        uploads:
+        - last_job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          uploaded_file_path: /interval-data/devices-hvac-january-2024.72.csv
+          current_file_path: /interval-data/failed/devices-hvac-january-2024.72.csv/devices-hvac-january-2024.72.csv
+          uploaded_at_date_time: '2024-01-30T18:55:12Z'
+          status: PROCESSING
+          feedback_csv_file_path: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.feedback
+          error_csv_file_path: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.errors.csv
+        - last_job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          uploaded_file_path: /interval-data/devices-hvac-january-2024.72.csv
+          current_file_path: /interval-data/failed/devices-hvac-january-2024.72.csv/devices-hvac-january-2024.72.csv
+          uploaded_at_date_time: '2024-01-30T18:55:12Z'
+          status: PROCESSING
+          feedback_csv_file_path: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.feedback
+          error_csv_file_path: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.errors.csv
+        next_page_token: next_page_token
+      properties:
+        uploads:
+          description: The list of found uploads.
+          items:
+            $ref: '#/components/schemas/IntervalDataUpload'
+          type: array
+        next_page_token:
+          description: Use this value to get the next page of content. Will only be provided if there might be more data available.
+          type: string
+      required:
+      - uploads
+      type: object
+    ErrorResponseUnauthorized:
+      type: object
+    GetIntervalDataFilePreviewResponse:
+      example:
+        file_data:
+        - file_data
+        - file_data
+        job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+        status: PROCESSING
+        created_at: '2024-05-24T00:00:00Z'
+        updated_at: '2024-05-24T00:00:00Z'
+        is_limited: true
+      properties:
+        file_data:
+          description: A list of strings, each string is a line in the original file
+          items:
+            type: string
+          type: array
+        job_id:
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        created_at:
+          example: '2024-05-24T00:00:00Z'
+          format: date-time
+          type: string
+        updated_at:
+          example: '2024-05-24T00:00:00Z'
+          format: date-time
+          type: string
+        is_limited:
+          example: true
+          type: boolean
+      type: object
+    IntervalDataType:
+      description: "The type of interval data, corresponding to the interval-data upload endpoints.\n\n\tLOAD_DATA - load interval data\n\tRUNTIME_DATA - runtime interval data\n\tPERFORMANCE_DATA - performance interval data"
+      enum:
+      - LOAD_DATA
+      - RUNTIME_DATA
+      - PERFORMANCE_DATA
+      example: LOAD_DATA
+      type: string
+    ErrorResponseBadRequest:
+      type: object
+    GetUploadIngestionErrorsResponse:
+      example:
+        job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+        error_csv_file_path: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.errors.csv
+        error_summary:
+        - column: meter_id
+          code: MTR_0001
+          count: 123
+        - column: meter_id
+          code: MTR_0001
+          count: 123
+        errors:
+        - line: 12
+          column: meter_id
+          code: MTR_0001
+          message: ba82dd27-8b52-479c-8b19-0a717d88c87z is not a valid UUID.
+        - line: 12
+          column: meter_id
+          code: MTR_0001
+          message: ba82dd27-8b52-479c-8b19-0a717d88c87z is not a valid UUID.
+      properties:
+        job_id:
+          description: The job ID.
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+        error_csv_file_path:
+          description: Path of the CSV on the Leap SFTP server that contains the errors that occurred trying to ingest the file.
+          example: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.errors.csv
+          type: string
+        error_summary:
+          description: Aggregations of the errors.
+          items:
+            $ref: '#/components/schemas/IntervalDataUploadIngestionErrorSummary'
+          type: array
+        errors:
+          description: The list of file ingestion errors.
+          items:
+            $ref: '#/components/schemas/IntervalDataUploadIngestionError'
+          type: array
+      required:
+      - errors
+      - job_id
+      - summary
+      type: object
+    IntervalDataUploadIngestionError:
+      description: The list of file ingestion errors.
+      example:
+        line: 12
+        column: meter_id
+        code: MTR_0001
+        message: ba82dd27-8b52-479c-8b19-0a717d88c87z is not a valid UUID.
+      properties:
+        line:
+          description: The line in the original file that produced the error(s).
+          example: 12
+          format: int32
+          type: integer
+        column:
+          description: The column in the original file that produced the error(s).
+          example: meter_id
+          type: string
+        code:
+          description: "The error code of the error.\n\nUNCATEGORISED: When the error is not categorised (basically never happens).\n\tLIN_0001: Line is too short for the amount of columns.\n\tMTR_0001: meter_id column is not present.\n\tMTR_0002: meter_id value is not parsable.\n\tMTR_0003: meter_id does not point to a known meter.\n\tSTM_0001: interval_start_time_utc is not present.\n\tSTM_0002: interval_start_time_utc is not parsable.\n\tSTM_0003: interval_start_time_utc is not correct. It either does not align to the right 15-minute start or is in the future.\n\tETM_0001: interval_end_time_utc is not present.\n\tETM_0002: interval_end_time_utc is not parsable.\n\tETM_0003: interval_end_time_utc is not correct. It either does not aligh to the right 15-minute end or is in the future.\n\tDTR_0003: Date range is not correct. It is not 15 minutes in length (depicted by the interval_start_time_utc and interval_end_time_utc columns).\n\tGEN_0002: energy_generated_kwh is not a number.\n\tGEN_0003: energy_generated_kwh is not correct. It is probably negative.\n\tNET_0002: energy_net_kwh is not a number,\n\tCON_0002: energy_consumed_kwh is not a number,\n\tCON_0003: energy_consumed_kwh is not correct. It is probably negative.\n\tNRG_0001: No correct set of energy column present. Make sure you have energy_net_kwh a combination of energy_generated_kwh and energy_consumed_kwh, or provide all energy columns.\n\tNRG_0003: The energy columns are providing conflicting information.\n\tREG_0002: region is not parsable.\n\tREG_0003: region is not a valid state.\n\tFNL_0002: final is not parsable"
+          example: MTR_0001
+          type: string
+        message:
+          description: The message associated with the error.
+          example: ba82dd27-8b52-479c-8b19-0a717d88c87z is not a valid UUID.
+          type: string
+      required:
+      - code
+      - errors
+      - line
+      - message
+      type: object
+    IntervalDataUploadIngestionErrorSummary:
+      description: The list of file ingestion errors.
+      example:
+        column: meter_id
+        code: MTR_0001
+        count: 123
+      properties:
+        column:
+          description: The column in the original file that produced the error(s).
+          example: meter_id
+          type: string
+        code:
+          description: The error code of the error.
+          example: MTR_0001
+          type: string
+        count:
+          description: The amount of errors of this type.
+          example: 123
+          type: integer
+      required:
+      - code
+      - count
+      type: object
+    MissingIntervalStatus:
+      description: "The status of a missing interval.\n\n\tOPEN - the interval is known to be missing and has not yet been backfilled\n\tPROCESSING - a backfill of the interval is in progress"
+      enum:
+      - OPEN
+      - PROCESSING
+      example: OPEN
+      type: string
+    IntervalDataUpload:
+      description: The list of found uploads.
+      example:
+        last_job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+        uploaded_file_path: /interval-data/devices-hvac-january-2024.72.csv
+        current_file_path: /interval-data/failed/devices-hvac-january-2024.72.csv/devices-hvac-january-2024.72.csv
+        uploaded_at_date_time: '2024-01-30T18:55:12Z'
+        status: PROCESSING
+        feedback_csv_file_path: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.feedback
+        error_csv_file_path: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.errors.csv
+      properties:
+        last_job_id:
+          description: The last ingestion attempt of this file. Usually Leap will just perform a single attempt to ingest the file. Leap can make an exception to correct for a known bug. This ID can be used to find the errors associated with the file ingestion.
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+        uploaded_file_path:
+          description: The file path as it has been uploaded to the Leap sftp server. This file will not be present after ingestion and will be moved to a folder based on the success of ingestion. On successful ingestion, this file will be moved to the `interval-data/accepted/[filename]` folder. On unsuccessful ingestion, the file will be moved to the `interval-data/failed/[filename]` folder.
+          example: /interval-data/devices-hvac-january-2024.72.csv
+          type: string
+        current_file_path:
+          description: The ingested file. This may not be the original location of the upload, as after ingestion this file will be moved to a folder according to the success of ingestion (see uploaded_file_path)
+          example: /interval-data/failed/devices-hvac-january-2024.72.csv/devices-hvac-january-2024.72.csv
+          type: string
+        uploaded_at_date_time:
+          description: The date the file was uploaded to the Leap SFTP server
+          example: '2024-01-30T18:55:12Z'
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        feedback_csv_file_path:
+          description: Path of the CSV on the Leap SFTP server that contains the summary of the ingestion of the file. Note that this field is only set when the file has been parsed.
+          example: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.feedback
+          type: string
+        error_csv_file_path:
+          description: Path of the CSV on the Leap SFTP server that contains the errors that occurred trying to ingest the file. Note that this value is only set when the `status` field is equal to `FAILED`. You can also get the errors through the API by using the `v1/jobs/interval-data-uploads/{job_id}` endpoint.
+          example: /interval-data/failed/devices-hvac-januari-2024.72.csv/c09240ce-8942-4eaf-a642-1c728e8d61a3.errors.csv
+          type: string
+      required:
+      - current_file_path
+      - last_job_id
+      - status
+      - uploaded_at_date_time
+      - uploaded_file_path
+      type: object
+    SearchMissingIntervalDataRequest:
+      example:
+        meter_ids:
+        - c09240ce-8942-4eaf-a642-1c728e8d61a3
+        - c09240ce-8942-4eaf-a642-1c728e8d61a3
+        state: OPEN
+        missing_interval_window_start_date_time_utc: '2026-01-01T00:00:00Z'
+        missing_interval_window_end_date_time_utc: '2026-12-31T00:00:00Z'
+        submission_deadline_window_start_date_time_utc: '2026-01-01T00:00:00Z'
+        submission_deadline_window_end_date_time_utc: '2026-12-31T00:00:00Z'
+        page_token: page_token
+        page_size: 100
+      properties:
+        meter_ids:
+          description: The meters to search for missing interval data.
+          items:
+            example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+            format: uuid
+            type: string
+          type: array
+        state:
+          description: The state of the missing intervals
+          enum:
+          - OPEN
+          - PENDING
+          example: OPEN
+          type: string
+        missing_interval_window_start_date_time_utc:
+          description: Start of the search window (inclusive, UTC, RFC 3339).
+          example: '2026-01-01T00:00:00Z'
+          format: date-time
+          type: string
+        missing_interval_window_end_date_time_utc:
+          description: End of the search window (exclusive, UTC, RFC 3339).
+          example: '2026-12-31T00:00:00Z'
+          format: date-time
+          type: string
+        submission_deadline_window_start_date_time_utc:
+          description: Start of the search window (inclusive, UTC, RFC 3339).
+          example: '2026-01-01T00:00:00Z'
+          format: date-time
+          type: string
+        submission_deadline_window_end_date_time_utc:
+          description: End of the search window (exclusive, UTC, RFC 3339).
+          example: '2026-12-31T00:00:00Z'
+          format: date-time
+          type: string
+        page_token:
+          description: Use the `next_page_token` from a previous response to fetch the next page of results. Omit to fetch the first page.
+          type: string
+        page_size:
+          default: 500
+          description: Max number of results to return per page.
+          example: 100
+          format: int32
+          maximum: 500
+          minimum: 1
+          type: integer
+      type: object
+    ErrorResponseForbidden:
+      type: object
+    MissingInterval:
+      example:
+        meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+        data_type: LOAD_DATA
+        start_date_time_utc: '2026-04-01T21:00:00Z'
+        end_date_time_utc: '2026-04-01T23:00:00Z'
+        submission_deadline_date_time_utc: '2026-04-01T23:00:00Z'
+        status: OPEN
+      properties:
+        meter_id:
+          description: The meter the missing interval belongs to.
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+        data_type:
+          $ref: '#/components/schemas/IntervalDataType'
+        start_date_time_utc:
+          description: Start of the missing interval (inclusive, UTC, RFC 3339).
+          example: '2026-04-01T21:00:00Z'
+          format: date-time
+          type: string
+        end_date_time_utc:
+          description: End of the missing interval (exclusive, UTC, RFC 3339).
+          example: '2026-04-01T23:00:00Z'
+          format: date-time
+          type: string
+        submission_deadline_date_time_utc:
+          description: Submission deadline for the dataa (exclusive, UTC, RFC 3339).
+          example: '2026-04-01T23:00:00Z'
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/MissingIntervalStatus'
+      type: object
+    SearchMissingIntervalDataResponse:
+      example:
+        missing_intervals:
+        - meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          data_type: LOAD_DATA
+          start_date_time_utc: '2026-04-01T21:00:00Z'
+          end_date_time_utc: '2026-04-01T23:00:00Z'
+          submission_deadline_date_time_utc: '2026-04-01T23:00:00Z'
+          status: OPEN
+        - meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          data_type: LOAD_DATA
+          start_date_time_utc: '2026-04-01T21:00:00Z'
+          end_date_time_utc: '2026-04-01T23:00:00Z'
+          submission_deadline_date_time_utc: '2026-04-01T23:00:00Z'
+          status: OPEN
+        next_page_token: next_page_token
+      properties:
+        missing_intervals:
+          description: The intervals that are missing data for the requested meters and window.
+          items:
+            $ref: '#/components/schemas/MissingInterval'
+          type: array
+        next_page_token:
+          description: Use this value to get the next page of content. Will only be provided if there might be more data available.
+          type: string
+      required:
+      - missing_intervals
+      type: object
+    JobStatus:
+      description: "The status of the ingestion.\n\n\tPROCESSING - file ingestion in process\n\tCOMPLETED - all data ingested successfully\n\tFAILED - one or more data validation errors were found, check 'List data validation errors' endpoint for details"
+      enum:
+      - QUEUED
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      example: PROCESSING
+      type: string
+  securitySchemes:
+    http:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http

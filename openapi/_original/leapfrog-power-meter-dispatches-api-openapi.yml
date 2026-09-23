@@ -1,3 +1,5 @@
+# x-archived-from: leapfrog-power-meter-dispatches-api-openapi.yml
+# x-archived-on: 2026-09-16
 openapi: 3.2.0
 info:
   contact:
@@ -531,8 +533,10 @@ paths:
       - meter-dispatches
 components:
   schemas:
-    WebhookMeterDispatchEvent:
-      description: "Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id  as an existing one, the previously received dispatch has to be updated with the new field values. \n"
+    SearchMeterDispatchEvent:
+      description: 'Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+
+        '
       properties:
         meter_id:
           description: Id of the meter that received dispatches from the market
@@ -544,55 +548,68 @@ components:
         timeslots:
           description: List with timeslots and quantities that contains dispatches for this meter
           items:
-            $ref: '#/components/schemas/MeterDispatchEventTimeslot'
+            $ref: '#/components/schemas/SearchMeterDispatchEventTimeslot'
           minItems: 1
           type: array
       required:
       - meter_id
       - timeslots
       type: object
-    CommunicationTestMeterDispatchResponse:
+    SearchMeterDispatchEventTimeslot:
+      allOf:
+      - properties:
+          meter_event_id:
+            description: Unique identifier of the dispatch event
+            format: uuid
+            type: string
+          communication_test:
+            description: Indicates whether the dispatch is a communication test.
+            type: boolean
+        type: object
+      - $ref: '#/components/schemas/BaseDispatchEventTimeslot'
+      required:
+      - meter_event_id
+      x-all-of-name: SearchMeterDispatchEventTimeslot
+    WebhookIntegrationTestResponse:
+      description: Dispatch notification successfully sent to webhook URL during an integration test
       example:
-        dispatch_status: dispatch_status
-        start_time: 2021-09-14 22:00:00+00:00
-        end_time: 2021-09-14 23:00:00+00:00
-        test_event: true
-        program: CEC-DSGS
-        approved: false
-        transmission_region: CAISO
-        market_type: hour-ahead
-        meter_count: 1034
+        sent_time: 2023-01-23 04:56:07+00:00
+        headers:
+          key:
+          - x-api-key
+          - your-key
+        http_status: 200
+        received_time: 2023-01-23 04:56:17+00:00
+        body: body that is echoed
       properties:
-        dispatch_status:
-          description: The current/updated/new status of the communication test
-          type: string
-        start_time:
-          description: Start time of communication test
-          example: 2021-09-14 22:00:00+00:00
-          format: date-time
-          type: string
-        end_time:
-          description: End time of communication test
-          example: 2021-09-14 23:00:00+00:00
-          format: date-time
-          type: string
-        test_event:
-          description: Indicates whether the communication test is a capacity test event
-          type: boolean
-        program:
-          $ref: '#/components/schemas/program_identifier'
-        approved:
-          description: Indicates whether the communication test has been processed (true), or if this was a dry-run to show the partner impact (false).
-          example: false
-          type: boolean
-        transmission_region:
-          $ref: '#/components/schemas/transmission_region'
-        market_type:
-          $ref: '#/components/schemas/MarketType'
-        meter_count:
-          description: Amount of meters in this communication test
-          example: 1034
+        http_status:
+          description: The http code from the response server for the webhook URL or 'null' if no response was received
           type: integer
+        sent_time:
+          description: Time when the request was sent
+          format: date-time
+          type: string
+        received_time:
+          description: Time when the response was received
+          format: date-time
+          type: string
+        headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: Http headers received from the server
+          type: object
+        body:
+          description: 'Http body received from the server if present (so either a Meter Event Notification or  Market Group Event Notification), ''null'' otherwise
+
+            '
+          type: string
+        error_message:
+          description: In case the request to the webhook URL failed this field contains a description of the failure
+          type: string
+      required:
+      - sent_time
       type: object
     CommunicationTestMeterDispatchRequest:
       example:
@@ -645,6 +662,239 @@ components:
       - program
       - start_time
       type: object
+    WebhookMeterDispatchEvent:
+      description: "Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id  as an existing one, the previously received dispatch has to be updated with the new field values. \n"
+      properties:
+        meter_id:
+          description: Id of the meter that received dispatches from the market
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
+          type: string
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches for this meter
+          items:
+            $ref: '#/components/schemas/MeterDispatchEventTimeslot'
+          minItems: 1
+          type: array
+      required:
+      - meter_id
+      - timeslots
+      type: object
+    PerformanceCompensationCap:
+      description: 'This field can be used to automate a dispatch response that is aligned with the event’s settlement structure, to capitalize on scenarios where over-performance is lucrative versus scenarios where over-performance is not compensated and best reserved for another event.<br/> - UpToNomination - If partners dispatch beyond their nomination value, they will not be compensated.<br/> - UpToSiteLoad - Partners will be compensated for dispatching up to a site load of 0 kW.<br/> - GridExportsAllowed - Partners will be compensated for dispatching beyond a site load of 0 kW, into negative site load.
+
+        '
+      enum:
+      - grid-exports-allowed
+      - up-to-nomination
+      - up-to-site-load
+      type: string
+      x-enum-varnames:
+      - GRID_EXPORTS_ALLOWED
+      - UP_TO_NOMINATION
+      - UP_TO_SITE_LOAD
+    SearchMeterDispatchEventRequest:
+      allOf:
+      - properties:
+          meter_event_ids:
+            description: Meter event ids to get dispatches for
+            items:
+              format: uuid
+              type: string
+            minItems: 1
+            type: array
+            uniqueItems: true
+          meter_ids:
+            description: Meter ids to get dispatches for
+            items:
+              format: uuid
+              type: string
+            minItems: 1
+            type: array
+            uniqueItems: true
+        type: object
+      - $ref: '#/components/schemas/BaseSearchDispatchEventRequest'
+      example:
+        meter_ids:
+        - 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+        meter_event_ids:
+        - ac5ea4df-db45-4cb5-a0bf-a32677dac736
+        - 242c3e24-43e6-4ad7-88b3-666cda21582b
+        start_date: 2023-02-01 00:00:00+00:00
+        end_date: 2023-02-14 23:59:00+00:00
+      x-all-of-name: SearchMeterDispatchEventRequest
+    MeterDispatchEventTimeslot:
+      allOf:
+      - properties:
+          meter_event_id:
+            description: Unique identifier of the dispatch event
+            format: uuid
+            type: string
+        type: object
+      - $ref: '#/components/schemas/BaseDispatchEventTimeslot'
+      required:
+      - meter_event_id
+      x-all-of-name: MeterDispatchEventTimeslot
+    BaseSearchDispatchEventRequest:
+      description: 'Search parameters for the search dispatches endpoints
+
+        '
+      properties:
+        start_date:
+          description: Start datetime range to get dispatches for (inclusive)
+          format: date-time
+          type: string
+        end_date:
+          description: 'End datetime range to get dispatches for (exclusive). End date must be max 31 days after the start date
+
+            '
+          format: date-time
+          type: string
+        exclude_real_time_events:
+          default: true
+          description: Exclude dispatches for CAISO 5 minute real time events in the response. If empty, 5 min real time events are excluded
+          type: boolean
+        exclude_voluntary_events:
+          default: false
+          description: Exclude dispatches for voluntary events in the response. If empty, all dispatches are returned
+          type: boolean
+        page_token:
+          description: 'Token of the page to request. Max results per page is 500. Null to request a new batch of results
+
+            '
+          format: uuid
+          type: string
+      required:
+      - end_date
+      - start_date
+      type: object
+    ErrorResponse:
+      example:
+        code: BAD_REQUEST
+        message: message
+        error_code: LEAP_DISPATCH_INTERNAL_ERROR_001
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - UNSUPPORTED_MEDIA_TYPE
+          - SERVICE_UNAVAILABLE
+          - INTERNAL_SERVER_ERROR
+          type: string
+        message:
+          type: string
+        error_code:
+          enum:
+          - LEAP_DISPATCH_INTERNAL_ERROR_001
+          - LEAP_DISPATCH_INTERNAL_ERROR_002
+          - DISPATCH_INVALID_INPUT
+          - DISPATCH_NO_ACCESS_TO_RESOURCE
+          - DISPATCH_UNAUTHORIZED
+          - DISPATCH_UNEXPECTED_ERROR
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    DispatchEventType:
+      enum:
+      - hour-ahead
+      - day-ahead
+      - 5m
+      - capacity-test
+      - standard
+      type: string
+      x-enum-varnames:
+      - HOUR_AHEAD
+      - DAY_AHEAD
+      - FIVE_MINUTES
+      - CAPACITY_TEST
+      - STANDARD
+    program_identifier:
+      description: Identifier of program
+      enum:
+      - CAISO-CCA-SC_ONLY
+      - CCA
+      - CEC-DSGS-OPTION4
+      - CEC-DSGS
+      - CONED-CSRP
+      - CONED-DLRP
+      - DRAM
+      - ELRP
+      - ENERGY-ONLY
+      - ERCOT-ERS
+      - EVERSOURCE-CS
+      - MA_DOER-CPS
+      - NATGRID-CS
+      - NRG-REALTIME
+      - NRG-RED
+      - NYISO-SCR
+      - ONCOR-CLM
+      - PGE-ART
+      - PGE-CBP
+      - PJM-CAPACITY
+      - PSEGLI-CSRP
+      - PSEGLI-DLRP
+      - RIE-CS
+      - UNITIL-CS
+      - PSE-RPO
+      - SRP-RPO
+      - TVA-RPO
+      - CAISO-ELRP-A4
+      - CEC-DSGS-OPTION2
+      - ENERGYHUB-CS
+      example: CEC-DSGS
+      type: string
+      x-enum-varnames:
+      - CAISO_CCA_SC_ONLY
+      - CCA
+      - CEC_DSGS_OPTION4
+      - CEC_DSGS
+      - CONED_CSRP
+      - CONED_DLRP
+      - DRAM
+      - ELRP
+      - ENERGY_ONLY
+      - ERCOT_ERS
+      - EVERSOURCE_CS
+      - MA_DOER_CPS
+      - NATGRID_CS
+      - NRG_REALTIME
+      - NRG_RED
+      - NYISO_SCR
+      - ONCOR_CLM
+      - PGE_ART
+      - PGE_CBP
+      - PJM_CAPACITY
+      - PSEGLI_CSRP
+      - PSEGLI_DLRP
+      - RIE_CS
+      - UNITIL_CS
+      - PSE_RPO
+      - SRP_RPO
+      - TVA_RPO
+      - CAISO_ELRP_A4
+      - CEC_DSGS_OPTION2
+      - ENERGYHUB_CS
+    MarketType:
+      description: Indicates the market “day-ahead”, “hour-ahead”, “15m” or “5m”
+      enum:
+      - hour-ahead
+      - day-ahead
+      - 15m
+      - 5m
+      type: string
+      x-enum-varnames:
+      - HOUR_AHEAD
+      - DAY_AHEAD
+      - FIFTEEN_MINUTES
+      - FIVE_MINUTES
     WebhookMeterDispatchIntegrationTestRequest:
       example:
         meter_dispatches:
@@ -687,57 +937,142 @@ components:
       required:
       - meter_dispatches
       type: object
-    SearchMeterDispatchEvent:
-      description: 'Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
-
-        '
+    HeaderDescription:
+      description: Header name and value
       properties:
-        meter_id:
-          description: Id of the meter that received dispatches from the market
+        name:
+          type: string
+        value:
+          type: string
+      required:
+      - name
+      - value
+      type: object
+    CommunicationTestMeterDispatchResponse:
+      example:
+        dispatch_status: dispatch_status
+        start_time: 2021-09-14 22:00:00+00:00
+        end_time: 2021-09-14 23:00:00+00:00
+        test_event: true
+        program: CEC-DSGS
+        approved: false
+        transmission_region: CAISO
+        market_type: hour-ahead
+        meter_count: 1034
+      properties:
+        dispatch_status:
+          description: The current/updated/new status of the communication test
+          type: string
+        start_time:
+          description: Start time of communication test
+          example: 2021-09-14 22:00:00+00:00
+          format: date-time
+          type: string
+        end_time:
+          description: End time of communication test
+          example: 2021-09-14 23:00:00+00:00
+          format: date-time
+          type: string
+        test_event:
+          description: Indicates whether the communication test is a capacity test event
+          type: boolean
+        program:
+          $ref: '#/components/schemas/program_identifier'
+        approved:
+          description: Indicates whether the communication test has been processed (true), or if this was a dry-run to show the partner impact (false).
+          example: false
+          type: boolean
+        transmission_region:
+          $ref: '#/components/schemas/transmission_region'
+        market_type:
+          $ref: '#/components/schemas/MarketType'
+        meter_count:
+          description: Amount of meters in this communication test
+          example: 1034
+          type: integer
+      type: object
+    SearchMeterDispatchEventResponse:
+      example:
+        next_page_token: 242c3e24-43e6-4ad7-88b3-666cda21582b
+        results:
+        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          timeslots:
+          - meter_event_id: f4cfced0-16f4-4fb7-b72e-5ff939ae541e
+            start_time: 2023-02-21 00:00:00+00:00
+            end_time: 2023-02-21 01:00:00+00:00
+            energy_kw: 80
+            nomination_kw: 100
+            cancelled: false
+            programs:
+            - CCA
+            priority: 1
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+            - capacity-test
+          - meter_event_id: a6d4bbde-36ee-401f-92b8-c58aa17aa71d
+            start_time: 2023-02-21 00:00:00+00:00
+            end_time: 2023-02-21 04:00:00+00:00
+            energy_kw: null
+            nomination_kw: 100
+            cancelled: false
+            programs:
+            - ELRP
+            priority: 3
+            is_voluntary: true
+            performance_compensation_cap: grid-exports-allowed
+            dispatch_event_types:
+            - standard
+      properties:
+        next_page_token:
+          description: 'Token to be used in a subsequent request to get the next batch of results. Max results per page is 500. Null when the last page of results has been reached
+
+            '
           format: uuid
           type: string
-        partner_reference:
-          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
-          type: string
-        timeslots:
-          description: List with timeslots and quantities that contains dispatches for this meter
+        results:
+          description: 'A list of meter-level dispatches.
+
+            '
           items:
-            $ref: '#/components/schemas/SearchMeterDispatchEventTimeslot'
-          minItems: 1
+            $ref: '#/components/schemas/SearchMeterDispatchEvent'
           type: array
       required:
-      - meter_id
-      - timeslots
+      - results
       type: object
-    DispatchEventType:
+    transmission_region:
+      description: Defines the transmission region of the meter
       enum:
-      - hour-ahead
-      - day-ahead
-      - 5m
-      - capacity-test
-      - standard
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
       type: string
-      x-enum-varnames:
-      - HOUR_AHEAD
-      - DAY_AHEAD
-      - FIVE_MINUTES
-      - CAPACITY_TEST
-      - STANDARD
-    SearchMeterDispatchEventTimeslot:
-      allOf:
-      - properties:
-          meter_event_id:
-            description: Unique identifier of the dispatch event
-            format: uuid
-            type: string
-          communication_test:
-            description: Indicates whether the dispatch is a communication test.
-            type: boolean
-        type: object
-      - $ref: '#/components/schemas/BaseDispatchEventTimeslot'
+    Webhook:
+      example:
+        headers:
+        - name: x-your-api-key
+          value: 81819286-3448-4f44-9b1b-3d742666fa5a
+        url: https://webhook.yourcompany.com
+      properties:
+        url:
+          description: Webhook URL
+          format: uri
+          type: string
+        headers:
+          description: Headers that Leap includes in each webhook notification request. They can be used for authentication.
+          items:
+            $ref: '#/components/schemas/HeaderDescription'
+          type: array
       required:
-      - meter_event_id
-      x-all-of-name: SearchMeterDispatchEventTimeslot
+      - url
+      type: object
     BaseDispatchEventTimeslot:
       description: A single dispatch interval that describes all aspects of the dispatch.
       properties:
@@ -811,339 +1146,6 @@ components:
       - priority
       - programs
       - start_time
-      type: object
-    MarketType:
-      description: Indicates the market “day-ahead”, “hour-ahead”, “15m” or “5m”
-      enum:
-      - hour-ahead
-      - day-ahead
-      - 15m
-      - 5m
-      type: string
-      x-enum-varnames:
-      - HOUR_AHEAD
-      - DAY_AHEAD
-      - FIFTEEN_MINUTES
-      - FIVE_MINUTES
-    transmission_region:
-      description: Defines the transmission region of the meter
-      enum:
-      - CAISO
-      - ERCOT
-      - NYISO
-      - ISONE
-      - PJM
-      - SERC
-      - WECC_SW
-      - WECC_PC
-      example: CAISO
-      type: string
-    PerformanceCompensationCap:
-      description: 'This field can be used to automate a dispatch response that is aligned with the event’s settlement structure, to capitalize on scenarios where over-performance is lucrative versus scenarios where over-performance is not compensated and best reserved for another event.<br/> - UpToNomination - If partners dispatch beyond their nomination value, they will not be compensated.<br/> - UpToSiteLoad - Partners will be compensated for dispatching up to a site load of 0 kW.<br/> - GridExportsAllowed - Partners will be compensated for dispatching beyond a site load of 0 kW, into negative site load.
-
-        '
-      enum:
-      - grid-exports-allowed
-      - up-to-nomination
-      - up-to-site-load
-      type: string
-      x-enum-varnames:
-      - GRID_EXPORTS_ALLOWED
-      - UP_TO_NOMINATION
-      - UP_TO_SITE_LOAD
-    SearchMeterDispatchEventRequest:
-      allOf:
-      - properties:
-          meter_event_ids:
-            description: Meter event ids to get dispatches for
-            items:
-              format: uuid
-              type: string
-            minItems: 1
-            type: array
-            uniqueItems: true
-          meter_ids:
-            description: Meter ids to get dispatches for
-            items:
-              format: uuid
-              type: string
-            minItems: 1
-            type: array
-            uniqueItems: true
-        type: object
-      - $ref: '#/components/schemas/BaseSearchDispatchEventRequest'
-      example:
-        meter_ids:
-        - 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
-        meter_event_ids:
-        - ac5ea4df-db45-4cb5-a0bf-a32677dac736
-        - 242c3e24-43e6-4ad7-88b3-666cda21582b
-        start_date: 2023-02-01 00:00:00+00:00
-        end_date: 2023-02-14 23:59:00+00:00
-      x-all-of-name: SearchMeterDispatchEventRequest
-    program_identifier:
-      description: Identifier of program
-      enum:
-      - CAISO-CCA-SC_ONLY
-      - CCA
-      - CEC-DSGS-OPTION4
-      - CEC-DSGS
-      - CONED-CSRP
-      - CONED-DLRP
-      - DRAM
-      - ELRP
-      - ENERGY-ONLY
-      - ERCOT-ERS
-      - EVERSOURCE-CS
-      - MA_DOER-CPS
-      - NATGRID-CS
-      - NRG-REALTIME
-      - NRG-RED
-      - NYISO-SCR
-      - ONCOR-CLM
-      - PGE-ART
-      - PGE-CBP
-      - PJM-CAPACITY
-      - PSEGLI-CSRP
-      - PSEGLI-DLRP
-      - RIE-CS
-      - UNITIL-CS
-      - PSE-RPO
-      - SRP-RPO
-      - TVA-RPO
-      - CAISO-ELRP-A4
-      - CEC-DSGS-OPTION2
-      - ENERGYHUB-CS
-      example: CEC-DSGS
-      type: string
-      x-enum-varnames:
-      - CAISO_CCA_SC_ONLY
-      - CCA
-      - CEC_DSGS_OPTION4
-      - CEC_DSGS
-      - CONED_CSRP
-      - CONED_DLRP
-      - DRAM
-      - ELRP
-      - ENERGY_ONLY
-      - ERCOT_ERS
-      - EVERSOURCE_CS
-      - MA_DOER_CPS
-      - NATGRID_CS
-      - NRG_REALTIME
-      - NRG_RED
-      - NYISO_SCR
-      - ONCOR_CLM
-      - PGE_ART
-      - PGE_CBP
-      - PJM_CAPACITY
-      - PSEGLI_CSRP
-      - PSEGLI_DLRP
-      - RIE_CS
-      - UNITIL_CS
-      - PSE_RPO
-      - SRP_RPO
-      - TVA_RPO
-      - CAISO_ELRP_A4
-      - CEC_DSGS_OPTION2
-      - ENERGYHUB_CS
-    WebhookIntegrationTestResponse:
-      description: Dispatch notification successfully sent to webhook URL during an integration test
-      example:
-        sent_time: 2023-01-23 04:56:07+00:00
-        headers:
-          key:
-          - x-api-key
-          - your-key
-        http_status: 200
-        received_time: 2023-01-23 04:56:17+00:00
-        body: body that is echoed
-      properties:
-        http_status:
-          description: The http code from the response server for the webhook URL or 'null' if no response was received
-          type: integer
-        sent_time:
-          description: Time when the request was sent
-          format: date-time
-          type: string
-        received_time:
-          description: Time when the response was received
-          format: date-time
-          type: string
-        headers:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: Http headers received from the server
-          type: object
-        body:
-          description: 'Http body received from the server if present (so either a Meter Event Notification or  Market Group Event Notification), ''null'' otherwise
-
-            '
-          type: string
-        error_message:
-          description: In case the request to the webhook URL failed this field contains a description of the failure
-          type: string
-      required:
-      - sent_time
-      type: object
-    ErrorResponse:
-      example:
-        code: BAD_REQUEST
-        message: message
-        error_code: LEAP_DISPATCH_INTERNAL_ERROR_001
-      properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - UNSUPPORTED_MEDIA_TYPE
-          - SERVICE_UNAVAILABLE
-          - INTERNAL_SERVER_ERROR
-          type: string
-        message:
-          type: string
-        error_code:
-          enum:
-          - LEAP_DISPATCH_INTERNAL_ERROR_001
-          - LEAP_DISPATCH_INTERNAL_ERROR_002
-          - DISPATCH_INVALID_INPUT
-          - DISPATCH_NO_ACCESS_TO_RESOURCE
-          - DISPATCH_UNAUTHORIZED
-          - DISPATCH_UNEXPECTED_ERROR
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    MeterDispatchEventTimeslot:
-      allOf:
-      - properties:
-          meter_event_id:
-            description: Unique identifier of the dispatch event
-            format: uuid
-            type: string
-        type: object
-      - $ref: '#/components/schemas/BaseDispatchEventTimeslot'
-      required:
-      - meter_event_id
-      x-all-of-name: MeterDispatchEventTimeslot
-    Webhook:
-      example:
-        headers:
-        - name: x-your-api-key
-          value: 81819286-3448-4f44-9b1b-3d742666fa5a
-        url: https://webhook.yourcompany.com
-      properties:
-        url:
-          description: Webhook URL
-          format: uri
-          type: string
-        headers:
-          description: Headers that Leap includes in each webhook notification request. They can be used for authentication.
-          items:
-            $ref: '#/components/schemas/HeaderDescription'
-          type: array
-      required:
-      - url
-      type: object
-    SearchMeterDispatchEventResponse:
-      example:
-        next_page_token: 242c3e24-43e6-4ad7-88b3-666cda21582b
-        results:
-        - meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          timeslots:
-          - meter_event_id: f4cfced0-16f4-4fb7-b72e-5ff939ae541e
-            start_time: 2023-02-21 00:00:00+00:00
-            end_time: 2023-02-21 01:00:00+00:00
-            energy_kw: 80
-            nomination_kw: 100
-            cancelled: false
-            programs:
-            - CCA
-            priority: 1
-            is_voluntary: false
-            performance_compensation_cap: up-to-site-load
-            dispatch_event_types:
-            - day-ahead
-            - capacity-test
-          - meter_event_id: a6d4bbde-36ee-401f-92b8-c58aa17aa71d
-            start_time: 2023-02-21 00:00:00+00:00
-            end_time: 2023-02-21 04:00:00+00:00
-            energy_kw: null
-            nomination_kw: 100
-            cancelled: false
-            programs:
-            - ELRP
-            priority: 3
-            is_voluntary: true
-            performance_compensation_cap: grid-exports-allowed
-            dispatch_event_types:
-            - standard
-      properties:
-        next_page_token:
-          description: 'Token to be used in a subsequent request to get the next batch of results. Max results per page is 500. Null when the last page of results has been reached
-
-            '
-          format: uuid
-          type: string
-        results:
-          description: 'A list of meter-level dispatches.
-
-            '
-          items:
-            $ref: '#/components/schemas/SearchMeterDispatchEvent'
-          type: array
-      required:
-      - results
-      type: object
-    HeaderDescription:
-      description: Header name and value
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-      required:
-      - name
-      - value
-      type: object
-    BaseSearchDispatchEventRequest:
-      description: 'Search parameters for the search dispatches endpoints
-
-        '
-      properties:
-        start_date:
-          description: Start datetime range to get dispatches for (inclusive)
-          format: date-time
-          type: string
-        end_date:
-          description: 'End datetime range to get dispatches for (exclusive). End date must be max 31 days after the start date
-
-            '
-          format: date-time
-          type: string
-        exclude_real_time_events:
-          default: true
-          description: Exclude dispatches for CAISO 5 minute real time events in the response. If empty, 5 min real time events are excluded
-          type: boolean
-        exclude_voluntary_events:
-          default: false
-          description: Exclude dispatches for voluntary events in the response. If empty, all dispatches are returned
-          type: boolean
-        page_token:
-          description: 'Token of the page to request. Max results per page is 500. Null to request a new batch of results
-
-            '
-          format: uuid
-          type: string
-      required:
-      - end_date
-      - start_date
       type: object
   securitySchemes:
     http:

@@ -1,32 +1,57 @@
 {
   "provider": "leap",
   "sources": [
-    "leap-create-meters-api-openapi.yml",
-    "leap-group-dispatches-api-openapi.yml",
-    "leap-meter-details-api-openapi.yml",
-    "leap-meter-dispatches-api-openapi.yml",
-    "leap-meter-enrollment-api-openapi.yml",
-    "leap-nominations-api-openapi.yml",
-    "leap-performance-api-openapi.yml",
-    "leap-provisional-assets-api-openapi.yml",
-    "leap-revenue-api-openapi.yml",
-    "leap-webhooks-api-openapi.yml"
+    "_original/leap-create-meters-openapi-original.yml",
+    "_original/leap-dispatching-openapi-original.yml",
+    "_original/leap-enrollments-openapi-original.yml",
+    "_original/leap-meters-openapi-original.yml",
+    "_original/leap-nominations-openapi-original.yml",
+    "_original/leap-settlement-openapi-original.yml",
+    "_original/leap-webhooks-openapi-original.yml",
+    "_original/leapfrog-power-interval-data-upload-api-openapi.yml"
   ],
   "outputs": [
     "leap-create-meters-api-openapi.yml",
+    "leap-provisional-assets-api-openapi.yml",
     "leap-group-dispatches-api-openapi.yml",
-    "leap-meter-details-api-openapi.yml",
     "leap-meter-dispatches-api-openapi.yml",
     "leap-meter-enrollment-api-openapi.yml",
+    "leap-meter-details-api-openapi.yml",
     "leap-nominations-api-openapi.yml",
     "leap-performance-api-openapi.yml",
-    "leap-provisional-assets-api-openapi.yml",
     "leap-revenue-api-openapi.yml",
-    "leap-webhooks-api-openapi.yml"
+    "leap-webhooks-api-openapi.yml",
+    "leap-interval-data-upload-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "2 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (8 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "leap-create-meters-openapi-original.yml: upgraded openapi 3.0.2 -> OpenAPI 3.2.0",
+    "leap-dispatching-openapi-original.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "leap-enrollments-openapi-original.yml: upgraded openapi 3.0.2 -> OpenAPI 3.2.0",
+    "leap-meters-openapi-original.yml: upgraded openapi 3.0.2 -> OpenAPI 3.2.0",
+    "leap-nominations-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "leap-settlement-openapi-original.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "leap-settlement-openapi-original.yml: declared missing tag: performance",
+    "leap-webhooks-openapi-original.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/leapfrog-power-meter-dispatches-api-openapi.yml: archived document superseded by a larger archived document",
+    "_original/leapfrog-power-group-dispatches-api-openapi.yml: archived document superseded by a larger archived document",
+    "leap-create-meters-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-group-dispatches-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-interval-data-upload-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-meter-details-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-meter-dispatches-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-meter-enrollment-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-nominations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-performance-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-provisional-assets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-revenue-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "leap-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
