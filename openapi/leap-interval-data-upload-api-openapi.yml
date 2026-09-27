@@ -445,20 +445,6 @@ paths:
       - interval_data_upload
 components:
   schemas:
-    ErrorResponseInternalServerError:
-      type: object
-    IngestionResponse:
-      example:
-        job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
-      properties:
-        job_id:
-          description: The ingestion job that was started for the uploaded file. Use this to track progress and look up validation errors via the 'List interval data uploads' and 'List data validation errors' endpoints.
-          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
-          format: uuid
-          type: string
-      required:
-      - job_id
-      type: object
     GetUploadsResponse:
       example:
         uploads:
@@ -489,41 +475,14 @@ components:
       required:
       - uploads
       type: object
-    ErrorResponseUnauthorized:
-      type: object
-    GetIntervalDataFilePreviewResponse:
-      example:
-        file_data:
-        - file_data
-        - file_data
-        job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
-        status: PROCESSING
-        created_at: '2024-05-24T00:00:00Z'
-        updated_at: '2024-05-24T00:00:00Z'
-        is_limited: true
-      properties:
-        file_data:
-          description: A list of strings, each string is a line in the original file
-          items:
-            type: string
-          type: array
-        job_id:
-          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
-          format: uuid
-          type: string
-        status:
-          $ref: '#/components/schemas/JobStatus'
-        created_at:
-          example: '2024-05-24T00:00:00Z'
-          format: date-time
-          type: string
-        updated_at:
-          example: '2024-05-24T00:00:00Z'
-          format: date-time
-          type: string
-        is_limited:
-          example: true
-          type: boolean
+    MissingIntervalStatus:
+      description: "The status of a missing interval.\n\n\tOPEN - the interval is known to be missing and has not yet been backfilled\n\tPROCESSING - a backfill of the interval is in progress"
+      enum:
+      - OPEN
+      - PROCESSING
+      example: OPEN
+      type: string
+    ErrorResponseBadRequest:
       type: object
     IntervalDataType:
       description: "The type of interval data, corresponding to the interval-data upload endpoints.\n\n\tLOAD_DATA - load interval data\n\tRUNTIME_DATA - runtime interval data\n\tPERFORMANCE_DATA - performance interval data"
@@ -533,8 +492,6 @@ components:
       - PERFORMANCE_DATA
       example: LOAD_DATA
       type: string
-    ErrorResponseBadRequest:
-      type: object
     GetUploadIngestionErrorsResponse:
       example:
         job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
@@ -580,6 +537,34 @@ components:
       - job_id
       - summary
       type: object
+    SearchMissingIntervalDataResponse:
+      example:
+        missing_intervals:
+        - meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          data_type: LOAD_DATA
+          start_date_time_utc: '2026-04-01T21:00:00Z'
+          end_date_time_utc: '2026-04-01T23:00:00Z'
+          submission_deadline_date_time_utc: '2026-04-01T23:00:00Z'
+          status: OPEN
+        - meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          data_type: LOAD_DATA
+          start_date_time_utc: '2026-04-01T21:00:00Z'
+          end_date_time_utc: '2026-04-01T23:00:00Z'
+          submission_deadline_date_time_utc: '2026-04-01T23:00:00Z'
+          status: OPEN
+        next_page_token: next_page_token
+      properties:
+        missing_intervals:
+          description: The intervals that are missing data for the requested meters and window.
+          items:
+            $ref: '#/components/schemas/MissingInterval'
+          type: array
+        next_page_token:
+          description: Use this value to get the next page of content. Will only be provided if there might be more data available.
+          type: string
+      required:
+      - missing_intervals
+      type: object
     IntervalDataUploadIngestionError:
       description: The list of file ingestion errors.
       example:
@@ -611,36 +596,6 @@ components:
       - line
       - message
       type: object
-    IntervalDataUploadIngestionErrorSummary:
-      description: The list of file ingestion errors.
-      example:
-        column: meter_id
-        code: MTR_0001
-        count: 123
-      properties:
-        column:
-          description: The column in the original file that produced the error(s).
-          example: meter_id
-          type: string
-        code:
-          description: The error code of the error.
-          example: MTR_0001
-          type: string
-        count:
-          description: The amount of errors of this type.
-          example: 123
-          type: integer
-      required:
-      - code
-      - count
-      type: object
-    MissingIntervalStatus:
-      description: "The status of a missing interval.\n\n\tOPEN - the interval is known to be missing and has not yet been backfilled\n\tPROCESSING - a backfill of the interval is in progress"
-      enum:
-      - OPEN
-      - PROCESSING
-      example: OPEN
-      type: string
     IntervalDataUpload:
       description: The list of found uploads.
       example:
@@ -686,6 +641,29 @@ components:
       - status
       - uploaded_at_date_time
       - uploaded_file_path
+      type: object
+    IntervalDataUploadIngestionErrorSummary:
+      description: The list of file ingestion errors.
+      example:
+        column: meter_id
+        code: MTR_0001
+        count: 123
+      properties:
+        column:
+          description: The column in the original file that produced the error(s).
+          example: meter_id
+          type: string
+        code:
+          description: The error code of the error.
+          example: MTR_0001
+          type: string
+        count:
+          description: The amount of errors of this type.
+          example: 123
+          type: integer
+      required:
+      - code
+      - count
       type: object
     SearchMissingIntervalDataRequest:
       example:
@@ -746,7 +724,41 @@ components:
           minimum: 1
           type: integer
       type: object
-    ErrorResponseForbidden:
+    GetIntervalDataFilePreviewResponse:
+      example:
+        file_data:
+        - file_data
+        - file_data
+        job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
+        status: PROCESSING
+        created_at: '2024-05-24T00:00:00Z'
+        updated_at: '2024-05-24T00:00:00Z'
+        is_limited: true
+      properties:
+        file_data:
+          description: A list of strings, each string is a line in the original file
+          items:
+            type: string
+          type: array
+        job_id:
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
+          type: string
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        created_at:
+          example: '2024-05-24T00:00:00Z'
+          format: date-time
+          type: string
+        updated_at:
+          example: '2024-05-24T00:00:00Z'
+          format: date-time
+          type: string
+        is_limited:
+          example: true
+          type: boolean
+      type: object
+    ErrorResponseUnauthorized:
       type: object
     MissingInterval:
       example:
@@ -782,33 +794,21 @@ components:
         status:
           $ref: '#/components/schemas/MissingIntervalStatus'
       type: object
-    SearchMissingIntervalDataResponse:
+    ErrorResponseForbidden:
+      type: object
+    IngestionResponse:
       example:
-        missing_intervals:
-        - meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
-          data_type: LOAD_DATA
-          start_date_time_utc: '2026-04-01T21:00:00Z'
-          end_date_time_utc: '2026-04-01T23:00:00Z'
-          submission_deadline_date_time_utc: '2026-04-01T23:00:00Z'
-          status: OPEN
-        - meter_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
-          data_type: LOAD_DATA
-          start_date_time_utc: '2026-04-01T21:00:00Z'
-          end_date_time_utc: '2026-04-01T23:00:00Z'
-          submission_deadline_date_time_utc: '2026-04-01T23:00:00Z'
-          status: OPEN
-        next_page_token: next_page_token
+        job_id: c09240ce-8942-4eaf-a642-1c728e8d61a3
       properties:
-        missing_intervals:
-          description: The intervals that are missing data for the requested meters and window.
-          items:
-            $ref: '#/components/schemas/MissingInterval'
-          type: array
-        next_page_token:
-          description: Use this value to get the next page of content. Will only be provided if there might be more data available.
+        job_id:
+          description: The ingestion job that was started for the uploaded file. Use this to track progress and look up validation errors via the 'List interval data uploads' and 'List data validation errors' endpoints.
+          example: c09240ce-8942-4eaf-a642-1c728e8d61a3
+          format: uuid
           type: string
       required:
-      - missing_intervals
+      - job_id
+      type: object
+    ErrorResponseInternalServerError:
       type: object
     JobStatus:
       description: "The status of the ingestion.\n\n\tPROCESSING - file ingestion in process\n\tCOMPLETED - all data ingested successfully\n\tFAILED - one or more data validation errors were found, check 'List data validation errors' endpoint for details"

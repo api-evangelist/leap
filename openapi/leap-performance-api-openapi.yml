@@ -81,109 +81,6 @@ paths:
       - Performance
 components:
   schemas:
-    ErrorResponseForbidden:
-      additionalProperties: false
-      example:
-        title: Forbidden
-        status: 403
-        details:
-        - message: message
-          description: description
-        - message: message
-          description: description
-      properties:
-        title:
-          example: Forbidden
-          type: string
-        status:
-          example: 403
-          format: int32
-          type: integer
-        details:
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    ErrorResponseInternalServerError:
-      additionalProperties: false
-      example:
-        title: Server Error
-        status: 500
-        details:
-        - message: Internal Error
-          description: A technical error has occurred
-      properties:
-        title:
-          example: Server Error
-          type: string
-        status:
-          example: 500
-          format: int32
-          type: integer
-        details:
-          example:
-          - message: Internal Error
-            description: A technical error has occurred
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    ErrorResponseUnauthorized:
-      additionalProperties: false
-      example:
-        title: Unauthorized
-        status: 401
-        details:
-        - message: message
-          description: description
-        - message: message
-          description: description
-      properties:
-        title:
-          example: Unauthorized
-          type: string
-        status:
-          example: 401
-          format: int32
-          type: integer
-        details:
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    HistoricalResponsiveness:
-      description: Shows the meter?s responsiveness for the last 12 months.
-      enum:
-      - NEVER_RESPONDS
-      - RARELY_RESPONDS
-      - NORMALLY_RESPONDS
-      - NEW_METER
-      type: string
-    transmission_region:
-      description: Defines the transmission region of the meter
-      enum:
-      - CAISO
-      - ERCOT
-      - NYISO
-      - ISONE
-      - PJM
-      - SERC
-      - WECC_SW
-      - WECC_PC
-      example: CAISO
-      type: string
     MeterProgram:
       example:
         program: CEC-DSGS
@@ -198,82 +95,6 @@ components:
       - meter_id
       - program
       type: object
-    ErrorResponseBadRequest:
-      additionalProperties: false
-      example:
-        title: Bad Request
-        status: 400
-        details:
-        - message: Validation Error
-          description: Missing required parameter(s)
-      properties:
-        title:
-          example: Bad Request
-          type: string
-        status:
-          example: 400
-          format: int32
-          type: integer
-        details:
-          example:
-          - message: Validation Error
-            description: Missing required parameter(s)
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    ErrorResponseUnsupportedMediaType:
-      additionalProperties: false
-      example:
-        title: Unsupported Media Type
-        status: 415
-        details:
-        - message: Invalid value in the 'Accept' header.
-          description: Supported types are application/json and text/csv
-      properties:
-        title:
-          example: Unsupported Media Type
-          type: string
-        status:
-          example: 415
-          format: int32
-          type: integer
-        details:
-          example:
-          - message: Invalid value in the 'Accept' header.
-            description: Supported types are application/json and text/csv
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    ErrorResponseDetail:
-      additionalProperties: false
-      example:
-        message: message
-        description: description
-      properties:
-        message:
-          type: string
-        description:
-          type: string
-      required:
-      - description
-      - message
-      type: object
-    SortDirection:
-      description: Sort direction for a field. Can be `ASC` for ascending or `DESC` for descending.
-      enum:
-      - ASC
-      - DESC
-      type: string
     UnresponsiveMeter:
       example:
         meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
@@ -340,6 +161,77 @@ components:
       - program
       - response_percentage
       - transmission_region
+      type: object
+    SortDirection:
+      description: Sort direction for a field. Can be `ASC` for ascending or `DESC` for descending.
+      enum:
+      - ASC
+      - DESC
+      type: string
+    ErrorResponseBadRequest:
+      additionalProperties: false
+      example:
+        title: Bad Request
+        status: 400
+        details:
+        - message: Validation Error
+          description: Missing required parameter(s)
+      properties:
+        title:
+          example: Bad Request
+          type: string
+        status:
+          example: 400
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Validation Error
+            description: Missing required parameter(s)
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseDetail:
+      additionalProperties: false
+      example:
+        message: message
+        description: description
+      properties:
+        message:
+          type: string
+        description:
+          type: string
+      required:
+      - description
+      - message
+      type: object
+    UnresponsiveMetersSummary:
+      example:
+        number_of_meters: 0
+        missed_revenue: 20000.3
+        average_response_percentage: 75
+      properties:
+        number_of_meters:
+          description: Total number of unresponsive meters.
+          format: int32
+          type: integer
+        missed_revenue:
+          description: 'The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+
+            '
+          example: 20000.3
+          format: double
+          type: number
+        average_response_percentage:
+          description: Monthly average response percentage for meters.
+          example: 75
+          format: double
+          type: number
       type: object
     MonthlyUnresponsiveMetersRequest:
       example:
@@ -455,6 +347,47 @@ components:
       required:
       - year_month
       type: object
+    SortRequest:
+      additionalProperties: false
+      properties:
+        field:
+          description: The field used to perform the sort operation
+          example: nomination_w
+          type: string
+        direction:
+          $ref: '#/components/schemas/SortDirection'
+      required:
+      - direction
+      - field
+      type: object
+    ErrorResponseUnsupportedMediaType:
+      additionalProperties: false
+      example:
+        title: Unsupported Media Type
+        status: 415
+        details:
+        - message: Invalid value in the 'Accept' header.
+          description: Supported types are application/json and text/csv
+      properties:
+        title:
+          example: Unsupported Media Type
+          type: string
+        status:
+          example: 415
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Invalid value in the 'Accept' header.
+            description: Supported types are application/json and text/csv
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
     program_identifier:
       description: Identifier of program
       enum:
@@ -492,41 +425,72 @@ components:
       - CT_GB-ESS
       example: CEC-DSGS
       type: string
-    SortRequest:
+    ErrorResponseUnauthorized:
       additionalProperties: false
-      properties:
-        field:
-          description: The field used to perform the sort operation
-          example: nomination_w
-          type: string
-        direction:
-          $ref: '#/components/schemas/SortDirection'
-      required:
-      - direction
-      - field
-      type: object
-    UnresponsiveMetersSummary:
       example:
-        number_of_meters: 0
-        missed_revenue: 20000.3
-        average_response_percentage: 75
+        title: Unauthorized
+        status: 401
+        details:
+        - message: message
+          description: description
+        - message: message
+          description: description
       properties:
-        number_of_meters:
-          description: Total number of unresponsive meters.
+        title:
+          example: Unauthorized
+          type: string
+        status:
+          example: 401
           format: int32
           type: integer
-        missed_revenue:
-          description: 'The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
-
-            '
-          example: 20000.3
-          format: double
-          type: number
-        average_response_percentage:
-          description: Monthly average response percentage for meters.
-          example: 75
-          format: double
-          type: number
+        details:
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    ErrorResponseForbidden:
+      additionalProperties: false
+      example:
+        title: Forbidden
+        status: 403
+        details:
+        - message: message
+          description: description
+        - message: message
+          description: description
+      properties:
+        title:
+          example: Forbidden
+          type: string
+        status:
+          example: 403
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
       type: object
     MonthlyUnresponsiveMetersResponse:
       example:
@@ -579,6 +543,42 @@ components:
       required:
       - meters
       type: object
+    ErrorResponseInternalServerError:
+      additionalProperties: false
+      example:
+        title: Server Error
+        status: 500
+        details:
+        - message: Internal Error
+          description: A technical error has occurred
+      properties:
+        title:
+          example: Server Error
+          type: string
+        status:
+          example: 500
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Internal Error
+            description: A technical error has occurred
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    HistoricalResponsiveness:
+      description: Shows the meter?s responsiveness for the last 12 months.
+      enum:
+      - NEVER_RESPONDS
+      - RARELY_RESPONDS
+      - NORMALLY_RESPONDS
+      - NEW_METER
+      type: string
   securitySchemes:
     Bearer:
       bearerFormat: JWT

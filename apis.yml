@@ -96,7 +96,7 @@ apis:
   - type: Documentation
     url: https://developer.leap.energy/reference/listwebhooks-2
 - aid: leap:leap-group-dispatches-api
-  name: Leap group-dispatches API
+  name: Leap Group Dispatches API
   description: Endpoints for group dispatches
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
@@ -146,7 +146,7 @@ apis:
   - type: Documentation
     url: https://developer.leap.energy/reference/listwebhooks-2
 - aid: leap:leap-meter-dispatches-api
-  name: Leap meter-dispatches API
+  name: Leap Meter Dispatches API
   description: Endpoints for meter dispatches
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
@@ -198,7 +198,7 @@ apis:
   - type: Documentation
     url: https://developer.leap.energy/reference/listwebhooks-2
 - aid: leap:leap-nominations-api
-  name: Leap nominations API
+  name: Leap Nominations API
   description: The nominations API from Leap — 5 operation(s) for nominations.
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
@@ -224,7 +224,7 @@ apis:
   - type: Documentation
     url: https://developer.leap.energy/reference/listwebhooks-2
 - aid: leap:leap-performance-api
-  name: Leap performance API
+  name: Leap Performance API
   description: The performance API from Leap — 1 operation(s) for performance.
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
@@ -276,7 +276,7 @@ apis:
   - type: Documentation
     url: https://developer.leap.energy/reference/listwebhooks-2
 - aid: leap:leap-revenue-api
-  name: Leap revenue API
+  name: Leap Revenue API
   description: The revenue API from Leap — 8 operation(s) for revenue.
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
@@ -302,7 +302,7 @@ apis:
   - type: Documentation
     url: https://developer.leap.energy/reference/listwebhooks-2
 - aid: leap:leap-webhooks-api
-  name: Leap webhooks API
+  name: Leap Webhooks API
   description: The webhooks API from Leap — 3 operation(s) for webhooks.
   humanURL: https://developer.leap.energy/docs/sync-meter-inventory-v2
   baseURL: https://api.leap.energy
