@@ -81,48 +81,93 @@ paths:
       - Performance
 components:
   schemas:
-    MeterProgram:
+    UnresponsiveMeter:
       example:
+        meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+        partner_reference: partner_reference
+        customer_name: John Doe
+        customer_group: Store Inc.
+        transmission_region: CAISO
         program: CEC-DSGS
-        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        missed_revenue: 20000.3
+        nomination_w: 16600.88
+        response_percentage: 75
+        number_of_events: 6
+        historical_responsiveness: NEVER_RESPONDS
       properties:
-        program:
-          $ref: '#/components/schemas/program_identifier'
         meter_id:
+          description: Meter UUID
+          example: db0291d1-009d-4393-9a8d-4613a4efcd7a
           format: uuid
           type: string
-      required:
-      - meter_id
-      - program
-      type: object
-    ErrorResponseBadRequest:
-      additionalProperties: false
-      example:
-        title: Bad Request
-        status: 400
-        details:
-        - message: Validation Error
-          description: Missing required parameter(s)
-      properties:
-        title:
-          example: Bad Request
+        partner_reference:
+          description: Meter partner reference.
           type: string
-        status:
-          example: 400
+        customer_name:
+          description: Customer Name
+          example: John Doe
+          type: string
+        customer_group:
+          description: 'The Customer Group(s) associated with the customer. If the customer is part of multiple groups, they will be separated by a comma.
+
+            '
+          example: Store Inc.
+          type: string
+        transmission_region:
+          $ref: '#/components/schemas/transmission_region'
+        program:
+          $ref: '#/components/schemas/program_identifier'
+        missed_revenue:
+          description: 'The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+
+            '
+          example: 20000.3
+          format: double
+          type: number
+        nomination_w:
+          description: Target quantity set for capacity market.
+          example: 16600.88
+          format: double
+          type: number
+        response_percentage:
+          description: The meter?s event response percentage.
+          example: 75
+          format: double
+          type: number
+        number_of_events:
+          description: Total number of events.
           format: int32
           type: integer
-        details:
-          example:
-          - message: Validation Error
-            description: Missing required parameter(s)
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
+        historical_responsiveness:
+          $ref: '#/components/schemas/HistoricalResponsiveness'
       required:
-      - details
-      - status
-      - title
+      - historical_responsiveness
+      - meter_id
+      - number_of_events
+      - program
+      - response_percentage
+      - transmission_region
       type: object
+    ErrorResponseDetail:
+      additionalProperties: false
+      example:
+        message: message
+        description: description
+      properties:
+        message:
+          type: string
+        description:
+          type: string
+      required:
+      - description
+      - message
+      type: object
+    SortDirection:
+      description: Sort direction for a field. Can be `ASC` for ascending or `DESC` for descending.
+      enum:
+      - ASC
+      - DESC
+      type: string
     ErrorResponseInternalServerError:
       additionalProperties: false
       example:
@@ -143,6 +188,196 @@ components:
           example:
           - message: Internal Error
             description: A technical error has occurred
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseUnauthorized:
+      additionalProperties: false
+      example:
+        title: Unauthorized
+        status: 401
+        details:
+        - message: message
+          description: description
+        - message: message
+          description: description
+      properties:
+        title:
+          example: Unauthorized
+          type: string
+        status:
+          example: 401
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    ErrorResponseForbidden:
+      additionalProperties: false
+      example:
+        title: Forbidden
+        status: 403
+        details:
+        - message: message
+          description: description
+        - message: message
+          description: description
+      properties:
+        title:
+          example: Forbidden
+          type: string
+        status:
+          example: 403
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/ErrorResponseDetail'
+          type: array
+      required:
+      - details
+      - status
+      - title
+      type: object
+    UnresponsiveMetersSummary:
+      example:
+        number_of_meters: 0
+        missed_revenue: 20000.3
+        average_response_percentage: 75
+      properties:
+        number_of_meters:
+          description: Total number of unresponsive meters.
+          format: int32
+          type: integer
+        missed_revenue:
+          description: 'The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
+
+            '
+          example: 20000.3
+          format: double
+          type: number
+        average_response_percentage:
+          description: Monthly average response percentage for meters.
+          example: 75
+          format: double
+          type: number
+      type: object
+    HistoricalResponsiveness:
+      description: Shows the meter?s responsiveness for the last 12 months.
+      enum:
+      - NEVER_RESPONDS
+      - RARELY_RESPONDS
+      - NORMALLY_RESPONDS
+      - NEW_METER
+      type: string
+    MonthlyUnresponsiveMetersResponse:
+      example:
+        summary:
+          number_of_meters: 0
+          missed_revenue: 20000.3
+          average_response_percentage: 75
+        meters:
+        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          partner_reference: partner_reference
+          customer_name: John Doe
+          customer_group: Store Inc.
+          transmission_region: CAISO
+          program: CEC-DSGS
+          missed_revenue: 20000.3
+          nomination_w: 16600.88
+          response_percentage: 75
+          number_of_events: 6
+          historical_responsiveness: NEVER_RESPONDS
+        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
+          partner_reference: partner_reference
+          customer_name: John Doe
+          customer_group: Store Inc.
+          transmission_region: CAISO
+          program: CEC-DSGS
+          missed_revenue: 20000.3
+          nomination_w: 16600.88
+          response_percentage: 75
+          number_of_events: 6
+          historical_responsiveness: NEVER_RESPONDS
+        year_month: 2023-03
+        page_token: page_token
+      properties:
+        summary:
+          $ref: '#/components/schemas/UnresponsiveMetersSummary'
+        meters:
+          items:
+            $ref: '#/components/schemas/UnresponsiveMeter'
+          type: array
+        year_month:
+          description: ISO-8601 formatted year and month (`YYYY-MM`) representing the performance diagnosis month.
+          example: 2023-03
+          pattern: ^\d{4}-\d{2}$
+          type: string
+        page_token:
+          description: 'If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
+
+            '
+          type: string
+      required:
+      - meters
+      type: object
+    SortRequest:
+      additionalProperties: false
+      properties:
+        field:
+          description: The field used to perform the sort operation
+          example: nomination_w
+          type: string
+        direction:
+          $ref: '#/components/schemas/SortDirection'
+      required:
+      - direction
+      - field
+      type: object
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    ErrorResponseBadRequest:
+      additionalProperties: false
+      example:
+        title: Bad Request
+        status: 400
+        details:
+        - message: Validation Error
+          description: Missing required parameter(s)
+      properties:
+        title:
+          example: Bad Request
+          type: string
+        status:
+          example: 400
+          format: int32
+          type: integer
+        details:
+          example:
+          - message: Validation Error
+            description: Missing required parameter(s)
           items:
             $ref: '#/components/schemas/ErrorResponseDetail'
           type: array
@@ -265,93 +500,34 @@ components:
       required:
       - year_month
       type: object
-    UnresponsiveMetersSummary:
+    ErrorResponseUnsupportedMediaType:
+      additionalProperties: false
       example:
-        number_of_meters: 0
-        missed_revenue: 20000.3
-        average_response_percentage: 75
+        title: Unsupported Media Type
+        status: 415
+        details:
+        - message: Invalid value in the 'Accept' header.
+          description: Supported types are application/json and text/csv
       properties:
-        number_of_meters:
-          description: Total number of unresponsive meters.
+        title:
+          example: Unsupported Media Type
+          type: string
+        status:
+          example: 415
           format: int32
           type: integer
-        missed_revenue:
-          description: 'The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
-
-            '
-          example: 20000.3
-          format: double
-          type: number
-        average_response_percentage:
-          description: Monthly average response percentage for meters.
-          example: 75
-          format: double
-          type: number
-      type: object
-    MonthlyUnresponsiveMetersResponse:
-      example:
-        summary:
-          number_of_meters: 0
-          missed_revenue: 20000.3
-          average_response_percentage: 75
-        meters:
-        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
-          partner_reference: partner_reference
-          customer_name: John Doe
-          customer_group: Store Inc.
-          transmission_region: CAISO
-          program: CEC-DSGS
-          missed_revenue: 20000.3
-          nomination_w: 16600.88
-          response_percentage: 75
-          number_of_events: 6
-          historical_responsiveness: NEVER_RESPONDS
-        - meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
-          partner_reference: partner_reference
-          customer_name: John Doe
-          customer_group: Store Inc.
-          transmission_region: CAISO
-          program: CEC-DSGS
-          missed_revenue: 20000.3
-          nomination_w: 16600.88
-          response_percentage: 75
-          number_of_events: 6
-          historical_responsiveness: NEVER_RESPONDS
-        year_month: 2023-03
-        page_token: page_token
-      properties:
-        summary:
-          $ref: '#/components/schemas/UnresponsiveMetersSummary'
-        meters:
+        details:
+          example:
+          - message: Invalid value in the 'Accept' header.
+            description: Supported types are application/json and text/csv
           items:
-            $ref: '#/components/schemas/UnresponsiveMeter'
+            $ref: '#/components/schemas/ErrorResponseDetail'
           type: array
-        year_month:
-          description: ISO-8601 formatted year and month (`YYYY-MM`) representing the performance diagnosis month.
-          example: 2023-03
-          pattern: ^\d{4}-\d{2}$
-          type: string
-        page_token:
-          description: 'If there are more records to fetch, this token will be populated as `next_page_token` in the response. Use it to fetch the next page. When requesting a CSV format via Accept header with value `text/csv`, this parameter is not required.
-
-            '
-          type: string
       required:
-      - meters
+      - details
+      - status
+      - title
       type: object
-    transmission_region:
-      description: Defines the transmission region of the meter
-      enum:
-      - CAISO
-      - ERCOT
-      - NYISO
-      - ISONE
-      - PJM
-      - SERC
-      - WECC_SW
-      - WECC_PC
-      example: CAISO
-      type: string
     program_identifier:
       description: Identifier of program
       enum:
@@ -389,195 +565,19 @@ components:
       - CT_GB-ESS
       example: CEC-DSGS
       type: string
-    ErrorResponseUnsupportedMediaType:
-      additionalProperties: false
+    MeterProgram:
       example:
-        title: Unsupported Media Type
-        status: 415
-        details:
-        - message: Invalid value in the 'Accept' header.
-          description: Supported types are application/json and text/csv
-      properties:
-        title:
-          example: Unsupported Media Type
-          type: string
-        status:
-          example: 415
-          format: int32
-          type: integer
-        details:
-          example:
-          - message: Invalid value in the 'Accept' header.
-            description: Supported types are application/json and text/csv
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    SortRequest:
-      additionalProperties: false
-      properties:
-        field:
-          description: The field used to perform the sort operation
-          example: nomination_w
-          type: string
-        direction:
-          $ref: '#/components/schemas/SortDirection'
-      required:
-      - direction
-      - field
-      type: object
-    ErrorResponseDetail:
-      additionalProperties: false
-      example:
-        message: message
-        description: description
-      properties:
-        message:
-          type: string
-        description:
-          type: string
-      required:
-      - description
-      - message
-      type: object
-    ErrorResponseForbidden:
-      additionalProperties: false
-      example:
-        title: Forbidden
-        status: 403
-        details:
-        - message: message
-          description: description
-        - message: message
-          description: description
-      properties:
-        title:
-          example: Forbidden
-          type: string
-        status:
-          example: 403
-          format: int32
-          type: integer
-        details:
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    SortDirection:
-      description: Sort direction for a field. Can be `ASC` for ascending or `DESC` for descending.
-      enum:
-      - ASC
-      - DESC
-      type: string
-    HistoricalResponsiveness:
-      description: Shows the meter?s responsiveness for the last 12 months.
-      enum:
-      - NEVER_RESPONDS
-      - RARELY_RESPONDS
-      - NORMALLY_RESPONDS
-      - NEW_METER
-      type: string
-    ErrorResponseUnauthorized:
-      additionalProperties: false
-      example:
-        title: Unauthorized
-        status: 401
-        details:
-        - message: message
-          description: description
-        - message: message
-          description: description
-      properties:
-        title:
-          example: Unauthorized
-          type: string
-        status:
-          example: 401
-          format: int32
-          type: integer
-        details:
-          items:
-            $ref: '#/components/schemas/ErrorResponseDetail'
-          type: array
-      required:
-      - details
-      - status
-      - title
-      type: object
-    UnresponsiveMeter:
-      example:
-        meter_id: db0291d1-009d-4393-9a8d-4613a4efcd7a
-        partner_reference: partner_reference
-        customer_name: John Doe
-        customer_group: Store Inc.
-        transmission_region: CAISO
         program: CEC-DSGS
-        missed_revenue: 20000.3
-        nomination_w: 16600.88
-        response_percentage: 75
-        number_of_events: 6
-        historical_responsiveness: NEVER_RESPONDS
+        meter_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
       properties:
-        meter_id:
-          description: Meter UUID
-          example: db0291d1-009d-4393-9a8d-4613a4efcd7a
-          format: uuid
-          type: string
-        partner_reference:
-          description: Meter partner reference.
-          type: string
-        customer_name:
-          description: Customer Name
-          example: John Doe
-          type: string
-        customer_group:
-          description: 'The Customer Group(s) associated with the customer. If the customer is part of multiple groups, they will be separated by a comma.
-
-            '
-          example: Store Inc.
-          type: string
-        transmission_region:
-          $ref: '#/components/schemas/transmission_region'
         program:
           $ref: '#/components/schemas/program_identifier'
-        missed_revenue:
-          description: 'The difference between potential revenue and the actual revenue of the revenue report over the settlement period. Rounded to zero if actual revenue is greater than potential revenue.
-
-            '
-          example: 20000.3
-          format: double
-          type: number
-        nomination_w:
-          description: Target quantity set for capacity market.
-          example: 16600.88
-          format: double
-          type: number
-        response_percentage:
-          description: The meter?s event response percentage.
-          example: 75
-          format: double
-          type: number
-        number_of_events:
-          description: Total number of events.
-          format: int32
-          type: integer
-        historical_responsiveness:
-          $ref: '#/components/schemas/HistoricalResponsiveness'
+        meter_id:
+          format: uuid
+          type: string
       required:
-      - historical_responsiveness
       - meter_id
-      - number_of_events
       - program
-      - response_percentage
-      - transmission_region
       type: object
   securitySchemes:
     Bearer:

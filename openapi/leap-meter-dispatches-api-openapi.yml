@@ -531,6 +531,174 @@ paths:
       - meter-dispatches
 components:
   schemas:
+    WebhookIntegrationTestResponse:
+      description: Dispatch notification successfully sent to webhook URL during an integration test
+      example:
+        sent_time: 2023-01-23 04:56:07+00:00
+        headers:
+          key:
+          - x-api-key
+          - your-key
+        http_status: 200
+        received_time: 2023-01-23 04:56:17+00:00
+        body: body that is echoed
+      properties:
+        http_status:
+          description: The http code from the response server for the webhook URL or 'null' if no response was received
+          type: integer
+        sent_time:
+          description: Time when the request was sent
+          format: date-time
+          type: string
+        received_time:
+          description: Time when the response was received
+          format: date-time
+          type: string
+        headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: Http headers received from the server
+          type: object
+        body:
+          description: 'Http body received from the server if present (so either a Meter Event Notification or  Market Group Event Notification), ''null'' otherwise
+
+            '
+          type: string
+        error_message:
+          description: In case the request to the webhook URL failed this field contains a description of the failure
+          type: string
+      required:
+      - sent_time
+      type: object
+    CommunicationTestMeterDispatchRequest:
+      example:
+        start_time: 2023-02-21 00:00:00+00:00
+        end_time: 2023-02-21 23:59:00+00:00
+        test_event: false
+        program: CEC-DSGS
+        meter_uuids:
+        - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+        dispatch_quantity_kw: 1000
+        approved: false
+      properties:
+        start_time:
+          description: Start datetime for the communication test (inclusive)
+          example: 2023-02-21 00:00:00+00:00
+          format: date-time
+          type: string
+        end_time:
+          description: End datetime for the communication test (exclusive). End date must be max 31 days after the start date
+          example: 2023-02-21 23:59:00+00:00
+          format: date-time
+          type: string
+        test_event:
+          description: Indicates whether the communication test is a capacity test event
+          example: false
+          type: boolean
+        program:
+          $ref: '#/components/schemas/program_identifier'
+        meter_uuids:
+          description: List of meter UUIDs to run the communication test for
+          example:
+          - dd21c76c-7126-4ef7-b0a6-f190fad300b2
+          items:
+            format: uuid
+            maxItems: 1000
+            type: string
+          type: array
+        dispatch_quantity_kw:
+          description: Quantity of capacity in kW to dispatch for the communication test
+          example: 1000
+          format: double
+          type: number
+        approved:
+          description: Indicates whether the dispatch has been processed (true), or if this was a dry-run to show the partner impact (false).
+          example: false
+          type: boolean
+      required:
+      - end_time
+      - meter_uuids
+      - program
+      - start_time
+      type: object
+    DispatchEventType:
+      enum:
+      - hour-ahead
+      - day-ahead
+      - 5m
+      - capacity-test
+      - standard
+      type: string
+      x-enum-varnames:
+      - HOUR_AHEAD
+      - DAY_AHEAD
+      - FIVE_MINUTES
+      - CAPACITY_TEST
+      - STANDARD
+    SearchMeterDispatchEventRequest:
+      allOf:
+      - properties:
+          meter_event_ids:
+            description: Meter event ids to get dispatches for
+            items:
+              format: uuid
+              type: string
+            minItems: 1
+            type: array
+            uniqueItems: true
+          meter_ids:
+            description: Meter ids to get dispatches for
+            items:
+              format: uuid
+              type: string
+            minItems: 1
+            type: array
+            uniqueItems: true
+        type: object
+      - $ref: '#/components/schemas/BaseSearchDispatchEventRequest'
+      example:
+        meter_ids:
+        - 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
+        meter_event_ids:
+        - ac5ea4df-db45-4cb5-a0bf-a32677dac736
+        - 242c3e24-43e6-4ad7-88b3-666cda21582b
+        start_date: 2023-02-01 00:00:00+00:00
+        end_date: 2023-02-14 23:59:00+00:00
+      x-all-of-name: SearchMeterDispatchEventRequest
+    WebhookMeterDispatchEvent:
+      description: "Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id  as an existing one, the previously received dispatch has to be updated with the new field values. \n"
+      properties:
+        meter_id:
+          description: Id of the meter that received dispatches from the market
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
+          type: string
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches for this meter
+          items:
+            $ref: '#/components/schemas/MeterDispatchEventTimeslot'
+          minItems: 1
+          type: array
+      required:
+      - meter_id
+      - timeslots
+      type: object
+    MeterDispatchEventTimeslot:
+      allOf:
+      - properties:
+          meter_event_id:
+            description: Unique identifier of the dispatch event
+            format: uuid
+            type: string
+        type: object
+      - $ref: '#/components/schemas/BaseDispatchEventTimeslot'
+      required:
+      - meter_event_id
+      x-all-of-name: MeterDispatchEventTimeslot
     SearchMeterDispatchEventResponse:
       example:
         next_page_token: 242c3e24-43e6-4ad7-88b3-666cda21582b
@@ -581,50 +749,61 @@ components:
       required:
       - results
       type: object
-    ErrorResponse:
-      example:
-        code: BAD_REQUEST
-        message: message
-        error_code: LEAP_DISPATCH_INTERNAL_ERROR_001
+    BaseSearchDispatchEventRequest:
+      description: 'Search parameters for the search dispatches endpoints
+
+        '
       properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - UNSUPPORTED_MEDIA_TYPE
-          - SERVICE_UNAVAILABLE
-          - INTERNAL_SERVER_ERROR
+        start_date:
+          description: Start datetime range to get dispatches for (inclusive)
+          format: date-time
           type: string
-        message:
+        end_date:
+          description: 'End datetime range to get dispatches for (exclusive). End date must be max 31 days after the start date
+
+            '
+          format: date-time
           type: string
-        error_code:
-          enum:
-          - LEAP_DISPATCH_INTERNAL_ERROR_001
-          - LEAP_DISPATCH_INTERNAL_ERROR_002
-          - DISPATCH_INVALID_INPUT
-          - DISPATCH_NO_ACCESS_TO_RESOURCE
-          - DISPATCH_UNAUTHORIZED
-          - DISPATCH_UNEXPECTED_ERROR
+        exclude_real_time_events:
+          default: true
+          description: Exclude dispatches for CAISO 5 minute real time events in the response. If empty, 5 min real time events are excluded
+          type: boolean
+        exclude_voluntary_events:
+          default: false
+          description: Exclude dispatches for voluntary events in the response. If empty, all dispatches are returned
+          type: boolean
+        page_token:
+          description: 'Token of the page to request. Max results per page is 500. Null to request a new batch of results
+
+            '
+          format: uuid
           type: string
       required:
-      - code
-      - message
+      - end_date
+      - start_date
       type: object
-    MeterDispatchEventTimeslot:
-      allOf:
-      - properties:
-          meter_event_id:
-            description: Unique identifier of the dispatch event
-            format: uuid
-            type: string
-        type: object
-      - $ref: '#/components/schemas/BaseDispatchEventTimeslot'
+    SearchMeterDispatchEvent:
+      description: 'Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+
+        '
+      properties:
+        meter_id:
+          description: Id of the meter that received dispatches from the market
+          format: uuid
+          type: string
+        partner_reference:
+          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
+          type: string
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches for this meter
+          items:
+            $ref: '#/components/schemas/SearchMeterDispatchEventTimeslot'
+          minItems: 1
+          type: array
       required:
-      - meter_event_id
-      x-all-of-name: MeterDispatchEventTimeslot
+      - meter_id
+      - timeslots
+      type: object
     program_identifier:
       description: Identifier of program
       enum:
@@ -691,90 +870,6 @@ components:
       - CAISO_ELRP_A4
       - CEC_DSGS_OPTION2
       - ENERGYHUB_CS
-    WebhookMeterDispatchEvent:
-      description: "Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id  as an existing one, the previously received dispatch has to be updated with the new field values. \n"
-      properties:
-        meter_id:
-          description: Id of the meter that received dispatches from the market
-          format: uuid
-          type: string
-        partner_reference:
-          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
-          type: string
-        timeslots:
-          description: List with timeslots and quantities that contains dispatches for this meter
-          items:
-            $ref: '#/components/schemas/MeterDispatchEventTimeslot'
-          minItems: 1
-          type: array
-      required:
-      - meter_id
-      - timeslots
-      type: object
-    CommunicationTestMeterDispatchRequest:
-      example:
-        start_time: 2023-02-21 00:00:00+00:00
-        end_time: 2023-02-21 23:59:00+00:00
-        test_event: false
-        program: CEC-DSGS
-        meter_uuids:
-        - dd21c76c-7126-4ef7-b0a6-f190fad300b2
-        dispatch_quantity_kw: 1000
-        approved: false
-      properties:
-        start_time:
-          description: Start datetime for the communication test (inclusive)
-          example: 2023-02-21 00:00:00+00:00
-          format: date-time
-          type: string
-        end_time:
-          description: End datetime for the communication test (exclusive). End date must be max 31 days after the start date
-          example: 2023-02-21 23:59:00+00:00
-          format: date-time
-          type: string
-        test_event:
-          description: Indicates whether the communication test is a capacity test event
-          example: false
-          type: boolean
-        program:
-          $ref: '#/components/schemas/program_identifier'
-        meter_uuids:
-          description: List of meter UUIDs to run the communication test for
-          example:
-          - dd21c76c-7126-4ef7-b0a6-f190fad300b2
-          items:
-            format: uuid
-            maxItems: 1000
-            type: string
-          type: array
-        dispatch_quantity_kw:
-          description: Quantity of capacity in kW to dispatch for the communication test
-          example: 1000
-          format: double
-          type: number
-        approved:
-          description: Indicates whether the dispatch has been processed (true), or if this was a dry-run to show the partner impact (false).
-          example: false
-          type: boolean
-      required:
-      - end_time
-      - meter_uuids
-      - program
-      - start_time
-      type: object
-    PerformanceCompensationCap:
-      description: 'This field can be used to automate a dispatch response that is aligned with the event’s settlement structure, to capitalize on scenarios where over-performance is lucrative versus scenarios where over-performance is not compensated and best reserved for another event.<br/> - UpToNomination - If partners dispatch beyond their nomination value, they will not be compensated.<br/> - UpToSiteLoad - Partners will be compensated for dispatching up to a site load of 0 kW.<br/> - GridExportsAllowed - Partners will be compensated for dispatching beyond a site load of 0 kW, into negative site load.
-
-        '
-      enum:
-      - grid-exports-allowed
-      - up-to-nomination
-      - up-to-site-load
-      type: string
-      x-enum-varnames:
-      - GRID_EXPORTS_ALLOWED
-      - UP_TO_NOMINATION
-      - UP_TO_SITE_LOAD
     SearchMeterDispatchEventTimeslot:
       allOf:
       - properties:
@@ -790,6 +885,78 @@ components:
       required:
       - meter_event_id
       x-all-of-name: SearchMeterDispatchEventTimeslot
+    HeaderDescription:
+      description: Header name and value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      required:
+      - name
+      - value
+      type: object
+    WebhookMeterDispatchIntegrationTestRequest:
+      example:
+        meter_dispatches:
+        - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
+          timeslots:
+          - meter_event_id: f4cfced0-16f4-4fb7-b72e-5ff939ae541e
+            start_time: 2023-02-21 00:00:00+00:00
+            end_time: 2023-02-21 01:00:00+00:00
+            energy_kw: 10
+            nomination_kw: 10
+            cancelled: false
+            programs:
+            - CCA
+            priority: 1
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+            - capacity-test
+          - meter_event_id: a6d4bbde-36ee-401f-92b8-c58aa17aa71d
+            start_time: 2023-02-21 00:00:00+00:00
+            end_time: 2023-02-21 04:00:00+00:00
+            energy_kw: null
+            nomination_kw: 10
+            cancelled: false
+            programs:
+            - ELRP
+            priority: 3
+            is_voluntary: true
+            performance_compensation_cap: grid-exports-allowed
+            dispatch_event_types:
+            - standard
+      properties:
+        meter_dispatches:
+          description: List of meter dispatch events
+          items:
+            $ref: '#/components/schemas/WebhookMeterDispatchEvent'
+          minItems: 1
+          type: array
+      required:
+      - meter_dispatches
+      type: object
+    Webhook:
+      example:
+        headers:
+        - name: x-your-api-key
+          value: 81819286-3448-4f44-9b1b-3d742666fa5a
+        url: https://webhook.yourcompany.com
+      properties:
+        url:
+          description: Webhook URL
+          format: uri
+          type: string
+        headers:
+          description: Headers that Leap includes in each webhook notification request. They can be used for authentication.
+          items:
+            $ref: '#/components/schemas/HeaderDescription'
+          type: array
+      required:
+      - url
+      type: object
     BaseDispatchEventTimeslot:
       description: A single dispatch interval that describes all aspects of the dispatch.
       properties:
@@ -864,160 +1031,19 @@ components:
       - programs
       - start_time
       type: object
-    WebhookMeterDispatchIntegrationTestRequest:
-      example:
-        meter_dispatches:
-        - meter_id: dd21c76c-7126-4ef7-b0a6-f190fad300b2
-          timeslots:
-          - meter_event_id: f4cfced0-16f4-4fb7-b72e-5ff939ae541e
-            start_time: 2023-02-21 00:00:00+00:00
-            end_time: 2023-02-21 01:00:00+00:00
-            energy_kw: 10
-            nomination_kw: 10
-            cancelled: false
-            programs:
-            - CCA
-            priority: 1
-            is_voluntary: false
-            performance_compensation_cap: up-to-site-load
-            dispatch_event_types:
-            - day-ahead
-            - capacity-test
-          - meter_event_id: a6d4bbde-36ee-401f-92b8-c58aa17aa71d
-            start_time: 2023-02-21 00:00:00+00:00
-            end_time: 2023-02-21 04:00:00+00:00
-            energy_kw: null
-            nomination_kw: 10
-            cancelled: false
-            programs:
-            - ELRP
-            priority: 3
-            is_voluntary: true
-            performance_compensation_cap: grid-exports-allowed
-            dispatch_event_types:
-            - standard
-      properties:
-        meter_dispatches:
-          description: List of meter dispatch events
-          items:
-            $ref: '#/components/schemas/WebhookMeterDispatchEvent'
-          minItems: 1
-          type: array
-      required:
-      - meter_dispatches
-      type: object
-    BaseSearchDispatchEventRequest:
-      description: 'Search parameters for the search dispatches endpoints
+    PerformanceCompensationCap:
+      description: 'This field can be used to automate a dispatch response that is aligned with the event’s settlement structure, to capitalize on scenarios where over-performance is lucrative versus scenarios where over-performance is not compensated and best reserved for another event.<br/> - UpToNomination - If partners dispatch beyond their nomination value, they will not be compensated.<br/> - UpToSiteLoad - Partners will be compensated for dispatching up to a site load of 0 kW.<br/> - GridExportsAllowed - Partners will be compensated for dispatching beyond a site load of 0 kW, into negative site load.
 
         '
-      properties:
-        start_date:
-          description: Start datetime range to get dispatches for (inclusive)
-          format: date-time
-          type: string
-        end_date:
-          description: 'End datetime range to get dispatches for (exclusive). End date must be max 31 days after the start date
-
-            '
-          format: date-time
-          type: string
-        exclude_real_time_events:
-          default: true
-          description: Exclude dispatches for CAISO 5 minute real time events in the response. If empty, 5 min real time events are excluded
-          type: boolean
-        exclude_voluntary_events:
-          default: false
-          description: Exclude dispatches for voluntary events in the response. If empty, all dispatches are returned
-          type: boolean
-        page_token:
-          description: 'Token of the page to request. Max results per page is 500. Null to request a new batch of results
-
-            '
-          format: uuid
-          type: string
-      required:
-      - end_date
-      - start_date
-      type: object
-    DispatchEventType:
       enum:
-      - hour-ahead
-      - day-ahead
-      - 5m
-      - capacity-test
-      - standard
+      - grid-exports-allowed
+      - up-to-nomination
+      - up-to-site-load
       type: string
       x-enum-varnames:
-      - HOUR_AHEAD
-      - DAY_AHEAD
-      - FIVE_MINUTES
-      - CAPACITY_TEST
-      - STANDARD
-    WebhookIntegrationTestResponse:
-      description: Dispatch notification successfully sent to webhook URL during an integration test
-      example:
-        sent_time: 2023-01-23 04:56:07+00:00
-        headers:
-          key:
-          - x-api-key
-          - your-key
-        http_status: 200
-        received_time: 2023-01-23 04:56:17+00:00
-        body: body that is echoed
-      properties:
-        http_status:
-          description: The http code from the response server for the webhook URL or 'null' if no response was received
-          type: integer
-        sent_time:
-          description: Time when the request was sent
-          format: date-time
-          type: string
-        received_time:
-          description: Time when the response was received
-          format: date-time
-          type: string
-        headers:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: Http headers received from the server
-          type: object
-        body:
-          description: 'Http body received from the server if present (so either a Meter Event Notification or  Market Group Event Notification), ''null'' otherwise
-
-            '
-          type: string
-        error_message:
-          description: In case the request to the webhook URL failed this field contains a description of the failure
-          type: string
-      required:
-      - sent_time
-      type: object
-    transmission_region:
-      description: Defines the transmission region of the meter
-      enum:
-      - CAISO
-      - ERCOT
-      - NYISO
-      - ISONE
-      - PJM
-      - SERC
-      - WECC_SW
-      - WECC_PC
-      example: CAISO
-      type: string
-    HeaderDescription:
-      description: Header name and value
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-      required:
-      - name
-      - value
-      type: object
+      - GRID_EXPORTS_ALLOWED
+      - UP_TO_NOMINATION
+      - UP_TO_SITE_LOAD
     CommunicationTestMeterDispatchResponse:
       example:
         dispatch_status: dispatch_status
@@ -1061,76 +1087,50 @@ components:
           example: 1034
           type: integer
       type: object
-    Webhook:
+    transmission_region:
+      description: Defines the transmission region of the meter
+      enum:
+      - CAISO
+      - ERCOT
+      - NYISO
+      - ISONE
+      - PJM
+      - SERC
+      - WECC_SW
+      - WECC_PC
+      example: CAISO
+      type: string
+    ErrorResponse:
       example:
-        headers:
-        - name: x-your-api-key
-          value: 81819286-3448-4f44-9b1b-3d742666fa5a
-        url: https://webhook.yourcompany.com
+        code: BAD_REQUEST
+        message: message
+        error_code: LEAP_DISPATCH_INTERNAL_ERROR_001
       properties:
-        url:
-          description: Webhook URL
-          format: uri
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - UNSUPPORTED_MEDIA_TYPE
+          - SERVICE_UNAVAILABLE
+          - INTERNAL_SERVER_ERROR
           type: string
-        headers:
-          description: Headers that Leap includes in each webhook notification request. They can be used for authentication.
-          items:
-            $ref: '#/components/schemas/HeaderDescription'
-          type: array
+        message:
+          type: string
+        error_code:
+          enum:
+          - LEAP_DISPATCH_INTERNAL_ERROR_001
+          - LEAP_DISPATCH_INTERNAL_ERROR_002
+          - DISPATCH_INVALID_INPUT
+          - DISPATCH_NO_ACCESS_TO_RESOURCE
+          - DISPATCH_UNAUTHORIZED
+          - DISPATCH_UNEXPECTED_ERROR
+          type: string
       required:
-      - url
-      type: object
-    SearchMeterDispatchEventRequest:
-      allOf:
-      - properties:
-          meter_event_ids:
-            description: Meter event ids to get dispatches for
-            items:
-              format: uuid
-              type: string
-            minItems: 1
-            type: array
-            uniqueItems: true
-          meter_ids:
-            description: Meter ids to get dispatches for
-            items:
-              format: uuid
-              type: string
-            minItems: 1
-            type: array
-            uniqueItems: true
-        type: object
-      - $ref: '#/components/schemas/BaseSearchDispatchEventRequest'
-      example:
-        meter_ids:
-        - 9d1a7aae-24e5-455f-91e9-e0f5f145f2ae
-        meter_event_ids:
-        - ac5ea4df-db45-4cb5-a0bf-a32677dac736
-        - 242c3e24-43e6-4ad7-88b3-666cda21582b
-        start_date: 2023-02-01 00:00:00+00:00
-        end_date: 2023-02-14 23:59:00+00:00
-      x-all-of-name: SearchMeterDispatchEventRequest
-    SearchMeterDispatchEvent:
-      description: 'Aggregates timeslot dispatches per meter. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same meter_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
-
-        '
-      properties:
-        meter_id:
-          description: Id of the meter that received dispatches from the market
-          format: uuid
-          type: string
-        partner_reference:
-          description: The partner-supplied reference ID to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
-          type: string
-        timeslots:
-          description: List with timeslots and quantities that contains dispatches for this meter
-          items:
-            $ref: '#/components/schemas/SearchMeterDispatchEventTimeslot'
-          minItems: 1
-          type: array
-      required:
-      - meter_id
-      - timeslots
+      - code
+      - message
       type: object
     MarketType:
       description: Indicates the market “day-ahead”, “hour-ahead”, “15m” or “5m”
