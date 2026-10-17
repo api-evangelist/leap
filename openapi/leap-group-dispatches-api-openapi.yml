@@ -516,6 +516,157 @@ paths:
       - group-dispatches
 components:
   schemas:
+    SearchGroupDispatchEventResponse:
+      example:
+        next_page_token: a946dfb9-5dc9-41f4-b9f2-4e5ac8fb5447
+        results:
+        - market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          meter_ids:
+          - a946dfb9-5dc9-41f4-b9f2-4e5ac8fb5447
+          - 74a2444d-7b49-45d1-93f7-dd8c24b33130
+          timeslots:
+          - market_group_event_id: 904751e8-c0df-4d69-8a4f-9e7cebef1f84
+            start_time: 2023-01-23 01:00:00+00:00
+            end_time: 2023-01-23 02:00:00+00:00
+            energy_kw: 95
+            nomination_kw: 100
+            cancelled: false
+            programs:
+            - CCA
+            priority: 2
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+          - market_group_event_id: 3d1394e4-3f4a-4ee0-bd86-bf653ba29537
+            start_time: 2023-01-23 02:00:00+00:00
+            end_time: 2023-01-23 03:00:00+00:00
+            energy_kw: 115
+            nomination_kw: 120
+            cancelled: false
+            programs:
+            - CCA
+            priority: 2
+            is_voluntary: false
+            performance_compensation_cap: up-to-site-load
+            dispatch_event_types:
+            - day-ahead
+            is_communication_test: false
+      properties:
+        next_page_token:
+          description: 'Token to be used in a subsequent request to get the next batch of results. Max results per page is 500. Null when the last page of results has been reached
+
+            '
+          format: uuid
+          type: string
+        results:
+          description: 'A list of market-group dispatches.
+
+            '
+          items:
+            $ref: '#/components/schemas/SearchMarketGroupDispatchEvent'
+          type: array
+      required:
+      - results
+      type: object
+    WebhookMarketGroupDispatchEvent:
+      description: 'Aggregates timeslot dispatches per market group. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same market_group_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+
+        '
+      properties:
+        market_group_id:
+          description: The id of the market group that received dispatches from the market.
+          format: uuid
+          type: string
+        meter_ids:
+          description: Ids of the meters that received dispatches from the market
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        partner_references:
+          description: The partner-supplied reference IDs to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches for this market group
+          items:
+            $ref: '#/components/schemas/GroupDispatchEventTimeslot'
+          minItems: 1
+          type: array
+      required:
+      - market_group_id
+      - meter_ids
+      - timeslots
+      type: object
+    ErrorResponse:
+      example:
+        code: BAD_REQUEST
+        message: message
+        error_code: LEAP_DISPATCH_INTERNAL_ERROR_001
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - UNSUPPORTED_MEDIA_TYPE
+          - SERVICE_UNAVAILABLE
+          - INTERNAL_SERVER_ERROR
+          type: string
+        message:
+          type: string
+        error_code:
+          enum:
+          - LEAP_DISPATCH_INTERNAL_ERROR_001
+          - LEAP_DISPATCH_INTERNAL_ERROR_002
+          - DISPATCH_INVALID_INPUT
+          - DISPATCH_NO_ACCESS_TO_RESOURCE
+          - DISPATCH_UNAUTHORIZED
+          - DISPATCH_UNEXPECTED_ERROR
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    SearchMarketGroupDispatchEvent:
+      description: 'Aggregates timeslot dispatches per market group. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same market_group_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+
+        '
+      properties:
+        market_group_id:
+          description: The id of the market group that received dispatches from the market.
+          format: uuid
+          type: string
+        meter_ids:
+          description: Ids of the meters that received dispatches from the market
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        partner_references:
+          description: The partner-supplied reference IDs to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        timeslots:
+          description: List with timeslots and quantities that contains dispatches for this market group
+          items:
+            $ref: '#/components/schemas/SearchGroupDispatchEventTimeslot'
+          minItems: 1
+          type: array
+      required:
+      - market_group_id
+      - meter_ids
+      - timeslots
+      type: object
     PerformanceCompensationCap:
       description: 'This field can be used to automate a dispatch response that is aligned with the event’s settlement structure, to capitalize on scenarios where over-performance is lucrative versus scenarios where over-performance is not compensated and best reserved for another event.<br/> - UpToNomination - If partners dispatch beyond their nomination value, they will not be compensated.<br/> - UpToSiteLoad - Partners will be compensated for dispatching up to a site load of 0 kW.<br/> - GridExportsAllowed - Partners will be compensated for dispatching beyond a site load of 0 kW, into negative site load.
 
@@ -582,71 +733,38 @@ components:
         type: object
       - $ref: '#/components/schemas/GroupDispatchEventTimeslot'
       x-all-of-name: SearchGroupDispatchEventTimeslot
-    WebhookMarketGroupDispatchEvent:
-      description: 'Aggregates timeslot dispatches per market group. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same market_group_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+    BaseSearchDispatchEventRequest:
+      description: 'Search parameters for the search dispatches endpoints
 
         '
       properties:
-        market_group_id:
-          description: The id of the market group that received dispatches from the market.
-          format: uuid
+        start_date:
+          description: Start datetime range to get dispatches for (inclusive)
+          format: date-time
           type: string
-        meter_ids:
-          description: Ids of the meters that received dispatches from the market
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        partner_references:
-          description: The partner-supplied reference IDs to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        timeslots:
-          description: List with timeslots and quantities that contains dispatches for this market group
-          items:
-            $ref: '#/components/schemas/GroupDispatchEventTimeslot'
-          minItems: 1
-          type: array
-      required:
-      - market_group_id
-      - meter_ids
-      - timeslots
-      type: object
-    SearchMarketGroupDispatchEvent:
-      description: 'Aggregates timeslot dispatches per market group. Previously stored dispatches might be updated so when dealing with a dispatch timeslot that has the same market_group_event_id as an existing one, the previously received dispatch has to be updated with the new field values.
+        end_date:
+          description: 'End datetime range to get dispatches for (exclusive). End date must be max 31 days after the start date
 
-        '
-      properties:
-        market_group_id:
-          description: The id of the market group that received dispatches from the market.
+            '
+          format: date-time
+          type: string
+        exclude_real_time_events:
+          default: true
+          description: Exclude dispatches for CAISO 5 minute real time events in the response. If empty, 5 min real time events are excluded
+          type: boolean
+        exclude_voluntary_events:
+          default: false
+          description: Exclude dispatches for voluntary events in the response. If empty, all dispatches are returned
+          type: boolean
+        page_token:
+          description: 'Token of the page to request. Max results per page is 500. Null to request a new batch of results
+
+            '
           format: uuid
           type: string
-        meter_ids:
-          description: Ids of the meters that received dispatches from the market
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        partner_references:
-          description: The partner-supplied reference IDs to help identify the customer or site that a Leap meter correlates to a partner’s internal systems.
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        timeslots:
-          description: List with timeslots and quantities that contains dispatches for this market group
-          items:
-            $ref: '#/components/schemas/SearchGroupDispatchEventTimeslot'
-          minItems: 1
-          type: array
       required:
-      - market_group_id
-      - meter_ids
-      - timeslots
+      - end_date
+      - start_date
       type: object
     HeaderDescription:
       description: Header name and value
@@ -671,6 +789,25 @@ components:
       required:
       - market_group_event_id
       x-all-of-name: GroupDispatchEventTimeslot
+    Webhook:
+      example:
+        headers:
+        - name: x-your-api-key
+          value: 81819286-3448-4f44-9b1b-3d742666fa5a
+        url: https://webhook.yourcompany.com
+      properties:
+        url:
+          description: Webhook URL
+          format: uri
+          type: string
+        headers:
+          description: Headers that Leap includes in each webhook notification request. They can be used for authentication.
+          items:
+            $ref: '#/components/schemas/HeaderDescription'
+          type: array
+      required:
+      - url
+      type: object
     WebhookGroupDispatchIntegrationTestRequest:
       example:
         group_dispatches:
@@ -716,71 +853,6 @@ components:
           type: array
       required:
       - group_dispatches
-      type: object
-    ErrorResponse:
-      example:
-        code: BAD_REQUEST
-        message: message
-        error_code: LEAP_DISPATCH_INTERNAL_ERROR_001
-      properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - UNSUPPORTED_MEDIA_TYPE
-          - SERVICE_UNAVAILABLE
-          - INTERNAL_SERVER_ERROR
-          type: string
-        message:
-          type: string
-        error_code:
-          enum:
-          - LEAP_DISPATCH_INTERNAL_ERROR_001
-          - LEAP_DISPATCH_INTERNAL_ERROR_002
-          - DISPATCH_INVALID_INPUT
-          - DISPATCH_NO_ACCESS_TO_RESOURCE
-          - DISPATCH_UNAUTHORIZED
-          - DISPATCH_UNEXPECTED_ERROR
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    BaseSearchDispatchEventRequest:
-      description: 'Search parameters for the search dispatches endpoints
-
-        '
-      properties:
-        start_date:
-          description: Start datetime range to get dispatches for (inclusive)
-          format: date-time
-          type: string
-        end_date:
-          description: 'End datetime range to get dispatches for (exclusive). End date must be max 31 days after the start date
-
-            '
-          format: date-time
-          type: string
-        exclude_real_time_events:
-          default: true
-          description: Exclude dispatches for CAISO 5 minute real time events in the response. If empty, 5 min real time events are excluded
-          type: boolean
-        exclude_voluntary_events:
-          default: false
-          description: Exclude dispatches for voluntary events in the response. If empty, all dispatches are returned
-          type: boolean
-        page_token:
-          description: 'Token of the page to request. Max results per page is 500. Null to request a new batch of results
-
-            '
-          format: uuid
-          type: string
-      required:
-      - end_date
-      - start_date
       type: object
     BaseDispatchEventTimeslot:
       description: A single dispatch interval that describes all aspects of the dispatch.
@@ -856,6 +928,47 @@ components:
       - programs
       - start_time
       type: object
+    WebhookIntegrationTestResponse:
+      description: Dispatch notification successfully sent to webhook URL during an integration test
+      example:
+        sent_time: 2023-01-23 04:56:07+00:00
+        headers:
+          key:
+          - x-api-key
+          - your-key
+        http_status: 200
+        received_time: 2023-01-23 04:56:17+00:00
+        body: body that is echoed
+      properties:
+        http_status:
+          description: The http code from the response server for the webhook URL or 'null' if no response was received
+          type: integer
+        sent_time:
+          description: Time when the request was sent
+          format: date-time
+          type: string
+        received_time:
+          description: Time when the response was received
+          format: date-time
+          type: string
+        headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: Http headers received from the server
+          type: object
+        body:
+          description: 'Http body received from the server if present (so either a Meter Event Notification or  Market Group Event Notification), ''null'' otherwise
+
+            '
+          type: string
+        error_message:
+          description: In case the request to the webhook URL failed this field contains a description of the failure
+          type: string
+      required:
+      - sent_time
+      type: object
     program_identifier:
       description: Identifier of program
       enum:
@@ -922,119 +1035,6 @@ components:
       - CAISO_ELRP_A4
       - CEC_DSGS_OPTION2
       - ENERGYHUB_CS
-    WebhookIntegrationTestResponse:
-      description: Dispatch notification successfully sent to webhook URL during an integration test
-      example:
-        sent_time: 2023-01-23 04:56:07+00:00
-        headers:
-          key:
-          - x-api-key
-          - your-key
-        http_status: 200
-        received_time: 2023-01-23 04:56:17+00:00
-        body: body that is echoed
-      properties:
-        http_status:
-          description: The http code from the response server for the webhook URL or 'null' if no response was received
-          type: integer
-        sent_time:
-          description: Time when the request was sent
-          format: date-time
-          type: string
-        received_time:
-          description: Time when the response was received
-          format: date-time
-          type: string
-        headers:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: Http headers received from the server
-          type: object
-        body:
-          description: 'Http body received from the server if present (so either a Meter Event Notification or  Market Group Event Notification), ''null'' otherwise
-
-            '
-          type: string
-        error_message:
-          description: In case the request to the webhook URL failed this field contains a description of the failure
-          type: string
-      required:
-      - sent_time
-      type: object
-    Webhook:
-      example:
-        headers:
-        - name: x-your-api-key
-          value: 81819286-3448-4f44-9b1b-3d742666fa5a
-        url: https://webhook.yourcompany.com
-      properties:
-        url:
-          description: Webhook URL
-          format: uri
-          type: string
-        headers:
-          description: Headers that Leap includes in each webhook notification request. They can be used for authentication.
-          items:
-            $ref: '#/components/schemas/HeaderDescription'
-          type: array
-      required:
-      - url
-      type: object
-    SearchGroupDispatchEventResponse:
-      example:
-        next_page_token: a946dfb9-5dc9-41f4-b9f2-4e5ac8fb5447
-        results:
-        - market_group_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          meter_ids:
-          - a946dfb9-5dc9-41f4-b9f2-4e5ac8fb5447
-          - 74a2444d-7b49-45d1-93f7-dd8c24b33130
-          timeslots:
-          - market_group_event_id: 904751e8-c0df-4d69-8a4f-9e7cebef1f84
-            start_time: 2023-01-23 01:00:00+00:00
-            end_time: 2023-01-23 02:00:00+00:00
-            energy_kw: 95
-            nomination_kw: 100
-            cancelled: false
-            programs:
-            - CCA
-            priority: 2
-            is_voluntary: false
-            performance_compensation_cap: up-to-site-load
-            dispatch_event_types:
-            - day-ahead
-          - market_group_event_id: 3d1394e4-3f4a-4ee0-bd86-bf653ba29537
-            start_time: 2023-01-23 02:00:00+00:00
-            end_time: 2023-01-23 03:00:00+00:00
-            energy_kw: 115
-            nomination_kw: 120
-            cancelled: false
-            programs:
-            - CCA
-            priority: 2
-            is_voluntary: false
-            performance_compensation_cap: up-to-site-load
-            dispatch_event_types:
-            - day-ahead
-            is_communication_test: false
-      properties:
-        next_page_token:
-          description: 'Token to be used in a subsequent request to get the next batch of results. Max results per page is 500. Null when the last page of results has been reached
-
-            '
-          format: uuid
-          type: string
-        results:
-          description: 'A list of market-group dispatches.
-
-            '
-          items:
-            $ref: '#/components/schemas/SearchMarketGroupDispatchEvent'
-          type: array
-      required:
-      - results
-      type: object
   securitySchemes:
     http:
       bearerFormat: JWT
